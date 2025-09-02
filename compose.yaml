@@ -1,0 +1,13 @@
+﻿services:
+  490l:
+    image: 490l
+    build:
+      context: .
+      dockerfile: 490L/Dockerfile
+
+  entities:
+    image: entities
+    build:
+      context: .
+      dockerfile: Entities/Dockerfile
+
