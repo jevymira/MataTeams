@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Entities;
 
@@ -13,7 +14,16 @@ public class ReviewContext : IdentityDbContext<ApplicationUser>
     
     // (OnConfiguring() discouraged for production applications)
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=Boyce-Codd normal form;Database=490L");
+    {
+        if (optionsBuilder.IsConfigured)
+        {
+            return;
+        }
+        IConfigurationBuilder builder = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json");
+        IConfigurationRoot configuration = builder.Build();
+        optionsBuilder.UseNpgsql(configuration["ConnectionString"]);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

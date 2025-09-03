@@ -32,7 +32,7 @@ public class SeedersController : ControllerBase
             SecurityStamp = Guid.NewGuid().ToString(),
         };
         
-        var x = await _userManager.CreateAsync(user, "P@ssw0rd!");
-        var y = await _context.SaveChangesAsync();
+        await _userManager.CreateAsync(user, _configuration["SeedUser:Password"]);
+        await _context.SaveChangesAsync();
     }
 }
