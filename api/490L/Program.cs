@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ReviewContext>(options =>
-    options.UseNpgsql(builder.Configuration["ConnectionString"]));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddHttpClient();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

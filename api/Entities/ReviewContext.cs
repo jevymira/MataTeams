@@ -20,9 +20,10 @@ public class ReviewContext : IdentityDbContext<ApplicationUser>
             return;
         }
         IConfigurationBuilder builder = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json");
+            .AddJsonFile("appsettings.json")
+            .AddUserSecrets<ReviewContext>();
         IConfigurationRoot configuration = builder.Build();
-        optionsBuilder.UseNpgsql(configuration["ConnectionString"]);
+        optionsBuilder.UseNpgsql(configuration["DefaultConnection"]);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
