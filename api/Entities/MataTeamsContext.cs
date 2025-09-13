@@ -4,13 +4,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace Entities;
 
-public class ReviewContext : IdentityDbContext<ApplicationUser>
+public class MataTeamsContext : IdentityDbContext<MataTeamsUser>
 {
-    public ReviewContext() {}
+    public MataTeamsContext() {}
     
-    public ReviewContext(DbContextOptions<ReviewContext> options) : base(options) {}
+    public MataTeamsContext(DbContextOptions<MataTeamsContext> options) : base(options) {}
     
-    public DbSet<Review> Reviews { get; set; }
+    public DbSet<Project> Projects { get; set; }
     
     // (OnConfiguring() discouraged for production applications)
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -21,7 +21,7 @@ public class ReviewContext : IdentityDbContext<ApplicationUser>
         }
         IConfigurationBuilder builder = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
-            .AddUserSecrets<ReviewContext>();
+            .AddUserSecrets<MataTeamsContext>();
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseNpgsql(configuration["DefaultConnection"]);
     }
@@ -30,8 +30,8 @@ public class ReviewContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(modelBuilder); // keys of Identity tables mapped in IdentityDbContext
         
-        modelBuilder.Entity<ApplicationUser>()
-            .HasMany(e => e.Reviews)
+        modelBuilder.Entity<MataTeamsUser>()
+            .HasMany(e => e.Projects)
             .WithOne()
             .HasForeignKey(e => e.UserId)
             .IsRequired();
