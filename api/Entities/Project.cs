@@ -15,6 +15,6 @@ public class Project
    /// The unique identifier of the user who created the project
    /// and who has the highest permissions by default.
    /// </summary>
-   [Column("user_id")]
-   public required string UserId { get; set; }
+   [Column("owner_id")]
+   public required string OwnerUserId { get; set; }
 }

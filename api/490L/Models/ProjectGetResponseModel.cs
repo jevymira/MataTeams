@@ -11,5 +11,5 @@ public class ProjectGetResponseModel
     /// The unique identifier of the user who created the project
     /// and who has the highest permissions by default.
     /// </summary>
-    public required string UserId { get; set; }
+    public required string OwnerUserId { get; set; }
 }

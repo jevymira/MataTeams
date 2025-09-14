@@ -23,7 +23,7 @@ public class ProjectsController(ProjectService projectService) : ControllerBase
             projects.Select(p => new ProjectGetResponseModel()
         {
             Id = p.Id,
-            UserId = p.UserId,
+            OwnerUserId = p.OwnerUserId,
         });
         return Ok(projectResponseModels);
     }

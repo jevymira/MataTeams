@@ -33,7 +33,7 @@ public class MataTeamsContext : IdentityDbContext<MataTeamsUser>
         modelBuilder.Entity<MataTeamsUser>()
             .HasMany(e => e.Projects)
             .WithOne()
-            .HasForeignKey(e => e.UserId)
+            .HasForeignKey(e => e.OwnerUserId)
             .IsRequired();
     }
 }
