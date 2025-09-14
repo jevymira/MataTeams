@@ -1,23 +1,30 @@
+using _490L.Models;
 using Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace _490L.Controllers;
 
-[Route("api/[controller]")]
+/// <summary>
+/// Controller for Project entities. 
+/// </summary>
 [ApiController]
-public class ProjectsController : ControllerBase
+[Route("api/[controller]")]
+public class ProjectsController(ProjectService projectService) : ControllerBase
 {
-    private readonly MataTeamsContext _context;
-
-    public ProjectsController(MataTeamsContext context)
-    {
-        _context = context;
-    }
-
+    /// <summary>
+    /// Retrieves all projects.
+    /// </summary>
+    /// <returns>List of projects.</returns>
     [HttpGet]
-    public async Task<List<Project>> GetProjectsAsync()
+    public async Task<ActionResult<List<Project>>> GetProjectsAsync()
     {
-        return await _context.Projects.ToListAsync();
+        var projects = await projectService.GetProjectsAsync();
+        var projectResponseModels = 
+            projects.Select(p => new ProjectGetResponseModel()
+        {
+            Id = p.Id,
+            UserId = p.UserId,
+        });
+        return Ok(projectResponseModels);
     }
 }

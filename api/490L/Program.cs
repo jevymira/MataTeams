@@ -10,9 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<MataTeamsContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<ProjectService>();
 
 builder.Services.AddIdentity<MataTeamsUser, IdentityRole>()
     .AddEntityFrameworkStores<MataTeamsContext>();
