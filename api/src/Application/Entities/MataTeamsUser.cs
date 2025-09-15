@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Entities;
+namespace Application.Entities;
 
 public class MataTeamsUser : IdentityUser
 {

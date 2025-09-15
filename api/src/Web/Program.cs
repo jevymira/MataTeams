@@ -1,5 +1,8 @@
 using _490L;
-using Entities;
+using Application;
+using Application.Data;
+using Application.Entities;
+using Application.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

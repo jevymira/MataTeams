@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿#nullable disable
 
-#nullable disable
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Entities.Migrations
+namespace Application.Data.Migrations
 {
     /// <inheritdoc />
     public partial class RenameUserIdColumn : Migration

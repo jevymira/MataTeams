@@ -1,4 +1,4 @@
-namespace _490L.Models;
+namespace Application.Models;
 
 public class ProjectGetResponseModel
 {

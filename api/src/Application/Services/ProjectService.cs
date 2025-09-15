@@ -1,7 +1,8 @@
-using Entities;
+using Application.Data;
+using Application.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace _490L;
+namespace Application.Services;
 
 public class ProjectService(MataTeamsContext context)
 {

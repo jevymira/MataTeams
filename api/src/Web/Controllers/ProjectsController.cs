@@ -1,5 +1,7 @@
-using _490L.Models;
-using Entities;
+using Application;
+using Application.Entities;
+using Application.Models;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _490L.Controllers;

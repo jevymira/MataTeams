@@ -1,8 +1,9 @@
+using Application.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Entities;
+namespace Application.Data;
 
 public class MataTeamsContext : IdentityDbContext<MataTeamsUser>
 {
