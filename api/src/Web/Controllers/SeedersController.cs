@@ -1,4 +1,6 @@
-using Entities;
+using Application;
+using Application.Data;
+using Application.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,24 +10,24 @@ namespace _490L.Controllers;
 [Route("api/[controller]")]
 public class SeedersController : ControllerBase
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly ReviewContext _context;
+    private readonly UserManager<MataTeamsUser> _userManager;
+    private readonly MataTeamsContext _context;
     private readonly IConfiguration _configuration;
 
     public SeedersController(
-        UserManager<ApplicationUser> userManager,
-        ReviewContext reviewContext,
+        UserManager<MataTeamsUser> userManager,
+        MataTeamsContext mataTeamsContext,
         IConfiguration configuration)
     {
         _userManager = userManager;
-        _context = reviewContext;
+        _context = mataTeamsContext;
         _configuration = configuration;
     }
     
     [HttpPost("Users")]
     public async Task SeedUser()
     {
-        ApplicationUser user = new()
+        var user = new MataTeamsUser()
         {
             UserName = "user",
             Email = "user@email.com",

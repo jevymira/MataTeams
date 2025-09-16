@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "490L", "490L\490L.csproj", "{5E5EFF0C-8478-4993-8ED1-C9316F505C69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "src\Web\Web.csproj", "{5E5EFF0C-8478-4993-8ED1-C9316F505C69}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D9AEE44C-C5AA-40A0-A317-42DCC9876CA2} = {D9AEE44C-C5AA-40A0-A317-42DCC9876CA2}
 		{FEBF20C6-1D3B-446A-A6A7-4D1347A88B64} = {FEBF20C6-1D3B-446A-A6A7-4D1347A88B64}
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		compose.yaml = compose.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{FEBF20C6-1D3B-446A-A6A7-4D1347A88B64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{FEBF20C6-1D3B-446A-A6A7-4D1347A88B64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

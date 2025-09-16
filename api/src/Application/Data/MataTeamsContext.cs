@@ -1,16 +1,17 @@
+using Application.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Entities;
+namespace Application.Data;
 
-public class ReviewContext : IdentityDbContext<ApplicationUser>
+public class MataTeamsContext : IdentityDbContext<MataTeamsUser>
 {
-    public ReviewContext() {}
+    public MataTeamsContext() {}
     
-    public ReviewContext(DbContextOptions<ReviewContext> options) : base(options) {}
+    public MataTeamsContext(DbContextOptions<MataTeamsContext> options) : base(options) {}
     
-    public DbSet<Review> Reviews { get; set; }
+    public DbSet<Project> Projects { get; set; }
     
     // (OnConfiguring() discouraged for production applications)
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -20,19 +21,20 @@ public class ReviewContext : IdentityDbContext<ApplicationUser>
             return;
         }
         IConfigurationBuilder builder = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json");
+            .AddJsonFile("appsettings.json")
+            .AddUserSecrets<MataTeamsContext>();
         IConfigurationRoot configuration = builder.Build();
-        optionsBuilder.UseNpgsql(configuration["ConnectionString"]);
+        optionsBuilder.UseNpgsql(configuration["DefaultConnection"]);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder); // keys of Identity tables mapped in IdentityDbContext
         
-        modelBuilder.Entity<ApplicationUser>()
-            .HasMany(e => e.Reviews)
+        modelBuilder.Entity<MataTeamsUser>()
+            .HasMany(e => e.Projects)
             .WithOne()
-            .HasForeignKey(e => e.UserId)
+            .HasForeignKey(e => e.OwnerUserId)
             .IsRequired();
     }
 }

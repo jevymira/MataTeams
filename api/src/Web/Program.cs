@@ -1,5 +1,8 @@
 using _490L;
-using Entities;
+using Application;
+using Application.Data;
+using Application.Entities;
+using Application.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ReviewContext>(options =>
-    options.UseNpgsql(builder.Configuration["ConnectionString"]));
-builder.Services.AddScoped<IgdbClient>();
-builder.Services.AddHttpClient();
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ReviewContext>();
+builder.Services.AddDbContext<MataTeamsContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ProjectService>();
+
+builder.Services.AddIdentity<MataTeamsUser, IdentityRole>()
+    .AddEntityFrameworkStores<MataTeamsContext>();
 
 var app = builder.Build();
 
