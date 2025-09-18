@@ -1,24 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import { Header } from './components/header/Header'
+import { Route, Routes } from 'react-router'
+import Projects from './pages/projects/Projects'
+import Profile from './pages/profile/Profile'
+import { ProjectObj } from './types'
 
+// TODO need context
+// reorg sample data
+const sampleProjects: ProjectObj[] = [
+  {title: 'Make a tastier Protein Bar', 
+    description: 'We will create the worlds most infinitely tasty protein bar', 
+    members: [], 
+    startDate: '', 
+    skills: [],
+    category: ''},
+  {title: 'Web app for ducks', 
+    description: 'This app will provide all water fowl related needs', 
+    members: [], 
+    startDate: '', 
+    skills: [],
+    category: ''},
+  {title: '', 
+    description: '', 
+    members: [], 
+    startDate: '', 
+    skills: [],
+    category: ''},
+]
+
+//projects={sampleProjects}
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Routes>
+        <Route path='/'  element={<Projects projects={sampleProjects}/>} />
+        <Route path='/profile' element={<Profile />}/>
+      </Routes>
     </div>
   );
 }
