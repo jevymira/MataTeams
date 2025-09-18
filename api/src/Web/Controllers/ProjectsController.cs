@@ -4,7 +4,7 @@ using Application.Models;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace _490L.Controllers;
+namespace Web.Controllers;
 
 /// <summary>
 /// Controller for Project entities. 
