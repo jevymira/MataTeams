@@ -1,13 +1,13 @@
 ﻿services:
-  490l:
-    image: 490l
+  web:
+    image: web
     build:
       context: .
-      dockerfile: 490L/Dockerfile
+      dockerfile: Web/Dockerfile
 
-  entities:
-    image: entities
+  application:
+    image: application 
     build:
       context: .
-      dockerfile: Entities/Dockerfile
+      dockerfile: Application/Dockerfile
 
