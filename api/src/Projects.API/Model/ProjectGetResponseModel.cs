@@ -1,4 +1,4 @@
-namespace Application.Models;
+namespace Projects.API.Model;
 
 public class ProjectGetResponseModel
 {

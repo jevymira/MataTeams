@@ -1,10 +1,10 @@
-using Application.Data;
-using Application.Entities;
 using Microsoft.EntityFrameworkCore;
+using Projects.API.Infrastructure;
+using Projects.API.Model;
 
-namespace Application.Services;
+namespace Projects.API.Services;
 
-public class ProjectService(MataTeamsContext context)
+public class ProjectService(ProjectDbContext context)
 {
     public async Task<List<Project>> GetProjectsAsync()
     {

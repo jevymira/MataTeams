@@ -1,10 +1,8 @@
-using Application;
-using Application.Entities;
-using Application.Models;
-using Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Projects.API.Model;
+using Projects.API.Services;
 
-namespace Web.Controllers;
+namespace Projects.API.Controllers;
 
 /// <summary>
 /// Controller for Project entities. 

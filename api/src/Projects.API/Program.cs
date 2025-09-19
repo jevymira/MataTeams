@@ -1,9 +1,7 @@
-using Application;
-using Application.Data;
-using Application.Entities;
-using Application.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Projects.API.Infrastructure;
+using Projects.API.Model;
+using Projects.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,13 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<MataTeamsContext>(options =>
+builder.Services.AddDbContext<ProjectDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ProjectService>();
-
-builder.Services.AddIdentity<MataTeamsUser, IdentityRole>()
-    .AddEntityFrameworkStores<MataTeamsContext>();
 
 var app = builder.Build();
 
