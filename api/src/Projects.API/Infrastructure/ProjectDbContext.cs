@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Projects.API.Infrastructure.EntityConfigurations;
 using Projects.API.Model;
 
 namespace Projects.API.Infrastructure;
@@ -43,6 +44,6 @@ public class ProjectDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder); // keys of Identity tables mapped in IdentityDbContext
+        modelBuilder.ApplyConfiguration(new ProjectEntityTypeConfiguration());
     }
 }
