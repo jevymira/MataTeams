@@ -6,8 +6,14 @@ namespace Projects.API.Services;
 
 public class ProjectService(ProjectDbContext context)
 {
-    public async Task<List<Project>> GetProjectsAsync()
+    public async Task<List<ProjectGetResponseModel>> GetProjectsAsync()
     {
-        return await context.Projects.ToListAsync();
+        var projects = await context.Projects.ToListAsync();
+        return projects.Select(p => new ProjectGetResponseModel
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Description = p.Description
+        }).ToList();
     }
 }

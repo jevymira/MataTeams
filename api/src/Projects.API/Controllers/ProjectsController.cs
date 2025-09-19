@@ -16,15 +16,9 @@ public class ProjectsController(ProjectService projectService) : ControllerBase
     /// </summary>
     /// <returns>List of projects.</returns>
     [HttpGet]
-    public async Task<ActionResult<List<Project>>> GetProjectsAsync()
+    public async Task<ActionResult<List<ProjectGetResponseModel>>> GetProjectsAsync()
     {
         var projects = await projectService.GetProjectsAsync();
-        var projectResponseModels = 
-            projects.Select(p => new ProjectGetResponseModel()
-        {
-            Id = p.Id,
-            OwnerUserId = p.OwnerUserId,
-        });
-        return Ok(projectResponseModels);
+        return Ok(projects);
     }
 }
