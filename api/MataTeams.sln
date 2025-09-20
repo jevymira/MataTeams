@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.Infrastructure", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.API", "src\Teams.API\Teams.API.csproj", "{1199F7E2-5478-4B57-92BC-94168652735A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Teams", "Teams", "{EC7D5740-07A3-4687-A7E1-11EECEFC1CE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,5 +31,10 @@ Global
 		{1199F7E2-5478-4B57-92BC-94168652735A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1199F7E2-5478-4B57-92BC-94168652735A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1199F7E2-5478-4B57-92BC-94168652735A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1199F7E2-5478-4B57-92BC-94168652735A} = {EC7D5740-07A3-4687-A7E1-11EECEFC1CE2}
+		{3CD68185-6A8B-4842-AAC8-52F4C967CAB7} = {EC7D5740-07A3-4687-A7E1-11EECEFC1CE2}
+		{11C01878-5339-41A4-AFDB-D941AA652A6C} = {EC7D5740-07A3-4687-A7E1-11EECEFC1CE2}
 	EndGlobalSection
 EndGlobal
