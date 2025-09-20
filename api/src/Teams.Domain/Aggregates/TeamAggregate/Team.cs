@@ -15,7 +15,7 @@ public class Team : Entity, IAggregateRoot
     
     private readonly List<TeamMember> _membershipRequests;
 
-    public Team(string name, string description)
+    public Team(string name)
     {
         Name = name;
         _members = [];
@@ -33,7 +33,7 @@ public class Team : Entity, IAggregateRoot
         else
         {
             // TODO: validate that member is not requesting to join a fully-filled role 
-            var newMember = new TeamMember(userId, roleId);
+            var newMember = new TeamMember(Id, userId, roleId);
             _members.Add(newMember);
         }
     }

@@ -13,5 +13,6 @@ public class TeamDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new TeamEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new TeamMemberEntityTypeConfiguration());
     }
 }

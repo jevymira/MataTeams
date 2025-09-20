@@ -11,6 +11,15 @@ public class TeamMemberEntityTypeConfiguration : IEntityTypeConfiguration<TeamMe
         builder.ToTable("team_members");
         
         builder.Property(tm => tm.Id)
-            .HasColumnName("team_member_id");
+            .HasColumnName("id");
+        
+        builder.Property(tm => tm.TeamId)
+            .HasColumnName("team_id");
+        
+        builder.Property(tm => tm.UserId)
+            .HasColumnName("user_id");
+        
+        builder.Property(tm => tm.RoleId)
+            .HasColumnName("role_id");
     }
 }
