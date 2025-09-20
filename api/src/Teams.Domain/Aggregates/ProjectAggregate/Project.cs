@@ -1,15 +1,12 @@
+using Teams.Domain.SeedWork;
+
 namespace Teams.Domain.Aggregates.ProjectAggregate;
 
-public class Project
+public class Project : Entity
 {
-   /// <summary>
-   /// The unique identifier for the project.
-   /// </summary>
-   public int Id { get; set; }
-
-   public required string Name { get; set; }
+   public string Name { get; private set; }
    
-   public required string Description { get; set; }
+   public  string Description { get; private set; }
    
    // public ProjectType ProjectType { get; set; }
    
@@ -20,4 +17,10 @@ public class Project
    // public int TeamId { get; set }
    
    // public int CreatedBy { get; set; }
+
+   public Project(string name, string description)
+   {
+      Name = name;
+      Description = description;
+   }
 }

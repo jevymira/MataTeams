@@ -1,6 +1,6 @@
 using Teams.Domain.SeedWork;
 
-namespace Teams.Domain.Entities;
+namespace Teams.Domain.SharedKernel;
 
 public class Role : Entity
 {
