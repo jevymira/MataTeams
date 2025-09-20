@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Domain.Aggregates.TeamAggregate;
 using Teams.Infrastructure.EntityConfigurations;
 
@@ -9,9 +10,11 @@ public class TeamDbContext : DbContext
     public TeamDbContext(DbContextOptions<TeamDbContext> options) : base(options) { }
     
     public DbSet<Team> Teams { get; set; }
+    public DbSet<Project> Projects { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new ProjectEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TeamEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TeamMemberEntityTypeConfiguration());
     }

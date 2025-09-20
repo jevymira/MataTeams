@@ -1,6 +1,6 @@
-namespace Projects.API.Model;
+namespace Teams.API.Features.Projects.GetProjectById;
 
-public class ProjectGetResponseModel
+public class GetProjectByIdResponse
 {
     /// <summary>
     /// The unique identifier for the project.

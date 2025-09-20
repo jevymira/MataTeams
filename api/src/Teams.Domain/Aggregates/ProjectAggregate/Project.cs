@@ -1,4 +1,4 @@
-namespace Projects.API.Model;
+namespace Teams.Domain.Aggregates.ProjectAggregate;
 
 public class Project
 {

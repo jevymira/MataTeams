@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Projects.API.Model;
+using Teams.Domain.Aggregates.ProjectAggregate;
 
-namespace Projects.API.Infrastructure.EntityConfigurations;
+namespace Teams.Infrastructure.EntityConfigurations;
 
 public class ProjectEntityTypeConfiguration : IEntityTypeConfiguration<Project>
 {
