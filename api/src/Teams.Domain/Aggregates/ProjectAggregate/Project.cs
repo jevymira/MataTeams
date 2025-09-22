@@ -15,8 +15,8 @@ public class Project : Entity
    // public ProjectStatus ProjectStatus { get; set; }
    
    // public int TeamId { get; set }
-   
-   // public int CreatedBy { get; set; }
+
+   public int OwnerId { get; set; }
 
    public Project(string name, string description)
    {

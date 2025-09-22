@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Teams.Domain.Aggregates.MemberAggregate;
 using Teams.Domain.Aggregates.ProjectAggregate;
 
 namespace Teams.Infrastructure.EntityConfigurations;
@@ -20,5 +21,13 @@ public class ProjectEntityTypeConfiguration : IEntityTypeConfiguration<Project>
         builder.Property(p => p.Description)
             .HasColumnName("description")
             .HasMaxLength(1024);
+        
+        builder.HasOne<Member>()
+            .WithMany()
+            .HasForeignKey(p => p.OwnerId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.Property(p => p.OwnerId)
+            .HasColumnName("owner_id");
     }
 }

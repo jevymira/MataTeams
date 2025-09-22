@@ -6,10 +6,10 @@ public class Member : Entity
 {  
     public string IdentityGuid { get; private set; }
 
-    public Member(string identity)
+    public Member(string identityGuid)
     {
-        IdentityGuid = !string.IsNullOrWhiteSpace(identity)
-            ? identity
-            : throw new ArgumentNullException(nameof(identity));
+        IdentityGuid = !string.IsNullOrWhiteSpace(identityGuid)
+            ? identityGuid 
+            : throw new ArgumentNullException(nameof(identityGuid));
     }
 }
