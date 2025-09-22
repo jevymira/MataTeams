@@ -1,8 +1,10 @@
 using System.Text;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects.CreateProject;
 using Teams.API.Features.Projects.GetProjectById;
+using Teams.API.Validation;
 using Teams.Infrastructure;
 
 namespace Teams.API.Extensions;
@@ -34,7 +36,11 @@ internal static class Extensions
         builder.Services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssemblyContaining<Program>();
+            
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
+
+        builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
     }
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)
