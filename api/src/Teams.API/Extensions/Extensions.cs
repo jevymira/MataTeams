@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Teams.API.Features.Projects.CreateProject;
 using Teams.API.Features.Projects.GetProjectById;
 using Teams.Infrastructure;
 
@@ -23,6 +24,7 @@ internal static class Extensions
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)
     {
+        CreateProjectEndpoint.Map(app);
         GetProjectByIdEndpoint.Map(app);
     }
 }
