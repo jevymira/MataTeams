@@ -1,4 +1,6 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects.CreateProject;
 using Teams.API.Features.Projects.GetProjectById;
 using Teams.Infrastructure;
@@ -10,6 +12,19 @@ internal static class Extensions
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
         var services = builder.Services;
+        
+        builder.Services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["Jwt:ValidAudience"],
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecurityKey"]!))
+                });
 
         builder.Services.AddDbContext<TeamDbContext>(options =>
         {

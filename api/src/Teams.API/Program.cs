@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using Teams.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(o =>
+{
+    var scheme = new OpenApiSecurityScheme
+    {
+        Name = "JWT Authentication",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
+    };
+    var requirement = new OpenApiSecurityRequirement
+    {
+        { scheme, [] }
+    };
+    o.AddSecurityDefinition("Bearer", scheme);
+    o.AddSecurityRequirement(requirement);
+});
 builder.AddApplicationServices();
 
 var app = builder.Build();
@@ -22,6 +44,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(option => option.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapEndpoints();
