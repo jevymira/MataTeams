@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects.CreateProject;
 using Teams.API.Features.Projects.GetProjectById;
+using Teams.API.Logging;
 using Teams.API.Validation;
 using Teams.Infrastructure;
 
@@ -38,6 +39,7 @@ internal static class Extensions
             cfg.RegisterServicesFromAssemblyContaining<Program>();
             
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
         });
 
         builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);

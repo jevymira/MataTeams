@@ -1,17 +1,24 @@
 using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace Teams.API.Validation;
 
+/// <remarks>
+/// Synchronous implementation adapted from eShop reference application:
+/// https://github.com/dotnet/eShop/blob/main/src/Ordering.API/Application/Behaviors/ValidatorBehavior.cs
+/// </remarks>
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
+    private readonly ILogger<ValidationBehavior<TRequest, TResponse>> _logger;
 
-    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+    public ValidationBehavior(
+        IEnumerable<IValidator<TRequest>> validators,
+        ILogger<ValidationBehavior<TRequest, TResponse>> logger)
     {
         _validators = validators;
+        _logger = logger;
     }
 
     public async Task<TResponse> Handle(
@@ -19,22 +26,20 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        var context = new ValidationContext<TRequest>(request);
-
-        var failures = await Task.WhenAll(
-            _validators.Select(v => v.ValidateAsync(context,  cancellationToken)));
-
-        var errors = failures
-            .Where(result => !result.IsValid)
+        _logger.LogInformation("Validating command {Command}", typeof(TRequest).Name);
+        
+        var failures = _validators
+            .Select(validator => validator.Validate(request))
             .SelectMany(result => result.Errors)
-            .Select(failure => new ValidationFailure(
-                failure.PropertyName,
-                failure.ErrorMessage))
+            .Where(error => error != null)
             .ToList();
-
-        if (errors.Count != 0)
+            
+        if (failures.Any())
         {
-            throw new ValidationException(errors);
+            _logger.LogWarning("Validation errors - {Command} - Errors: {@ValidationErrors}",
+                typeof(TRequest).Name, failures);
+            
+            throw new ValidationException(failures);
         }
 
         return await next(cancellationToken);
