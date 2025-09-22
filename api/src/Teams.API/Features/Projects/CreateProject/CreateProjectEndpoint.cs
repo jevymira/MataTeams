@@ -7,6 +7,7 @@ public static class CreateProjectEndpoint
 {
     public static void Map(IEndpointRouteBuilder app) => app
         .MapPost("api/project", CreateProjectAsync)
+        .RequireAuthorization()
         .WithSummary("Create a new project.");
 
     private static async Task<Results<Ok, BadRequest<string>>> CreateProjectAsync(
