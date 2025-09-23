@@ -18,9 +18,10 @@ public class Project : Entity
 
    public int OwnerId { get; set; }
 
-   public Project(string name, string description)
+   public Project(string name, string description, int ownerId)
    {
       Name = name;
       Description = description;
+      OwnerId = ownerId;
    }
 }

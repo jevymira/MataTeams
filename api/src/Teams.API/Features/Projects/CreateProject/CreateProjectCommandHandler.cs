@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Infrastructure;
 
@@ -8,7 +9,10 @@ public class CreateProjectCommandHandler(TeamDbContext context) : IRequestHandle
 {
     public async Task<bool> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
-        var project = new Project(request.Name, request.Description);
+        var owner = await context.Members
+            .FirstOrDefaultAsync(m => m.IdentityGuid == request.OwnerIdentityGuid, cancellationToken);
+        
+        var project = new Project(request.Name, request.Description,  owner.Id);
         
         context.Projects.Add(project);
 

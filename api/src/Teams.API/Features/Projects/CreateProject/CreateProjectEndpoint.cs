@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -11,12 +12,13 @@ public static class CreateProjectEndpoint
         .WithSummary("Create a new project.");
 
     private static async Task<Results<Ok, BadRequest<string>>> CreateProjectAsync(
-        CreateProjectRequest request, ISender sender)
+        CreateProjectRequest request, ISender sender, IHttpContextAccessor accessor)
     {
         var result = await sender.Send(new CreateProjectCommand
         {
             Name = request.Name,
-            Description = request.Description
+            Description = request.Description,
+            OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
         });
         
        return TypedResults.Ok(); 
