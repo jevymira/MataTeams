@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using Identity.API.Model;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +26,9 @@ public class JwtManager
         {
             Issuer = _configuration["Jwt:ValidAudience"],
             Audience = _configuration["Jwt:ValidAudience"],
+            Subject = new ClaimsIdentity([
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+            ]),
             SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
         };
         var handler = new JwtSecurityTokenHandler();
