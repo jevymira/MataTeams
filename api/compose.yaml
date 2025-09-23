@@ -1,13 +1,1 @@
-﻿services:
-  web:
-    image: web
-    build:
-      context: .
-      dockerfile: Web/Dockerfile
-
-  application:
-    image: application 
-    build:
-      context: .
-      dockerfile: Application/Dockerfile
-
+﻿version: '0.0'
