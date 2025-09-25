@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Teams.Domain.Aggregates.MemberAggregate;
+using Teams.Domain.Aggregates.UserAggregate;
 
 namespace Teams.Infrastructure.EntityConfigurations;
 
-public class MemberEntityTypeConfiguration : IEntityTypeConfiguration<Member>
+public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<Member> builder)
+    public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("members");
+        builder.ToTable("users");
         
         builder.Property(member => member.Id)
             .HasColumnName("id");
