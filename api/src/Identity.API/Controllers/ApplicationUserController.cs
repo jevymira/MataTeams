@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Identity.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/users")]
+[Tags("Users")] // Swagger UI tag
 public class ApplicationUserController : ControllerBase
 {
     private readonly ILogger<ApplicationUserController> _logger;
