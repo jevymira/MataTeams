@@ -56,6 +56,8 @@ public class ApplicationUserController : ControllerBase
     public async Task RegisterAsync()
     {
         var guid = Guid.NewGuid().ToString(); // PLACEHOLDER
+        
+        // TODO: registration logic via UserManager
 
         var endpoint = await _bus.GetSendEndpoint(new Uri("rabbitmq://localhost/create-user"));
 
