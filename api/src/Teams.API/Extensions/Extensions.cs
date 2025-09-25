@@ -75,7 +75,10 @@ internal static class Extensions
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)
     {
-        GetProjectById.MapEndpoint(app); 
-        CreateProjectEndpoint.Map(app);
+        var projectsMapGroup = app.MapGroup("/api/projects")
+            .WithTags("Projects");
+        
+        GetProjectById.MapEndpoint(projectsMapGroup); 
+        CreateProjectEndpoint.Map(projectsMapGroup);
     }
 }

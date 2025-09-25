@@ -24,8 +24,8 @@ public sealed record CreateProjectCommand : IRequest<bool>
 
 public class CreateProjectEndpoint
 {
-    public static void Map(IEndpointRouteBuilder app) => app
-        .MapPost("api/projects", CreateProjectAsync)
+    public static void Map(RouteGroupBuilder group) => group 
+        .MapPost("", CreateProjectAsync)
         .RequireAuthorization()
         .WithSummary("Create a new project.");
     
