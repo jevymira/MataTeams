@@ -1,6 +1,8 @@
+using EventBus.Commands;
 using Identity.API.Dtos;
 using Identity.API.Model;
 using Identity.API.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,15 +15,18 @@ public class ApplicationUserController : ControllerBase
     private readonly ILogger<ApplicationUserController> _logger;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JwtManager _jwtManager;
+    private readonly IBus _bus;
 
     public ApplicationUserController(
         ILogger<ApplicationUserController> logger,
         UserManager<ApplicationUser> userManager,
-        JwtManager jwtManager)
+        JwtManager jwtManager,
+        IBus bus)
     {
         _logger = logger;
         _userManager = userManager;
         _jwtManager = jwtManager;
+        _bus = bus;
     }
 
     [HttpPost("/login")]
@@ -44,5 +49,15 @@ public class ApplicationUserController : ControllerBase
         };
 
         return Ok(response);
+    }
+
+    [HttpPost("/register")]
+    public async Task RegisterAsync()
+    {
+        var guid = Guid.NewGuid().ToString(); // PLACEHOLDER
+
+        var endpoint = await _bus.GetSendEndpoint(new Uri("rabbitmq://localhost/create-user"));
+
+        await endpoint.Send<CreateUser>(new { IdentityGuid = guid });
     }
 }

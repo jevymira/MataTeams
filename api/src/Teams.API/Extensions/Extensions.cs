@@ -1,5 +1,6 @@
 using System.Text;
 using FluentValidation;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects.CreateProject;
@@ -71,6 +72,23 @@ internal static class Extensions
         builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
         
         builder.Services.AddHttpContextAccessor();
+        
+        services.AddMassTransit(options =>
+        {
+            options.AddConsumers(typeof(Program).Assembly);
+            options.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(new Uri("rabbitmq://localhost"), h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                });
+                cfg.ReceiveEndpoint("create-user", e =>
+                {
+                    e.ConfigureConsumers(context);
+                });
+            });
+        });
     }
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)

@@ -1,6 +1,7 @@
 
 
 using System.Text;
+using EventBus;
 using Identity.API.Data;
 using Identity.API.Model;
 using Identity.API.Services;
@@ -71,6 +72,7 @@ builder.Services.AddAuthentication(options =>
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecurityKey"]))
     };
 });
+builder.Services.AddProducerRabbitMq();
 
 var app = builder.Build();
 

@@ -1,4 +1,6 @@
+using EventBus;
 using Microsoft.OpenApi.Models;
+using Teams.API.Consumers;
 using Teams.API.Extensions;
 using Teams.API.Validation;
 
