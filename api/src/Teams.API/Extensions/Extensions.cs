@@ -2,8 +2,8 @@ using System.Text;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.CreateProject;
-using Teams.API.Features.Projects.GetProjectById;
 using Teams.API.Logging;
 using Teams.API.Validation;
 using Teams.Domain.Aggregates.MemberAggregate;
@@ -76,6 +76,6 @@ internal static class Extensions
     public static void MapEndpoints(this IEndpointRouteBuilder app)
     {
         CreateProjectEndpoint.Map(app);
-        GetProjectByIdEndpoint.Map(app);
+        GetProjectById.MapEndpoint(app); 
     }
 }
