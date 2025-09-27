@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Teams.Domain.Aggregates.MemberAggregate;
 using Teams.Domain.Aggregates.ProjectAggregate;
+using Teams.Domain.SharedKernel;
 
 namespace Teams.Infrastructure.EntityConfigurations;
 
@@ -21,6 +23,21 @@ public class ProjectEntityTypeConfiguration : IEntityTypeConfiguration<Project>
         builder.Property(p => p.Description)
             .HasColumnName("description")
             .HasMaxLength(1024);
+
+        var projectTypeConverter = new ValueConverter<ProjectType, string>(
+            v => v.Name, // when writing 
+            v => ProjectType.FromName(v) // when reading
+        );
+        
+        builder.Property(p => p.Type)
+            .HasColumnName("type")
+            .HasConversion(projectTypeConverter)
+            .HasMaxLength(64);
+        
+        builder.Property(p => p.Status)
+            .HasColumnName("status")
+            .HasConversion<string>()
+            .HasMaxLength(64);
         
         builder.HasOne<Member>()
             .WithMany()

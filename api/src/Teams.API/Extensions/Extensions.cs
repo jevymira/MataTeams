@@ -8,6 +8,7 @@ using Teams.API.Logging;
 using Teams.API.Validation;
 using Teams.Domain.Aggregates.MemberAggregate;
 using Teams.Domain.Aggregates.ProjectAggregate;
+using Teams.Domain.SharedKernel;
 using Teams.Infrastructure;
 
 namespace Teams.API.Extensions;
@@ -52,6 +53,8 @@ internal static class Extensions
                     project = new Project(
                         "Sample Project",
                         "Sample Text.",
+                        ProjectType.FromName("ARCS"),
+                        ProjectStatus.Draft,
                         member.Id);
                     context.Set<Project>().Add(project);
                     context.SaveChanges();
