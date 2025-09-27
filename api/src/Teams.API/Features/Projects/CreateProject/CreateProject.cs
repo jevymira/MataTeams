@@ -36,7 +36,7 @@ public class CreateProjectEndpoint
         .RequireAuthorization()
         .WithSummary("Create a new project.");
     
-    private static async Task<Results<Ok, BadRequest<string>>> CreateProjectAsync(
+    private static async Task<Results<Ok, BadRequest<string>, ProblemHttpResult>> CreateProjectAsync(
         CreateProjectRequest request, ISender sender, IHttpContextAccessor accessor)
     {
         try
@@ -49,6 +49,11 @@ public class CreateProjectEndpoint
                 Status = request.Status,
                 OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
             });
+
+            if (!result)
+            {
+                return TypedResults.Problem(detail: "Create project failed to process.", statusCode: 500);
+            }
 
             return TypedResults.Ok();
         }
