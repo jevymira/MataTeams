@@ -3,18 +3,25 @@ using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Teams.Domain.Aggregates.ProjectAggregate;
+using Teams.Domain.SharedKernel;
 using Teams.Infrastructure;
 
 namespace Teams.API.Features.Projects.CreateProject;
 
 public sealed record CreateProjectRequest(
     string Name,
-    string Description);
+    string Description,
+    string Type, 
+    string Status);
 
 public sealed record CreateProjectCommand : IRequest<bool>
 {
     public required string Name { get; init; }
     public required string Description { get; init; }
+    
+    public required string Type { get; init; }
+    
+    public required string Status { get; init; }
     
     /// <remarks>
     /// To retrieve the corresponding user's id within this context.
@@ -36,6 +43,8 @@ public class CreateProjectEndpoint
         {
             Name = request.Name,
             Description = request.Description,
+            Type = request.Type,
+            Status = request.Status,
             OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
         });
         
@@ -47,10 +56,18 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context) : IRequ
 {
     public async Task<bool> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
+        // Output the corresponding ProjectStatus.
+        Enum.TryParse<ProjectStatus>(request.Status, true, out var status);
+        
         var owner = await context.Members
             .FirstOrDefaultAsync(m => m.IdentityGuid == request.OwnerIdentityGuid, cancellationToken);
-        
-        var project = new Project(request.Name, request.Description, owner!.Id);
+       
+        var project = new Project(
+            request.Name,
+            request.Description,
+            ProjectType.FromName(request.Type),
+            status, 
+            owner!.Id);
         
         context.Projects.Add(project);
 
