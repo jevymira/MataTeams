@@ -49,7 +49,7 @@ public sealed class ProjectType : IEquatable<ProjectType>
     /// <returns>ProjectType.</returns>
     public static ProjectType FromName(string name) =>
         All.FirstOrDefault(t => t.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-        ?? throw new ArgumentException($"Invalid ProjectType: {name}");
+        ?? throw new InvalidOperationException($"Invalid project type: {name}");
 
     /// <remarks> 
     /// For comparisons between two project types.

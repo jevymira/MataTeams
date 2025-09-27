@@ -39,16 +39,23 @@ public class CreateProjectEndpoint
     private static async Task<Results<Ok, BadRequest<string>>> CreateProjectAsync(
         CreateProjectRequest request, ISender sender, IHttpContextAccessor accessor)
     {
-        var result = await sender.Send(new CreateProjectCommand
+        try
         {
-            Name = request.Name,
-            Description = request.Description,
-            Type = request.Type,
-            Status = request.Status,
-            OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-        });
-        
-        return TypedResults.Ok(); 
+            var result = await sender.Send(new CreateProjectCommand
+            {
+                Name = request.Name,
+                Description = request.Description,
+                Type = request.Type,
+                Status = request.Status,
+                OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            });
+
+            return TypedResults.Ok();
+        }
+        catch (Exception ex)
+        {
+            return TypedResults.BadRequest(ex.Message);
+        }
     }
 }
 
