@@ -9,6 +9,7 @@ using Teams.API.Validation;
 using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Domain.SharedKernel;
 using Teams.Domain.Aggregates.UserAggregate;
+using Teams.Domain.SharedKernel;
 using Teams.Infrastructure;
 
 namespace Teams.API.Extensions;
@@ -37,12 +38,39 @@ internal static class Extensions
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             options.UseSeeding((context, _) =>
             {
+                var java = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Java");
+                if (java == null)
+                {
+                    java = new Skill("Java");
+                    context.Set<Skill>().Add(java);
+                    context.SaveChanges();
+                }
+                
+                var js = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "JavaScript");
+                if (js == null)
+                {
+                    js = new Skill("JavaScript");
+                    context.Set<Skill>().Add(js);
+                    context.SaveChanges();
+                }
+                
                 var user = context.Set<User>()
                     .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUser:IdentityGuid"]);
                 if (user == null)
                 {
                     user = new User(builder.Configuration["SeedUser:IdentityGuid"]!);
                     context.Set<User>().Add(user);
+                    context.SaveChanges();
+                }
+                
+                var userSkill = context.Set<UserSkill>()
+                    .FirstOrDefault(s => s.UserId == user.Id);
+                if (userSkill == null)
+                {
+                    userSkill = new UserSkill(user.Id, js.Id, Proficiency.Interested);
+                    context.Set<UserSkill>().Add(userSkill);
                     context.SaveChanges();
                 }
                 

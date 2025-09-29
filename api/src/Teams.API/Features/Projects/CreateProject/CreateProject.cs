@@ -71,7 +71,7 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context) : IRequ
         // Output the corresponding ProjectStatus.
         Enum.TryParse<ProjectStatus>(request.Status, true, out var status);
         
-        var owner = await context.Members
+        var owner = await context.Users
             .FirstOrDefaultAsync(m => m.IdentityGuid == request.OwnerIdentityGuid, cancellationToken);
        
         var project = new Project(
