@@ -6,9 +6,9 @@ using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.CreateProject;
 using Teams.API.Logging;
 using Teams.API.Validation;
-using Teams.Domain.Aggregates.MemberAggregate;
 using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Domain.SharedKernel;
+using Teams.Domain.Aggregates.UserAggregate;
 using Teams.Infrastructure;
 
 namespace Teams.API.Extensions;
@@ -37,12 +37,12 @@ internal static class Extensions
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             options.UseSeeding((context, _) =>
             {
-                var member = context.Set<Member>()
+                var user = context.Set<User>()
                     .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUser:IdentityGuid"]);
-                if (member == null)
+                if (user == null)
                 {
-                    member = new Member(builder.Configuration["SeedUser:IdentityGuid"]!);
-                    context.Set<Member>().Add(member);
+                    user = new User(builder.Configuration["SeedUser:IdentityGuid"]!);
+                    context.Set<User>().Add(user);
                     context.SaveChanges();
                 }
                 
@@ -55,7 +55,7 @@ internal static class Extensions
                         "Sample Text.",
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
-                        member.Id);
+                        user.Id);
                     context.Set<Project>().Add(project);
                     context.SaveChanges();
                 } 

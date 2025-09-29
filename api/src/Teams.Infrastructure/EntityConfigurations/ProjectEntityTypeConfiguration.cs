@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Teams.Domain.Aggregates.MemberAggregate;
-using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Domain.SharedKernel;
+using Teams.Domain.Aggregates.ProjectAggregate;
+using Teams.Domain.Aggregates.UserAggregate;
 
 namespace Teams.Infrastructure.EntityConfigurations;
 
@@ -39,7 +39,7 @@ public class ProjectEntityTypeConfiguration : IEntityTypeConfiguration<Project>
             .HasConversion<string>()
             .HasMaxLength(64);
         
-        builder.HasOne<Member>()
+        builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(p => p.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);

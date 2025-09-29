@@ -1,12 +1,12 @@
 using Teams.Domain.SeedWork;
 
-namespace Teams.Domain.Aggregates.MemberAggregate;
+namespace Teams.Domain.Aggregates.UserAggregate;
 
-public class Member : Entity
+public class User : Entity
 {  
     public string IdentityGuid { get; private set; }
 
-    public Member(string identityGuid)
+    public User(string identityGuid)
     {
         IdentityGuid = !string.IsNullOrWhiteSpace(identityGuid)
             ? identityGuid 
