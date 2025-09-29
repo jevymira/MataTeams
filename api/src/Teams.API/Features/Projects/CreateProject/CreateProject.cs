@@ -47,7 +47,7 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context) : IRequ
 {
     public async Task<bool> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
-        var owner = await context.Members
+        var owner = await context.Users
             .FirstOrDefaultAsync(m => m.IdentityGuid == request.OwnerIdentityGuid, cancellationToken);
         
         var project = new Project(request.Name, request.Description, owner!.Id);
