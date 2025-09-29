@@ -15,5 +15,16 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
         
         builder.Property(member => member.IdentityGuid)
             .HasColumnName("identity_guid");
+        
+        /*
+        builder.Metadata
+            .FindNavigation((nameof(User.UserSkills)))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+        
+        builder.HasMany(u => u.UserSkills)
+            .WithOne()
+            .HasForeignKey(u => u.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        */
     }
 }
