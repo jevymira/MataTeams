@@ -17,6 +17,8 @@ public static class GetProjectById
         public int Id { get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
+        public required string Type { get; set; }
+        public required string Status { get; set; }
     }
 
     public static void MapEndpoint(RouteGroupBuilder group) => group 
@@ -54,6 +56,9 @@ public static class GetProjectById
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
+                Type = project.Type.ToString(),
+                Status = project.Status.ToString()
+
             };
         } 
     }

@@ -8,5 +8,7 @@ public sealed class CreateProjectCommandValidator : AbstractValidator<CreateProj
     {
         RuleFor(command => command.Name).NotEmpty();
         RuleFor(command => command.Description).NotEmpty();
+        RuleFor(command => command.Type).NotEmpty();
+        RuleFor(command => command.Status).NotEmpty();
     }
 }
