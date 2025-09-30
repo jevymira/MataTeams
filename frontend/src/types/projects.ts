@@ -1,8 +1,12 @@
-export type ProjectObj = {
-    title: string
-    members: string[]
-    skills: string[] // TODO: enum
+export type Project = {
+    id: number
+    name: string
     description: string
-    startDate: string
-    category: string
+    type: string
+    status: string
+}
+
+export type ProjectsContextType = {
+    projects: Array<Project>
+    setProjects: (projects: Array<Project>) => void
 }

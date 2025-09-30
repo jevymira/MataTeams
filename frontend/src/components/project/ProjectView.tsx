@@ -1,19 +1,19 @@
-import {ProjectObj} from '../../types'
+import {Project} from '../../types'
 import './Project.css'
 
 type ProjectProps = {
-    project: ProjectObj
+    project: Project
 }
 
-function Project({project} : ProjectProps) {
+function ProjectView({project} : ProjectProps) {
 
     return (
         <div className='projectContainer'>
-            <h1>{project.title} </h1>
+            <h1>{project.name} </h1>
             <p>{project.description}</p>
         </div>
     )
   }
   
-  export default Project;
+  export default ProjectView
   

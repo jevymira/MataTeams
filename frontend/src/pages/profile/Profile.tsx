@@ -1,5 +1,4 @@
-import Project from '../../components/project/Project'
-import {ProjectObj} from '../../types'
+import Project from '../../components/project/ProjectView'
 
 
 function Profile() {
