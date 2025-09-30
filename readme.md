@@ -1,6 +1,10 @@
-# Local Development
+# MataTeams
 
-## Initial Setup (JetBrains Rider OR EF Core tools CLI)
+A CSUN student-project matchmaker.
+
+## Local Development
+
+### Initial Setup (JetBrains Rider OR EF Core tools CLI)
 
 1. Define a `secrets.json` for `Identity.API` (**Rider**: right-click `Identity.API` > Add > Tools > .NET User Secrets):
    * `DefaultConnection` is your local PostgreSQL connection string, e.g., `"Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=matateams_identity"`
@@ -52,9 +56,9 @@
    * **Rider**: (right-click) Entity Framework Core > Update Database... > Migrations project: `Teams.Infrastructure` + Startup project: `Teams.API` > OK
    * **EF Core tools CLI**: `cd src` >`dotnet ef database update --project Teams.Infrastructure --startup-project Teams.API`
 
-## Error Resolution
+### Error Resolution
 
-### Errors when calling `dotnet ef database update` following `git pull` (2 steps):
+#### Errors when calling `dotnet ef database update` following `git pull` (2 steps):
 
 1. Drop the core database:
    * **Rider**: (right click) Teams.Infrastructure > Entity Framework Core > Drop Database > set "Startup project" to `Teams.API`.
