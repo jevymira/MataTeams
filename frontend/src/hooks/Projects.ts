@@ -39,9 +39,10 @@ export function useGetAllProjects() {
         const options = {
             method: 'GET'
         }
+        
         try {
             var projectsFromServer: Array<Project> = []
-            for (let i = 1; i < 4; i++) {
+            for (let i = 1; i < 6; i++) {
                 fetch('https://localhost:7260/api/projects/' + i, options).then(res => {
                     if (res.status !== 200) {
                         console.error('error!')
@@ -50,13 +51,15 @@ export function useGetAllProjects() {
 
                     return res.json()
                 }).then(jsonRes => {
+                    // TODO: this approach causing flickering, it is a 
+                    // workaround until we have a /get all projects endpoint
                     let project: Project = convertJSONToProject(jsonRes)
-                    console.log(project)
-                    projectsFromServer.push(project)
+                    projectsFromServer = [...projectsFromServer, project]
+                }).then(() => {
+                    setProjects(projectsFromServer)
                 })
             }
-
-            setProjects(projectsFromServer)
+            
         } catch (e) {
             console.error(e)
             return e
