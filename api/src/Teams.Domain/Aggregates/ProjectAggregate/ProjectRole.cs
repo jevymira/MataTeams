@@ -19,7 +19,12 @@ public class ProjectRole : Entity
     
     public IReadOnlyCollection<ProjectRoleSkill> Skills => _skills.AsReadOnly();
 
-    public ProjectRole(int projectId, int roleId) 
+    protected ProjectRole()
+    {
+        _skills = new List<ProjectRoleSkill>();
+    }
+    
+    public ProjectRole(int projectId, int roleId) : this()
     {
         ProjectId = projectId;
         RoleId = roleId;
