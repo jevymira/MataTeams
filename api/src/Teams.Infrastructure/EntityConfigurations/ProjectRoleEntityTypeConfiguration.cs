@@ -21,9 +21,9 @@ public class ProjectRoleEntityTypeConfiguration : IEntityTypeConfiguration<Proje
         builder.Property(pr => pr.RoleId)
             .HasColumnName("role_id");
        
-        builder.HasOne(pr => pr.Role)
-            .WithOne()
-            .HasForeignKey<ProjectRole>(pr => pr.RoleId)
+        builder.HasOne<Role>(pr => pr.Role)
+            .WithMany()
+            .HasForeignKey(pr => pr.RoleId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany<ProjectRoleSkill>(prs => prs.Skills)
