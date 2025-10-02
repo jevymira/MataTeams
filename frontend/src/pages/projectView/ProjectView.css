@@ -1,0 +1,4 @@
+.projectViewWrapper {
+    display: flex;
+    flex-direction: row;
+}

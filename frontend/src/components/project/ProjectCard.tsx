@@ -1,15 +1,22 @@
+
+// libraries
+import { Link } from 'react-router'
+
+// types
 import {Project} from '../../types'
-import './Project.css'
+
+// style
+import './ProjectCard.css'
 
 type ProjectProps = {
     project: Project
 }
 
 function ProjectCard({project} : ProjectProps) {
-
+    
     return (
         <div className='projectContainer'>
-            <h1>{project.name} </h1>
+            <Link to={`/project/${project.id}`} className='projectLink'>{project.name} </Link>
             <p>{project.description}</p>
             <p></p>
         </div>
