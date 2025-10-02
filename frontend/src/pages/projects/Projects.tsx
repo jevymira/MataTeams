@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import ProjectView from '../../components/project/ProjectView'
-import { useGetAllProjects } from '../../hooks/Projects';
+import { useEffect, useState } from 'react'
+import ProjectCard from '../../components/project/ProjectCard'
+import { useGetAllProjects } from '../../hooks/Projects'
 
 function Projects() {
   const [projects, getProjects] = useGetAllProjects()
@@ -14,11 +14,11 @@ function Projects() {
       {projects.map((p) => {
           console.log(p)
           return (
-              <ProjectView project={p}/>
+              <ProjectCard project={p}/>
           )
       })}
     </div>
-  );
+  )
 }
   
   export default Projects;

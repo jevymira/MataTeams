@@ -5,15 +5,16 @@ type ProjectProps = {
     project: Project
 }
 
-function ProjectView({project} : ProjectProps) {
+function ProjectCard({project} : ProjectProps) {
 
     return (
         <div className='projectContainer'>
             <h1>{project.name} </h1>
             <p>{project.description}</p>
+            <p></p>
         </div>
     )
   }
   
-  export default ProjectView
+  export default ProjectCard
   

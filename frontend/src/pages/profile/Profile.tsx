@@ -1,4 +1,4 @@
-import Project from '../../components/project/ProjectView'
+import Project from '../../components/project/ProjectCard'
 
 
 function Profile() {
