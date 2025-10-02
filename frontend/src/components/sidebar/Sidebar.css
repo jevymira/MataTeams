@@ -1,10 +1,20 @@
 .sidebar {
-    background-color: blue;
     display: flex;
     flex-direction: column;
+    height: 300px;
     max-height: 50vh;
     position: -webkit-sticky;
     position: sticky;
     left: 0;
     top: 100px;
+    padding-left: 20px;
+    text-align: left;
+    border-right: solid;
+    border-bottom: solid;
+    border-color: var(--highlight);
+    border-width: 2px;
+}
+
+.sideBarItem {
+    padding: 10px;
 }
