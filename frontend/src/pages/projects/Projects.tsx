@@ -1,24 +1,29 @@
-import { useEffect, useState } from 'react';
-import ProjectView from '../../components/project/ProjectView'
-import { useGetAllProjects } from '../../hooks/Projects';
+import { useEffect, useState } from 'react'
+import ProjectCard from '../../components/project/ProjectCard'
+import { useGetAllProjects } from '../../hooks/Projects'
+import { Sidebar } from '../../components/sidebar/Sidebar'
+import './Projects.css'
 
 function Projects() {
   const [projects, getProjects] = useGetAllProjects()
 
   useEffect(() => {
-    getProjects()
+      getProjects()
   }, [])
 
   return (
-    <div className="">
-      {projects.map((p) => {
-          console.log(p)
+  <div className='projectsWrapper'>
+    <Sidebar />
+    {projects === null || projects.length < 1? <div>Loading...</div> : (
+      <div className="">
+        {projects.map((p) => {
           return (
-              <ProjectView project={p}/>
+            <ProjectCard project={p}/>
           )
-      })}
-    </div>
-  );
+        })}
+      </div>
+    )}
+    </div>)
 }
   
   export default Projects;
