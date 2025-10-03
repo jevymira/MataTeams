@@ -56,6 +56,24 @@ internal static class Extensions
                     context.SaveChanges();
                 }
                 
+                var frontendRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Frontend");
+                if (frontendRole == null)
+                {
+                    frontendRole = new Role("Frontend");
+                    context.Set<Role>().Add(frontendRole);
+                    context.SaveChanges();
+                }
+                
+                var backendRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Backend");
+                if (backendRole == null)
+                {
+                    backendRole = new Role("Backend");
+                    context.Set<Role>().Add(backendRole);
+                    context.SaveChanges();
+                }
+                
                 var user = context.Set<User>()
                     .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUser:IdentityGuid"]);
                 if (user == null)
