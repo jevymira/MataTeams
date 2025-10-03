@@ -1,8 +1,9 @@
+using Teams.Domain.SeedWork;
 using Teams.Domain.SharedKernel;
 
 namespace Teams.Domain.Aggregates.ProjectAggregate;
 
-public class ProjectRoleSkill
+public class ProjectRoleSkill : Entity
 {
     public int ProjectRoleId { get; private set; }
     

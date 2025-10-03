@@ -10,8 +10,9 @@ public class ProjectRoleSkillEntityTypeConfiguration : IEntityTypeConfiguration<
     public void Configure(EntityTypeBuilder<ProjectRoleSkill> builder)
     {
         builder.ToTable("project_role_skills");
-        
-        builder.HasKey(rs => new {rs.ProjectRoleId, rs.SkillId});
+
+        builder.Property(rs => rs.Id)
+            .HasColumnName("id");
         
         builder.Property(rs => rs.ProjectRoleId)
             .HasColumnName("project_role_id");
