@@ -12,7 +12,6 @@ export function useGetProjectByID(id: string) {
             method: 'GET'
         }
         try {
-            console.log("trying?")
             fetch(`https://localhost:7260/api/projects/${id}`).then(res => {
                 if (res.status !== 200) {
                     console.error(res.statusText)

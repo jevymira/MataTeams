@@ -17,17 +17,11 @@ import './ProjectView.css'
 
 function ProjectView() {
     const { id } = useParams()
-    console.log(id)
     const [project, getProject] = useGetProjectByID(id as string)
 
     useEffect(() => {
         getProject()
-        console.log("got project??")
-        console.log(project)
     }, [])
-
-    console.log("got project??")
-    console.log(project)
 
     return (<div className='projectViewWrapper'>
     <Sidebar />

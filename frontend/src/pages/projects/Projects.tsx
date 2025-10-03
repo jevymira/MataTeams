@@ -8,7 +8,6 @@ function Projects() {
   const [projects, getProjects] = useGetAllProjects()
 
   useEffect(() => {
-    console.log('??')
       getProjects()
   }, [])
 
@@ -18,7 +17,6 @@ function Projects() {
     {projects === null || projects.length < 1? <div>Loading...</div> : (
       <div className="">
         {projects.map((p) => {
-          console.log(p)
           return (
             <ProjectCard project={p}/>
           )
