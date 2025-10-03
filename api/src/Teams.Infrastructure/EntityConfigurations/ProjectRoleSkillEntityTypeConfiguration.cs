@@ -19,10 +19,10 @@ public class ProjectRoleSkillEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.Property(rs => rs.SkillId)
             .HasColumnName("skill_id");
         
-        builder.HasOne(rs => rs.Skill)
-            .WithOne()
-            .HasForeignKey<ProjectRoleSkill>(rs => rs.SkillId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne<Skill>(rs => rs.Skill)
+            .WithMany()
+            .HasForeignKey(rs => rs.SkillId)
+            .OnDelete(DeleteBehavior.Cascade);
         
         builder.Property(us => us.Proficiency)
             .HasColumnName("proficiency")
