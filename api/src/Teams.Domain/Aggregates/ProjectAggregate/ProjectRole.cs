@@ -29,4 +29,10 @@ public class ProjectRole : Entity
         ProjectId = projectId;
         RoleId = roleId;
     }
+
+    public void AddProjectSkill(int skillId, Proficiency proficiency)
+    {
+        var skill = new ProjectRoleSkill(Id, skillId, proficiency);
+        _skills.Add(skill);
+    }
 }

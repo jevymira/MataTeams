@@ -43,4 +43,11 @@ public class Project : Entity
       Status = status;
       OwnerId = ownerId;
    }
+
+   public ProjectRole AddProjectRole(int roleId)
+   {
+      var projectRole = new ProjectRole(Id, roleId);
+      _roles.Add(projectRole);
+      return projectRole;
+   }
 }

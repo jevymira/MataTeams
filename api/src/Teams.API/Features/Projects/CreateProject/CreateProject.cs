@@ -12,16 +12,25 @@ public sealed record CreateProjectRequest(
     string Name,
     string Description,
     string Type, 
-    string Status);
+    string Status,
+    List<CreateProjectRequestRole> Roles);
+
+public sealed record CreateProjectRequestRole(
+    int RoleId,
+    List<CreateProjectRequestRoleSkill> Skills);
+
+// Full record rather than Value Tuple for representation in Swagger docs.
+public sealed record CreateProjectRequestRoleSkill(
+    int SkillId,
+    string Proficiency);
 
 public sealed record CreateProjectCommand : IRequest<bool>
 {
     public required string Name { get; init; }
     public required string Description { get; init; }
-    
     public required string Type { get; init; }
-    
     public required string Status { get; init; }
+    public required List<CreateProjectRequestRole> Roles { get; init; }
     
     /// <remarks>
     /// To retrieve the corresponding user's id within this context.
@@ -47,6 +56,7 @@ public class CreateProjectEndpoint
                 Description = request.Description,
                 Type = request.Type,
                 Status = request.Status,
+                Roles = request.Roles,
                 OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
             });
 
@@ -80,6 +90,17 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context) : IRequ
             ProjectType.FromName(request.Type),
             status, 
             owner!.Id);
+
+        foreach (var role in request.Roles)
+        {
+            var projectRole = project.AddProjectRole(role.RoleId);
+            
+            foreach (var skill in role.Skills)
+            {
+                Enum.TryParse<Proficiency>(skill.Proficiency, out var proficiency);
+                projectRole.AddProjectSkill(skill.SkillId, proficiency);
+            }
+        }
         
         context.Projects.Add(project);
 
