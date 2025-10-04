@@ -17,7 +17,7 @@ public class Project : Entity
    
    private readonly List<ProjectRole> _roles;
    
-   public IReadOnlyCollection<ProjectRole> ProjectRoles => _roles.AsReadOnly();
+   public IReadOnlyCollection<ProjectRole> Roles => _roles.AsReadOnly();
    
    // public ICollection<int> TeamIds { get; private set; }
    
