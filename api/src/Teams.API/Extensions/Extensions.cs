@@ -56,6 +56,15 @@ internal static class Extensions
                     context.SaveChanges();
                 }
                 
+                var react = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "React");
+                if (react == null)
+                {
+                    react = new Skill("React");
+                    context.Set<Skill>().Add(react);
+                    context.SaveChanges();
+                }
+                
                 var frontendRole = context.Set<Role>()
                     .FirstOrDefault(r => r.Name == "Frontend");
                 if (frontendRole == null)
@@ -102,6 +111,13 @@ internal static class Extensions
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
                         user.Id);
+                    // Add `Frontend` Role with `JavaScript` and `React Skills.
+                    project.AddProjectRole(1, 2);
+                    project.Roles.First().AddProjectSkill(2, Proficiency.Beginner);
+                    project.Roles.First().AddProjectSkill(3, Proficiency.Interested);
+                    // Add `Backend` Role with `Java` Skill.
+                    project.AddProjectRole(2, 2);
+                    project.Roles.Last().AddProjectSkill(1, Proficiency.Intermediate);
                     context.Set<Project>().Add(project);
                     context.SaveChanges();
                 } 
