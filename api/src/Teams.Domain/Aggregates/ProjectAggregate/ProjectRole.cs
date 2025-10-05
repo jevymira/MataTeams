@@ -15,6 +15,8 @@ public class ProjectRole : Entity
     
     public Role Role { get; private set; }
     
+    public int PositionCount { get; private set; }
+    
     private readonly List<ProjectRoleSkill> _skills;
     
     public IReadOnlyCollection<ProjectRoleSkill> Skills => _skills.AsReadOnly();
@@ -24,10 +26,11 @@ public class ProjectRole : Entity
         _skills = new List<ProjectRoleSkill>();
     }
     
-    public ProjectRole(int projectId, int roleId) : this()
+    public ProjectRole(int projectId, int roleId, int positionCount) : this()
     {
         ProjectId = projectId;
         RoleId = roleId;
+        PositionCount = positionCount;
     }
 
     public void AddProjectSkill(int skillId, Proficiency proficiency)

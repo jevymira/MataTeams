@@ -17,6 +17,7 @@ public sealed record CreateProjectRequest(
 
 public sealed record CreateProjectRequestRole(
     int RoleId,
+    int PositionCount,
     List<CreateProjectRequestRoleSkill> Skills);
 
 // Full record rather than Value Tuple for representation in Swagger docs.
@@ -93,7 +94,7 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context) : IRequ
 
         foreach (var role in request.Roles)
         {
-            var projectRole = project.AddProjectRole(role.RoleId);
+            var projectRole = project.AddProjectRole(role.RoleId, role.PositionCount);
             
             foreach (var skill in role.Skills)
             {
