@@ -9,18 +9,21 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+        <PackageReference Include="MassTransit" Version="8.5.4" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.4" />
         <PackageReference Include="MediatR" Version="13.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Teams.Domain\Teams.Domain.csproj" />
       <ProjectReference Include="..\Teams.Infrastructure\Teams.Infrastructure.csproj" />
+      <ProjectReference Include="..\Teams.Contracts\Teams.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

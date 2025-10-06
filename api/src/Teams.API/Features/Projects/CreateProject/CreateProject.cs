@@ -1,41 +1,41 @@
 using System.Security.Claims;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Domain.SharedKernel;
 using Teams.Infrastructure;
+using Teams.Contracts;
 
 namespace Teams.API.Features.Projects.CreateProject;
 
 public sealed record CreateProjectRequest(
     string Name,
     string Description,
-    string Type, 
+    string Type,
     string Status);
 
 public sealed record CreateProjectCommand : IRequest<bool>
 {
     public required string Name { get; init; }
     public required string Description { get; init; }
-    
+
     public required string Type { get; init; }
-    
+
     public required string Status { get; init; }
-    
-    /// <remarks>
-    /// To retrieve the corresponding user's id within this context.
-    /// </remarks>
+
+
     public required string OwnerIdentityGuid { get; init; }
 }
 
 public class CreateProjectEndpoint
 {
-    public static void Map(RouteGroupBuilder group) => group 
+    public static void Map(RouteGroupBuilder group) => group
         .MapPost("", CreateProjectAsync)
         .RequireAuthorization()
         .WithSummary("Create a new project.");
-    
+
     private static async Task<Results<Ok, BadRequest<string>, ProblemHttpResult>> CreateProjectAsync(
         CreateProjectRequest request, ISender sender, IHttpContextAccessor accessor)
     {
@@ -64,26 +64,45 @@ public class CreateProjectEndpoint
     }
 }
 
-internal sealed class CreateProjectCommandHandler(TeamDbContext context) : IRequestHandler<CreateProjectCommand, bool>
+internal sealed class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, bool>
 {
+    private readonly TeamDbContext _context;
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    public CreateProjectCommandHandler(TeamDbContext context, IPublishEndpoint publishEndpoint)
+    {
+        _context = context;
+        _publishEndpoint = publishEndpoint;
+    }
+
     public async Task<bool> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
-        // Output the corresponding ProjectStatus.
         Enum.TryParse<ProjectStatus>(request.Status, true, out var status);
-        
-        var owner = await context.Users
+
+        var owner = await _context.Users
             .FirstOrDefaultAsync(m => m.IdentityGuid == request.OwnerIdentityGuid, cancellationToken);
-       
+
         var project = new Project(
             request.Name,
             request.Description,
             ProjectType.FromName(request.Type),
-            status, 
-            owner!.Id);
-        
-        context.Projects.Add(project);
+            status,
+            owner!.Id
+        );
 
-        await context.SaveChangesAsync(cancellationToken);
+
+        _context.Projects.Add(project);
+        await _context.SaveChangesAsync(cancellationToken);
+
+
+        await _publishEndpoint.Publish(new ProjectCreated(
+            Guid.NewGuid(),       // temporary GUID for event
+            project.Name,
+            project.Description,
+            project.Type.Name,
+            project.Status.ToString(),
+            Guid.NewGuid()        // temporary GUID for event
+        ), cancellationToken);
 
         return true;
     }

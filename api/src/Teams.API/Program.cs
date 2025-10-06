@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Teams.API.Extensions;
 using Teams.API.Validation;
+using Teams.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,7 @@ builder.Services.AddSwaggerGen(o =>
 });
 builder.AddApplicationServices();
 builder.Services.AddTransient<ValidationExceptionHandlingMiddleware>();
+builder.Services.AddTeamsMessaging();
 
 var app = builder.Build();
 
