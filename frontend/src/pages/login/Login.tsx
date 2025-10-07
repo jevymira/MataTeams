@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import './Login.css'
 
 export const Login = () => {
-  return(
+  return (
   <div className=''>
     Login
   </div>

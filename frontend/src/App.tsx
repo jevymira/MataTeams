@@ -1,5 +1,6 @@
 // libraries
 import { Route, Routes } from 'react-router'
+import { ChakraProvider, defaultSystem } from '@chakra-ui/react'
 
 // components
 import { Header } from './components/header/Header'
@@ -21,16 +22,18 @@ function App() {
   return (
     <AuthContextProvider>
       <ProjectsContextProvider>
-        <div className="App">
-          <Header />
-          <Routes>
-            <Route path='/' element={<PrivateRoute outlet={<Projects />} />} />
-            <Route path='/project/:id' element={<PrivateRoute outlet={<ProjectView />} />} />
-            <Route path='/profile' element={<PrivateRoute outlet={<Profile />} />} />
-            <Route path='/login' element={<Login />} />
-            <Route path="*" element={<NotFound />}></Route>
-          </Routes>
-        </div>
+        <ChakraProvider value={defaultSystem}>
+          <div className="App">
+            <Header />
+            <Routes>
+              <Route path='/' element={<PrivateRoute outlet={<Projects />} />} />
+              <Route path='/project/:id' element={<PrivateRoute outlet={<ProjectView />} />} />
+              <Route path='/profile' element={<PrivateRoute outlet={<Profile />} />} />
+              <Route path='/login' element={<Login />} />
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
+          </div>
+        </ChakraProvider>
       </ProjectsContextProvider>
     </AuthContextProvider>
   )
