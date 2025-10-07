@@ -77,22 +77,15 @@ public class CreateProjectEndpoint
     }
 }
 
-internal sealed class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand, bool>
+internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublishEndpoint publishEndpoint)
+    : IRequestHandler<CreateProjectCommand, bool>
 {
-    private readonly TeamDbContext _context;
-    private readonly IPublishEndpoint _publishEndpoint;
-
-    public CreateProjectCommandHandler(TeamDbContext context, IPublishEndpoint publishEndpoint)
-    {
-        _context = context;
-        _publishEndpoint = publishEndpoint;
-    }
 
     public async Task<bool> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
         Enum.TryParse<ProjectStatus>(request.Status, true, out var status);
 
-        var owner = await _context.Users
+        var owner = await context.Users
             .FirstOrDefaultAsync(m => m.IdentityGuid == request.OwnerIdentityGuid, cancellationToken);
 
         var project = new Project(
@@ -115,11 +108,9 @@ internal sealed class CreateProjectCommandHandler : IRequestHandler<CreateProjec
         
         context.Projects.Add(project);
 
-        _context.Projects.Add(project);
-        await _context.SaveChangesAsync(cancellationToken);
-
-
-        await _publishEndpoint.Publish(new ProjectCreated(
+        await context.SaveChangesAsync(cancellationToken);
+        
+        await publishEndpoint.Publish(new ProjectCreated(
             Guid.NewGuid(),       // temporary GUID for event
             project.Name,
             project.Description,
