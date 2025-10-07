@@ -8,9 +8,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Teams.Domain\Teams.Domain.csproj" />
+      <ProjectReference Include="..\Teams.Contracts\Teams.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="MassTransit" Version="8.5.4" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
         <PrivateAssets>all</PrivateAssets>

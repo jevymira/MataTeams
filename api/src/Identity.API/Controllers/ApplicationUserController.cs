@@ -24,25 +24,48 @@ public class ApplicationUserController : ControllerBase
         _jwtManager = jwtManager;
     }
 
+    // [HttpPost("/login")]
+    // public async Task<IActionResult> LoginAsync(string userName, string password)
+    // {
+    //     var user = await _userManager.FindByNameAsync(userName);
+
+    //     if (user == null || !await _userManager.CheckPasswordAsync(user, password))
+    //     {
+    //         return Unauthorized("Invalid username or password");
+    //     }
+
+    //     var token = await _jwtManager.GetJwtAsync(user);
+
+    //     var response = new LoginResponse
+    //     {
+    //         Success = true,
+    //         Message = "Login success.",
+    //         Token = token,
+    //     };
+
+    //     return Ok(response);
+    // }
+    
     [HttpPost("/login")]
-    public async Task<IActionResult> LoginAsync(string userName, string password)
+public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
+{
+    var user = await _userManager.FindByNameAsync(request.UserName);
+
+    if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
     {
-        var user = await _userManager.FindByNameAsync(userName);
-        
-        if (user == null || !await _userManager.CheckPasswordAsync(user, password))
-        {
-            return Unauthorized("Invalid username or password");
-        }
-
-        var token = await _jwtManager.GetJwtAsync(user);
-
-        var response = new LoginResponse
-        {
-            Success = true,
-            Message = "Login success.",
-            Token = token,
-        };
-
-        return Ok(response);
+        return Unauthorized("Invalid username or password");
     }
+
+    var token = await _jwtManager.GetJwtAsync(user);
+
+    var response = new LoginResponse
+    {
+        Success = true,
+        Message = "Login success.",
+        Token = token,
+    };
+
+    return Ok(response);
+}
+
 }
