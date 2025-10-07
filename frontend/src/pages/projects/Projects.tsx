@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import ProjectCard from '../../components/project/ProjectCard'
-import { useGetAllProjects } from '../../hooks/Projects'
+import { useGetAllProjects } from '../../hooks/projects'
 import { Sidebar } from '../../components/sidebar/Sidebar'
 import './Projects.css'
 

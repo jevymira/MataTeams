@@ -8,9 +8,12 @@ export const Header = () => {
         <Link to='/' className='homeLink'>
         <h1>Mata Teams</h1>
         </Link>
-        <Link to='/profile'>
-            My Profile
-        </Link>
+        <div>
+          <Link to='/profile' className='profileLink'>
+              My Profile
+          </Link>
+          <Link to='/login'>Log Out</Link>
+        </div>
     </div>
   </div>
 )}

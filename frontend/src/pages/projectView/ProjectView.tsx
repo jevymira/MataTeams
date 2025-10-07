@@ -9,7 +9,7 @@ import { Sidebar } from '../../components/sidebar/Sidebar'
 
 // hooks
 import { useEffect } from 'react'
-import { useGetProjectByID } from '../../hooks/Projects'
+import { useGetProjectByID } from '../../hooks/projects'
 
 // style 
 import './ProjectView.css'
