@@ -26,7 +26,7 @@ public static class GetProjectById
     {
         public required int ProjectRoleId { get; set; }
         public required int RoleId { get; set; }
-        public required string Name { get; set; }
+        public required string RoleName { get; set; }
         public required int PositionCount { get; set; }
         public required List<ResponseRoleSkill> Skills { get; set; }
     }
@@ -35,7 +35,7 @@ public static class GetProjectById
     {
         public required int ProjectRoleSkillId { get; set; }
         public required int SkillId { get; set; }
-        public required string Name { get; set; }
+        public required string SkillName { get; set; }
         public required string Proficiency { get; set; }
     }
 
@@ -86,14 +86,14 @@ public static class GetProjectById
                     {
                         ProjectRoleId = r.Id,
                         RoleId = r.RoleId,
-                        Name = r.Role.Name,
+                        RoleName = r.Role.Name,
                         PositionCount = r.PositionCount,
                         Skills = r.Skills
                             .Select(s => new ResponseRoleSkill
                             {
                                ProjectRoleSkillId = s.Id,
                                SkillId = s.SkillId,
-                               Name = s.Skill.Name,
+                               SkillName = s.Skill.Name,
                                Proficiency = s.Proficiency.ToString()
                             })
                             .ToList()
