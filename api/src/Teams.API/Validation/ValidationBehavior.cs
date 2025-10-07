@@ -26,7 +26,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Validating command {Command}", typeof(TRequest).Name);
+        _logger.LogInformation("Validating {Request}", typeof(TRequest).Name);
         
         var failures = _validators
             .Select(validator => validator.Validate(request))
@@ -36,7 +36,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             
         if (failures.Any())
         {
-            _logger.LogWarning("Validation errors - {Command} - Errors: {@ValidationErrors}",
+            _logger.LogWarning("Validation errors - {Request} - Errors: {@ValidationErrors}",
                 typeof(TRequest).Name, failures);
             
             throw new ValidationException(failures);

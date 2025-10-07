@@ -15,9 +15,9 @@ public class Project : Entity
    
    // public bool AutoAllowTeamAcceptance
    
-   // private readonly List<Skill> _skills;
+   private readonly List<ProjectRole> _roles;
    
-   // public IReadOnlyCollection<Skill> Skills  => _skills.AsReadOnly();
+   public IReadOnlyCollection<ProjectRole> Roles => _roles.AsReadOnly();
    
    // public ICollection<int> TeamIds { get; private set; }
    
@@ -27,7 +27,12 @@ public class Project : Entity
 
    public int OwnerId { get; private set; }
 
-   public Project(string name, string description, ProjectType type, ProjectStatus status, int ownerId)
+   protected Project()
+   {
+      _roles = new List<ProjectRole>();
+   }
+
+   public Project(string name, string description, ProjectType type, ProjectStatus status, int ownerId) : this()
    {
       if (!type.AllowedStatuses.Contains(status))
          throw new InvalidOperationException("Invalid status for project type.");
@@ -37,5 +42,12 @@ public class Project : Entity
       Type = type;
       Status = status;
       OwnerId = ownerId;
+   }
+
+   public ProjectRole AddProjectRole(int roleId, int positionCount)
+   {
+      var projectRole = new ProjectRole(Id, roleId, positionCount);
+      _roles.Add(projectRole);
+      return projectRole;
    }
 }
