@@ -13,18 +13,20 @@ namespace Teams.API.Features.Projects.CreateProject;
 public sealed record CreateProjectRequest(
     string Name,
     string Description,
-    string Type, 
+    string Type,
     string Status,
     List<CreateProjectRequestRole> Roles);
 
 public sealed record CreateProjectRequestRole(
     int RoleId,
+    // The maximum number of positions, to be "filled" by team members, for the role.
     int PositionCount,
     List<CreateProjectRequestRoleSkill> Skills);
 
 // Full record rather than Value Tuple for representation in Swagger docs.
 public sealed record CreateProjectRequestRoleSkill(
     int SkillId,
+    // The minimum required proficiency for the skill.
     string Proficiency);
 
 public sealed record CreateProjectCommand : IRequest<bool>
