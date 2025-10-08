@@ -11,7 +11,7 @@ public class ProjectRole // : Entity
 {
     public Guid Id { get; private set; }
     
-    public int ProjectId { get; private set; }
+    public Guid ProjectId { get; private set; }
     
     public Guid RoleId { get; private set; }
     
@@ -28,7 +28,7 @@ public class ProjectRole // : Entity
         _skills = new List<ProjectRoleSkill>();
     }
     
-    public ProjectRole(int projectId, Guid roleId, int positionCount) : this()
+    public ProjectRole(Guid projectId, Guid roleId, int positionCount) : this()
     {
         ProjectId = projectId;
         RoleId = roleId;
