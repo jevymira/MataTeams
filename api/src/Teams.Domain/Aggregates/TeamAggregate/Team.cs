@@ -2,10 +2,8 @@
 
 namespace Teams.Domain.Aggregates.TeamAggregate;
 
-public class Team : /*Entity,*/ IAggregateRoot
+public class Team : Entity, IAggregateRoot
 {
-    public Guid Id { get; private set; }
-    
     public string Name { get; private set; }
     
     // Private collection fields; for rationale, refer to MS reference repository at

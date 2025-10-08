@@ -3,10 +3,8 @@ using Teams.Domain.SharedKernel;
 
 namespace Teams.Domain.Aggregates.UserAggregate;
 
-public class User //: Entity
+public class User : Entity
 {  
-    public Guid Id { get; private set; }
-    
     public string IdentityGuid { get; private set; }
     
     private readonly List<UserSkill> _userSkills;

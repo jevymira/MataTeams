@@ -3,10 +3,8 @@ using Teams.Domain.SharedKernel;
 
 namespace Teams.Domain.Aggregates.ProjectAggregate;
 
-public class ProjectRoleSkill // : Entity
+public class ProjectRoleSkill : Entity
 {
-    public Guid Id { get; private set; }
-    
     public Guid ProjectRoleId { get; private set; }
     
     public Guid SkillId { get; private set; }

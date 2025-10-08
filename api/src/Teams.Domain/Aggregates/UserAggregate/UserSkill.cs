@@ -3,9 +3,8 @@ using Teams.Domain.SharedKernel;
 
 namespace Teams.Domain.Aggregates.UserAggregate;
 
-public class UserSkill
+public class UserSkill : Entity
 {
-    public Guid Id { get; private set; }
     public Guid UserId { get; private set; }
     public Guid SkillId { get; private set; }
     public Skill Skill { get; private set; } // set by EF Core after construction
