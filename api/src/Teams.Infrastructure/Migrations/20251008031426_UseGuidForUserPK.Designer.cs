@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Teams.Infrastructure;
@@ -11,9 +12,11 @@ using Teams.Infrastructure;
 namespace Teams.Infrastructure.Migrations
 {
     [DbContext(typeof(TeamDbContext))]
-    partial class TeamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251008031426_UseGuidForUserPK")]
+    partial class UseGuidForUserPK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,10 +46,6 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("character varying(64)")
                         .HasColumnName("name");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("owner_id");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -60,8 +59,6 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnName("type");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("projects", (string)null);
                 });
@@ -176,17 +173,17 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.Aggregates.UserAggregate.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("guid");
 
                     b.Property<string>("IdentityGuid")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("identity_guid");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.ToTable("users", (string)null);
                 });
@@ -205,14 +202,14 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("proficiency");
 
-                    b.Property<Guid?>("UserId1")
+                    b.Property<Guid>("UserGuid")
                         .HasColumnType("uuid");
 
                     b.HasKey("UserId", "SkillId");
 
                     b.HasIndex("SkillId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserGuid");
 
                     b.ToTable("user_skills", (string)null);
                 });
@@ -253,15 +250,6 @@ namespace Teams.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("skills", (string)null);
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.Project", b =>
-                {
-                    b.HasOne("Teams.Domain.Aggregates.UserAggregate.User", null)
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", b =>
@@ -317,7 +305,9 @@ namespace Teams.Infrastructure.Migrations
 
                     b.HasOne("Teams.Domain.Aggregates.UserAggregate.User", null)
                         .WithMany("UserSkills")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Skill");
                 });

@@ -3,16 +3,24 @@ using Teams.Domain.SharedKernel;
 
 namespace Teams.Domain.Aggregates.UserAggregate;
 
-public class User : Entity
+public class User //: Entity
 {  
+    public Guid Id { get; private set; }
+    
     public string IdentityGuid { get; private set; }
     
     private readonly List<UserSkill> _userSkills;
     
     public IReadOnlyCollection<UserSkill> UserSkills => _userSkills.AsReadOnly();
 
-    public User(string identityGuid)
+    protected User()
     {
+        _userSkills = new List<UserSkill>();
+    }
+    
+    public User(Guid id, string identityGuid) : this()
+    {
+        Id = id;
         IdentityGuid = !string.IsNullOrWhiteSpace(identityGuid)
             ? identityGuid 
             : throw new ArgumentNullException(nameof(identityGuid));
@@ -21,6 +29,7 @@ public class User : Entity
     /// <remarks>
     /// Avoids passing in raw skill IDs, to ensure the `Skill` is valid.
     /// </remarks>
+    /*
     public void AddSkill(Skill skill, Proficiency proficiency)
     {
         if (_userSkills.Any(s => s.SkillId == skill.Id))
@@ -28,6 +37,7 @@ public class User : Entity
         
         _userSkills.Add(new UserSkill(Id, skill.Id, proficiency));
     }
+    */
 
     public void UpdateSkillProficiency(int skillId, Proficiency newProficiency)
     {

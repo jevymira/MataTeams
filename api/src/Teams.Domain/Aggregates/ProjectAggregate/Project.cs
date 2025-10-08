@@ -25,14 +25,14 @@ public class Project : Entity
    
    // public IReadOnlyCollection<Team> Teams { get; private set; }
 
-   public int OwnerId { get; private set; }
+   public Guid OwnerId { get; private set; }
 
    protected Project()
    {
       _roles = new List<ProjectRole>();
    }
 
-   public Project(string name, string description, ProjectType type, ProjectStatus status, int ownerId) : this()
+   public Project(string name, string description, ProjectType type, ProjectStatus status, Guid ownerId) : this()
    {
       if (!type.AllowedStatuses.Contains(status))
          throw new InvalidOperationException("Invalid status for project type.");
