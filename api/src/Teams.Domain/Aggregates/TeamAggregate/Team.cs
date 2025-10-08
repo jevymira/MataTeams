@@ -2,8 +2,10 @@
 
 namespace Teams.Domain.Aggregates.TeamAggregate;
 
-public class Team : Entity, IAggregateRoot
+public class Team : /*Entity,*/ IAggregateRoot
 {
+    public Guid Id { get; private set; }
+    
     public string Name { get; private set; }
     
     // Private collection fields; for rationale, refer to MS reference repository at
@@ -22,6 +24,7 @@ public class Team : Entity, IAggregateRoot
         _membershipRequests = [];
     }
 
+    /*
     public void AddMember(int userId, int roleId)
     {
         var existingMember = _members.SingleOrDefault(m => m.Id == userId);
@@ -33,8 +36,9 @@ public class Team : Entity, IAggregateRoot
         else
         {
             // TODO: validate that member is not requesting to join a fully-filled role 
-            var newMember = new TeamMember(Id, userId, roleId);
+            var newMember = new TeamMember(Id, userId);
             _members.Add(newMember);
         }
     }
+    */
 }

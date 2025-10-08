@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Teams.Infrastructure;
@@ -11,9 +12,11 @@ using Teams.Infrastructure;
 namespace Teams.Infrastructure.Migrations
 {
     [DbContext(typeof(TeamDbContext))]
-    partial class TeamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251008203315_AddTeamMemberGuidPK")]
+    partial class AddTeamMemberGuidPK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,10 +125,12 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.Aggregates.TeamAggregate.Team", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -145,17 +150,15 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("TeamId")
+                        .HasColumnType("integer")
                         .HasColumnName("team_id");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("team_members", (string)null);
                 });
@@ -282,15 +285,6 @@ namespace Teams.Infrastructure.Migrations
                     b.Navigation("Skill");
                 });
 
-            modelBuilder.Entity("Teams.Domain.Aggregates.TeamAggregate.TeamMember", b =>
-                {
-                    b.HasOne("Teams.Domain.Aggregates.TeamAggregate.Team", null)
-                        .WithMany("Members")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Teams.Domain.Aggregates.UserAggregate.UserSkill", b =>
                 {
                     b.HasOne("Teams.Domain.SharedKernel.Skill", "Skill")
@@ -316,11 +310,6 @@ namespace Teams.Infrastructure.Migrations
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", b =>
                 {
                     b.Navigation("Skills");
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.TeamAggregate.Team", b =>
-                {
-                    b.Navigation("Members");
                 });
 #pragma warning restore 612, 618
         }
