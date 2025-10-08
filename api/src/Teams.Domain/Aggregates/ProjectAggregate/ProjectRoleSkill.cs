@@ -5,7 +5,7 @@ namespace Teams.Domain.Aggregates.ProjectAggregate;
 
 public class ProjectRoleSkill : Entity
 {
-    public int ProjectRoleId { get; private set; }
+    public Guid ProjectRoleId { get; private set; }
     
     public Guid SkillId { get; private set; }
     
@@ -13,7 +13,7 @@ public class ProjectRoleSkill : Entity
     
     public Proficiency Proficiency { get; private set; }
 
-    public ProjectRoleSkill(int projectRoleId, Guid skillId, Proficiency proficiency)
+    public ProjectRoleSkill(Guid projectRoleId, Guid skillId, Proficiency proficiency)
     {
         ProjectRoleId = projectRoleId;
         SkillId = skillId;

@@ -14,8 +14,10 @@ public class ProjectRoleSkillEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.Property(rs => rs.Id)
             .HasColumnName("id");
         
+        /*
         builder.Property(rs => rs.ProjectRoleId)
             .HasColumnName("project_role_id");
+        */
         
         builder.Property(rs => rs.SkillId)
             .HasColumnName("skill_id");

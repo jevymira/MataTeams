@@ -7,8 +7,10 @@ namespace Teams.Domain.Aggregates.ProjectAggregate;
 /// An Entity (with a surrogate key) instead of a Value Object;
 /// it retains its identity despite, e.g., Skills being added/removed.
 /// </remarks>
-public class ProjectRole : Entity
+public class ProjectRole // : Entity
 {
+    public Guid Id { get; private set; }
+    
     public int ProjectId { get; private set; }
     
     public Guid RoleId { get; private set; }

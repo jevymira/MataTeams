@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Teams.Infrastructure;
@@ -11,9 +12,11 @@ using Teams.Infrastructure;
 namespace Teams.Infrastructure.Migrations
 {
     [DbContext(typeof(TeamDbContext))]
-    partial class TeamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251008184422_AddGuidAlternateKeyToProjectRoles")]
+    partial class AddGuidAlternateKeyToProjectRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,10 +71,15 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("PositionCount")
                         .HasColumnType("integer")
@@ -86,6 +94,8 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnName("role_id");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Guid");
 
                     b.HasIndex("ProjectId");
 
@@ -107,8 +117,8 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("proficiency");
 
-                    b.Property<Guid>("ProjectRoleId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("ProjectRoleId")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("SkillId")
                         .HasColumnType("uuid")
@@ -280,9 +290,7 @@ namespace Teams.Infrastructure.Migrations
                 {
                     b.HasOne("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", null)
                         .WithMany("Skills")
-                        .HasForeignKey("ProjectRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectRoleId");
 
                     b.HasOne("Teams.Domain.SharedKernel.Skill", "Skill")
                         .WithMany()

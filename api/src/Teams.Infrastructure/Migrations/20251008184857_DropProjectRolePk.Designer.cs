@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Teams.Infrastructure;
@@ -11,9 +12,11 @@ using Teams.Infrastructure;
 namespace Teams.Infrastructure.Migrations
 {
     [DbContext(typeof(TeamDbContext))]
-    partial class TeamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251008184857_DropProjectRolePk")]
+    partial class DropProjectRolePk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,10 +71,8 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("PositionCount")
                         .HasColumnType("integer")
@@ -84,10 +85,6 @@ namespace Teams.Infrastructure.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid")
                         .HasColumnName("role_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
 
                     b.HasIndex("RoleId");
 
@@ -107,16 +104,11 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("proficiency");
 
-                    b.Property<Guid>("ProjectRoleId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("SkillId")
                         .HasColumnType("uuid")
                         .HasColumnName("skill_id");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectRoleId");
 
                     b.HasIndex("SkillId");
 
@@ -261,12 +253,6 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", b =>
                 {
-                    b.HasOne("Teams.Domain.Aggregates.ProjectAggregate.Project", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Teams.Domain.SharedKernel.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
@@ -278,12 +264,6 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.ProjectRoleSkill", b =>
                 {
-                    b.HasOne("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", null)
-                        .WithMany("Skills")
-                        .HasForeignKey("ProjectRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Teams.Domain.SharedKernel.Skill", "Skill")
                         .WithMany()
                         .HasForeignKey("SkillId")
@@ -317,16 +297,6 @@ namespace Teams.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Skill");
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.Project", b =>
-                {
-                    b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", b =>
-                {
-                    b.Navigation("Skills");
                 });
 
             modelBuilder.Entity("Teams.Domain.Aggregates.TeamAggregate.Team", b =>
