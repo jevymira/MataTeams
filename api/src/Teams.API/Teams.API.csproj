@@ -26,4 +26,20 @@
       <ProjectReference Include="..\Teams.Contracts\Teams.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Features\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Features\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Features\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Features\**" />
+    </ItemGroup>
+
 </Project>
