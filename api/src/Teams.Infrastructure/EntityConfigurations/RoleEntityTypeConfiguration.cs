@@ -10,6 +10,8 @@ public class RoleEntityTypeConfiguration : IEntityTypeConfiguration<Role>
     {
         builder.ToTable("roles");
 
+        builder.HasKey(r => r.Id);
+        
         builder.Property(r => r.Id)
             .HasColumnName("id");
 

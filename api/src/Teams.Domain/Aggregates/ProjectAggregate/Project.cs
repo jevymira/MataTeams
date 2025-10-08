@@ -44,7 +44,7 @@ public class Project : Entity
       OwnerId = ownerId;
    }
 
-   public ProjectRole AddProjectRole(int roleId, int positionCount)
+   public ProjectRole AddProjectRole(Guid roleId, int positionCount)
    {
       var projectRole = new ProjectRole(Id, roleId, positionCount);
       _roles.Add(projectRole);

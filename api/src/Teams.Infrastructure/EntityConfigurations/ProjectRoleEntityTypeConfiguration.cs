@@ -18,12 +18,12 @@ public class ProjectRoleEntityTypeConfiguration : IEntityTypeConfiguration<Proje
         builder.Property(pr => pr.ProjectId)
             .HasColumnName("project_id");
         
-        builder.Property(pr => pr.RoleId)
-            .HasColumnName("role_id");
-        
         builder.Property(pr => pr.PositionCount)
             .HasColumnName("position_count");
        
+        builder.Property(pr => pr.RoleId)
+            .HasColumnName("role_id");
+        
         builder.HasOne<Role>(pr => pr.Role)
             .WithMany()
             .HasForeignKey(pr => pr.RoleId)

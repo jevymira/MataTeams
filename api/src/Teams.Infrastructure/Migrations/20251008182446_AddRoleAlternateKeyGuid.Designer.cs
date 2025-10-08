@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Teams.Infrastructure;
@@ -11,9 +12,11 @@ using Teams.Infrastructure;
 namespace Teams.Infrastructure.Migrations
 {
     [DbContext(typeof(TeamDbContext))]
-    partial class TeamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251008182446_AddRoleAlternateKeyGuid")]
+    partial class AddRoleAlternateKeyGuid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,8 +86,8 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("project_id");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer")
                         .HasColumnName("role_id");
 
                     b.HasKey("Id");
@@ -221,10 +224,16 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.SharedKernel.Role", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uuid")
+                        .HasColumnName("guid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -232,6 +241,8 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Guid");
 
                     b.ToTable("roles", (string)null);
                 });

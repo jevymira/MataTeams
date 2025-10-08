@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Teams.Infrastructure;
@@ -11,9 +12,11 @@ using Teams.Infrastructure;
 namespace Teams.Infrastructure.Migrations
 {
     [DbContext(typeof(TeamDbContext))]
-    partial class TeamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251008183059_DropRolePK")]
+    partial class DropRolePK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,15 +86,9 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("project_id");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("role_id");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("project_roles", (string)null);
                 });
@@ -221,17 +218,14 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.SharedKernel.Role", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("Guid")
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("guid");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
-
-                    b.HasKey("Id");
 
                     b.ToTable("roles", (string)null);
                 });
@@ -269,14 +263,6 @@ namespace Teams.Infrastructure.Migrations
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Teams.Domain.SharedKernel.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.ProjectRoleSkill", b =>
