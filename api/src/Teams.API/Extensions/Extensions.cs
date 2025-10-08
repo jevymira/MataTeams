@@ -38,6 +38,7 @@ internal static class Extensions
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             options.UseSeeding((context, _) =>
             {
+                /*
                 var java = context.Set<Skill>()
                     .FirstOrDefault(s => s.Name == "Java");
                 if (java == null)
@@ -121,7 +122,7 @@ internal static class Extensions
                     context.Set<Project>().Add(project);
                     context.SaveChanges();
                 } 
-
+                */
             });
         });
         
