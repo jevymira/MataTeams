@@ -33,7 +33,7 @@ public class ProjectRole : Entity
         PositionCount = positionCount;
     }
 
-    public void AddProjectSkill(int skillId, Proficiency proficiency)
+    public void AddProjectSkill(Guid skillId, Proficiency proficiency)
     {
         var skill = new ProjectRoleSkill(Id, skillId, proficiency);
         _skills.Add(skill);

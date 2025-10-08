@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Teams.Infrastructure;
@@ -11,9 +12,11 @@ using Teams.Infrastructure;
 namespace Teams.Infrastructure.Migrations
 {
     [DbContext(typeof(TeamDbContext))]
-    partial class TeamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251008160413_AddGuidAndUserIdFKToUserSkill")]
+    partial class AddGuidAndUserIdFKToUserSkill
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,8 +116,8 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("project_role_id");
 
-                    b.Property<Guid>("SkillId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("SkillId")
+                        .HasColumnType("integer")
                         .HasColumnName("skill_id");
 
                     b.HasKey("Id");
@@ -202,17 +205,11 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("proficiency");
 
-                    b.Property<Guid>("SkillId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("skill_id");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SkillId");
 
                     b.HasIndex("UserId");
 
@@ -240,10 +237,12 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.SharedKernel.Skill", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -309,19 +308,11 @@ namespace Teams.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.Aggregates.UserAggregate.UserSkill", b =>
                 {
-                    b.HasOne("Teams.Domain.SharedKernel.Skill", "Skill")
-                        .WithMany()
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Teams.Domain.Aggregates.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Skill");
                 });
 
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.Project", b =>

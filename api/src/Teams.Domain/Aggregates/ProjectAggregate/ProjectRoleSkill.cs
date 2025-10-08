@@ -7,13 +7,13 @@ public class ProjectRoleSkill : Entity
 {
     public int ProjectRoleId { get; private set; }
     
-    public int SkillId { get; private set; }
+    public Guid SkillId { get; private set; }
     
     public Skill Skill { get; private set; }
     
     public Proficiency Proficiency { get; private set; }
 
-    public ProjectRoleSkill(int projectRoleId, int skillId, Proficiency proficiency)
+    public ProjectRoleSkill(int projectRoleId, Guid skillId, Proficiency proficiency)
     {
         ProjectRoleId = projectRoleId;
         SkillId = skillId;

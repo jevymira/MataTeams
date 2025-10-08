@@ -11,10 +11,15 @@ public class UserSkillEntityTypeConfiguration : IEntityTypeConfiguration<UserSki
     {
         builder.ToTable("user_skills");
         
-        builder.HasKey(us => new { us.UserId, us.SkillId });
+        builder.Property(us => us.Id)
+            .HasColumnName("id");
         
         builder.Property(us => us.UserId)
             .HasColumnName("user_id");
+
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(us => us.UserId);
         
         builder.Property(us => us.SkillId)
             .HasColumnName("skill_id");

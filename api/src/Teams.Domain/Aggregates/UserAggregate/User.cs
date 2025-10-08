@@ -11,7 +11,7 @@ public class User //: Entity
     
     private readonly List<UserSkill> _userSkills;
     
-    public IReadOnlyCollection<UserSkill> UserSkills => _userSkills.AsReadOnly();
+    // public IReadOnlyCollection<UserSkill> UserSkills => _userSkills.AsReadOnly();
 
     protected User()
     {
@@ -39,6 +39,7 @@ public class User //: Entity
     }
     */
 
+    /*
     public void UpdateSkillProficiency(int skillId, Proficiency newProficiency)
     {
         var userSkill = _userSkills.FirstOrDefault(s => s.SkillId == skillId);
@@ -56,4 +57,5 @@ public class User //: Entity
         
         _userSkills.Remove(userSkill);
     }
+    */
 }
