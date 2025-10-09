@@ -15,6 +15,10 @@ public class ProjectRole : Entity
     
     public Role Role { get; private set; }
     
+    /// <summary>
+    // The maximum number of positions for a role,
+    // each to be "filled" by a team member.
+    /// </summary>
     public int PositionCount { get; private set; }
     
     private readonly List<ProjectRoleSkill> _skills;

@@ -27,6 +27,11 @@ public static class GetProjectById
         public required string ProjectRoleId { get; set; }
         public required string RoleId { get; set; }
         public required string RoleName { get; set; }
+        
+        /// <summary>
+        // The maximum number of positions for a role,
+        // each to be "filled" by a team member.
+        /// </summary>
         public required int PositionCount { get; set; }
         public required List<ResponseRoleSkill> Skills { get; set; }
     }

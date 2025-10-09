@@ -19,6 +19,8 @@ public sealed record CreateProjectRequest(
 
 public sealed record CreateProjectRequestRole(
     string RoleId,
+    // The maximum number of positions for a role,
+    // each to be "filled" by a team member.
     int PositionCount,
     List<CreateProjectRequestRoleSkill> Skills);
 
