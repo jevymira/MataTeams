@@ -10,7 +10,7 @@ public class ProjectRoleSkillEntityTypeConfiguration : IEntityTypeConfiguration<
     public void Configure(EntityTypeBuilder<ProjectRoleSkill> builder)
     {
         builder.ToTable("project_role_skills");
-
+        
         builder.Property(rs => rs.Id)
             .HasColumnName("id");
         
@@ -23,6 +23,7 @@ public class ProjectRoleSkillEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.HasOne<Skill>(rs => rs.Skill)
             .WithMany()
             .HasForeignKey(rs => rs.SkillId)
+            .HasPrincipalKey(s => s.Id)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Property(us => us.Proficiency)

@@ -18,8 +18,5 @@ public class TeamMemberEntityTypeConfiguration : IEntityTypeConfiguration<TeamMe
         
         builder.Property(tm => tm.UserId)
             .HasColumnName("user_id");
-        
-        builder.Property(tm => tm.RoleId)
-            .HasColumnName("role_id");
     }
 }

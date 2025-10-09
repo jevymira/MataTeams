@@ -2,7 +2,7 @@ namespace Teams.Domain.SeedWork;
 
 public abstract class Entity
 {
-    public int Id
+    public Guid Id
     {
         get;
         protected set; // accessible by EF via reflection

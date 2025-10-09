@@ -25,18 +25,19 @@ public class Project : Entity
    
    // public IReadOnlyCollection<Team> Teams { get; private set; }
 
-   public int OwnerId { get; private set; }
+   public Guid OwnerId { get; private set; }
 
    protected Project()
    {
       _roles = new List<ProjectRole>();
    }
 
-   public Project(string name, string description, ProjectType type, ProjectStatus status, int ownerId) : this()
+   public Project(Guid id, string name, string description, ProjectType type, ProjectStatus status, Guid ownerId) : this()
    {
       if (!type.AllowedStatuses.Contains(status))
          throw new InvalidOperationException("Invalid status for project type.");
-      
+
+      Id = id;
       Name = name;
       Description = description;
       Type = type;
@@ -44,9 +45,9 @@ public class Project : Entity
       OwnerId = ownerId;
    }
 
-   public ProjectRole AddProjectRole(int roleId, int positionCount)
+   public ProjectRole AddProjectRole(Guid projectRoleId, Guid roleId, int positionCount)
    {
-      var projectRole = new ProjectRole(Id, roleId, positionCount);
+      var projectRole = new ProjectRole(projectRoleId, Id, roleId, positionCount);
       _roles.Add(projectRole);
       return projectRole;
    }

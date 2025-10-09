@@ -39,12 +39,13 @@ public class ProjectEntityTypeConfiguration : IEntityTypeConfiguration<Project>
             .HasConversion<string>()
             .HasMaxLength(64);
         
+        builder.Property(p => p.OwnerId)
+            .HasColumnName("owner_id");
+        
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(p => p.OwnerId)
+            .HasPrincipalKey(u => u.Id)
             .OnDelete(DeleteBehavior.Restrict);
-        
-        builder.Property(p => p.OwnerId)
-            .HasColumnName("owner_id");
     }
 }
