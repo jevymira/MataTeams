@@ -7,7 +7,7 @@ public class ProjectAggregateTest
 {
     private readonly string name = "Sample Project";
     private readonly string description = "Sample Description";
-    private readonly int ownerId = 1;
+    private readonly Guid ownerId = Guid.NewGuid();
     
     [Fact]
     public void Create_Project_Success()
@@ -17,7 +17,7 @@ public class ProjectAggregateTest
         var status = ProjectStatus.Draft;
         
         // Act
-        var project = new Project(name, description, type, status, ownerId);
+        var project = new Project(Guid.NewGuid(), name, description, type, status, ownerId);
         
         // Assert
         Assert.NotNull(project);
@@ -42,7 +42,7 @@ public class ProjectAggregateTest
         
         // Act & Assert
         var ex = Assert.Throws<InvalidOperationException>(() =>
-            new Project(name, description, type, status, ownerId));
+            new Project(Guid.NewGuid(), name, description, type, status, ownerId));
         
         Assert.Equal("Invalid status for project type.", ex.Message);
     }

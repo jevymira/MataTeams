@@ -13,8 +13,9 @@ public class ProjectRoleSkill : Entity
     
     public Proficiency Proficiency { get; private set; }
 
-    public ProjectRoleSkill(Guid projectRoleId, Guid skillId, Proficiency proficiency)
+    public ProjectRoleSkill(Guid id, Guid projectRoleId, Guid skillId, Proficiency proficiency)
     {
+        Id = id;
         ProjectRoleId = projectRoleId;
         SkillId = skillId;
         Proficiency = proficiency;

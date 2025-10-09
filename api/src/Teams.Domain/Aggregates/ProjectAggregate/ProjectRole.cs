@@ -26,16 +26,17 @@ public class ProjectRole : Entity
         _skills = new List<ProjectRoleSkill>();
     }
     
-    public ProjectRole(Guid projectId, Guid roleId, int positionCount) : this()
+    public ProjectRole(Guid id, Guid projectId, Guid roleId, int positionCount) : this()
     {
+        Id = id;
         ProjectId = projectId;
         RoleId = roleId;
         PositionCount = positionCount;
     }
 
-    public void AddProjectSkill(Guid skillId, Proficiency proficiency)
+    public void AddProjectSkill(Guid id, Guid skillId, Proficiency proficiency)
     {
-        var skill = new ProjectRoleSkill(Id, skillId, proficiency);
+        var skill = new ProjectRoleSkill(id, Id, skillId, proficiency);
         _skills.Add(skill);
     }
 }
