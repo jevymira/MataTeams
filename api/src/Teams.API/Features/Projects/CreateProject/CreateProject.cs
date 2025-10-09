@@ -18,13 +18,13 @@ public sealed record CreateProjectRequest(
     List<CreateProjectRequestRole> Roles);
 
 public sealed record CreateProjectRequestRole(
-    int RoleId,
+    string RoleId,
     int PositionCount,
     List<CreateProjectRequestRoleSkill> Skills);
 
 // Full record rather than Value Tuple for representation in Swagger docs.
 public sealed record CreateProjectRequestRoleSkill(
-    int SkillId,
+    string SkillId,
     string Proficiency);
 
 public sealed record CreateProjectCommand : IRequest<bool>
@@ -88,7 +88,11 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
         var owner = await context.Users
             .FirstOrDefaultAsync(m => m.IdentityGuid == request.OwnerIdentityGuid, cancellationToken);
 
+        var projectId = Guid.CreateVersion7();
+        var projectRoleId = Guid.CreateVersion7();
+        
         var project = new Project(
+            projectId,
             request.Name,
             request.Description,
             ProjectType.FromName(request.Type),
@@ -97,12 +101,12 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
 
         foreach (var role in request.Roles)
         {
-            var projectRole = project.AddProjectRole(role.RoleId, role.PositionCount);
+            var projectRole = project.AddProjectRole(projectRoleId, Guid.Parse(role.RoleId), role.PositionCount);
             
             foreach (var skill in role.Skills)
             {
                 Enum.TryParse<Proficiency>(skill.Proficiency, out var proficiency);
-                projectRole.AddProjectSkill(skill.SkillId, proficiency);
+                projectRole.AddProjectSkill(Guid.CreateVersion7(), Guid.Parse(skill.SkillId), proficiency);
             }
         }
         
@@ -111,12 +115,12 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
         await context.SaveChangesAsync(cancellationToken);
         
         await publishEndpoint.Publish(new ProjectCreated(
-            Guid.NewGuid(),       // temporary GUID for event
+            projectId, 
             project.Name,
             project.Description,
             project.Type.Name,
             project.Status.ToString(),
-            Guid.NewGuid()        // temporary GUID for event
+            owner.Id
         ), cancellationToken);
 
         return true;
