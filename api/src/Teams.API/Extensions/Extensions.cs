@@ -66,6 +66,24 @@ internal static class Extensions
                     context.SaveChanges();
                 }
                 
+                var expressSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Express");
+                if (expressSkill == null)
+                {
+                    expressSkill = new Skill("Express");
+                    context.Set<Skill>().Add(expressSkill);
+                    context.SaveChanges();
+                }
+                
+                var fullstackRole = context.Set<Role>()
+                    .FirstOrDefault(role => role.Name == "Fullstack");
+                if (fullstackRole == null)
+                {
+                    fullstackRole = new Role("Fullstack");
+                    context.Set<Role>().Add(fullstackRole);
+                    context.SaveChanges();
+                }
+                
                 var frontendRole = context.Set<Role>()
                     .FirstOrDefault(r => r.Name == "Frontend");
                 if (frontendRole == null)
@@ -113,7 +131,7 @@ internal static class Extensions
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
                         user.Id);
-                    // Add `Frontend` Role with `JavaScript` and `React Skills.
+                    // Add `Frontend` Role with `JavaScript` and `React` Skills.
                     project.AddProjectRole(Guid.CreateVersion7(), frontendRole.Id, 2);
                     project.Roles.First().AddProjectSkill(Guid.CreateVersion7(), js.Id, Proficiency.Beginner);
                     project.Roles.First().AddProjectSkill(Guid.CreateVersion7(), react.Id, Proficiency.Interested);
