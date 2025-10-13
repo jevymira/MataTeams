@@ -57,9 +57,11 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("character varying(64)")
                         .HasColumnName("type");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_projects");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId")
+                        .HasDatabaseName("ix_projects_owner_id");
 
                     b.ToTable("projects", (string)null);
                 });
@@ -83,11 +85,14 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("role_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_project_roles");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("ProjectId")
+                        .HasDatabaseName("ix_project_roles_project_id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("RoleId")
+                        .HasDatabaseName("ix_project_roles_role_id");
 
                     b.ToTable("project_roles", (string)null);
                 });
@@ -111,11 +116,14 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("skill_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_project_role_skills");
 
-                    b.HasIndex("ProjectRoleId");
+                    b.HasIndex("ProjectRoleId")
+                        .HasDatabaseName("ix_project_role_skills_project_role_id");
 
-                    b.HasIndex("SkillId");
+                    b.HasIndex("SkillId")
+                        .HasDatabaseName("ix_project_role_skills_skill_id");
 
                     b.ToTable("project_role_skills", (string)null);
                 });
@@ -133,7 +141,8 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("character varying(64)")
                         .HasColumnName("name");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_teams");
 
                     b.ToTable("teams", (string)null);
                 });
@@ -153,9 +162,11 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_team_members");
 
-                    b.HasIndex("TeamId");
+                    b.HasIndex("TeamId")
+                        .HasDatabaseName("ix_team_members_team_id");
 
                     b.ToTable("team_members", (string)null);
                 });
@@ -172,7 +183,8 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("identity_guid");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_users");
 
                     b.ToTable("users", (string)null);
                 });
@@ -196,11 +208,14 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_user_skills");
 
-                    b.HasIndex("SkillId");
+                    b.HasIndex("SkillId")
+                        .HasDatabaseName("ix_user_skills_skill_id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_user_skills_user_id");
 
                     b.ToTable("user_skills", (string)null);
                 });
@@ -217,7 +232,8 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_roles");
 
                     b.ToTable("roles", (string)null);
                 });
@@ -234,7 +250,8 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_skills");
 
                     b.ToTable("skills", (string)null);
                 });
@@ -245,7 +262,8 @@ namespace Teams.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_projects_users_owner_id");
                 });
 
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", b =>
@@ -254,13 +272,15 @@ namespace Teams.Infrastructure.Migrations
                         .WithMany("Roles")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_project_roles_projects_project_id");
 
                     b.HasOne("Teams.Domain.SharedKernel.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_project_roles_roles_role_id");
 
                     b.Navigation("Role");
                 });
@@ -271,13 +291,15 @@ namespace Teams.Infrastructure.Migrations
                         .WithMany("Skills")
                         .HasForeignKey("ProjectRoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_project_role_skills_project_roles_project_role_id");
 
                     b.HasOne("Teams.Domain.SharedKernel.Skill", "Skill")
                         .WithMany()
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_project_role_skills_skills_skill_id");
 
                     b.Navigation("Skill");
                 });
@@ -288,7 +310,8 @@ namespace Teams.Infrastructure.Migrations
                         .WithMany("Members")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_team_members_teams_team_id");
                 });
 
             modelBuilder.Entity("Teams.Domain.Aggregates.UserAggregate.UserSkill", b =>
@@ -297,13 +320,15 @@ namespace Teams.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_skills_skills_skill_id");
 
                     b.HasOne("Teams.Domain.Aggregates.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_skills_users_user_id");
 
                     b.Navigation("Skill");
                 });

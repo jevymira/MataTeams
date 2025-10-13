@@ -9,14 +9,6 @@ public class SkillEntityTypeConfiguration : IEntityTypeConfiguration<Skill>
     
     public void Configure(EntityTypeBuilder<Skill> builder)
     {
-        builder.ToTable("skills");
-
-        builder.HasKey(s => s.Id);
-
-        builder.Property(s => s.Id)
-            .HasColumnName("id");
         
-        builder.Property(s => s.Name)
-            .HasColumnName("name");
     }
 }
