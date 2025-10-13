@@ -7,7 +7,7 @@ namespace Teams.API.Features.Skills;
 
 public sealed record GetSkillsQuery : IRequest<List<SkillViewModel>>;
 
-public class GetSkillsEndpoint
+public static class GetSkillsEndpoint
 {
     public static void Map(RouteGroupBuilder group) => group
         .MapGet("", GetSkillsAsync)
@@ -26,15 +26,12 @@ internal sealed class GetSkillsQueryHandler(TeamDbContext context)
     public async Task<List<SkillViewModel>> Handle(
         GetSkillsQuery request, CancellationToken cancellationToken)
     {
-        var skills = await context.Skills
-            .ToListAsync(cancellationToken);
-
-        return skills
+        return await context.Skills
             .Select(s => new SkillViewModel
             {
                 Id = s.Id.ToString(),
                 Name = s.Name,
             })
-            .ToList();
+            .ToListAsync(cancellationToken);
     }
 }
