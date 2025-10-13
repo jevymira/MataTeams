@@ -36,6 +36,7 @@ internal static class Extensions
         builder.Services.AddDbContext<TeamDbContext>(options =>
         {
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            options.UseSnakeCaseNamingConvention();
             options.UseSeeding((context, _) =>
             {
                 var java = context.Set<Skill>()
