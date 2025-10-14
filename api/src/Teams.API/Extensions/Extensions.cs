@@ -7,6 +7,7 @@ using Teams.API.Features.Projects.CreateProject;
 using Teams.API.Features.Roles;
 using Teams.API.Features.Skills;
 using Teams.API.Logging;
+using Teams.API.Services;
 using Teams.API.Validation;
 using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Domain.SharedKernel;
@@ -157,6 +158,7 @@ internal static class Extensions
         builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
         
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddTransient<IIdentityService, IdentityService>();
     }
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)
