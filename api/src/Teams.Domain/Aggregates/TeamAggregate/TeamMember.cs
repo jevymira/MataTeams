@@ -4,14 +4,13 @@ namespace Teams.Domain.Aggregates.TeamAggregate;
 
 public class TeamMember : Entity
 {
-    public int TeamId { get; private set; }
+    public Guid TeamId { get; private set; }
     
-    public int UserId { get; private set; }
-        
-    public int RoleId { get; private set; }
+    public Guid UserId { get; private set; }
 
-    public TeamMember(int teamId, int userId, int roleId)
+    public TeamMember(Guid teamId, Guid userId)
     {
-        RoleId = roleId;
+        TeamId = teamId;
+        UserId = userId;
     }
 }

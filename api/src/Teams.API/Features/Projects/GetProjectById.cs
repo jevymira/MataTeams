@@ -7,14 +7,14 @@ namespace Teams.API.Features.Projects;
 
 public static class GetProjectById
 {
-    public sealed record Query(int Id) : IRequest<Response>;
+    public sealed record Query(string Id) : IRequest<Response>;
     
     public sealed record Response
     {
         /// <summary>
-        /// The unique identifier of the project.
+        /// The GUID (UUID) of the project.
         /// </summary> 
-        public int Id { get; set; }
+        public required string Id { get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
         public required string Type { get; set; }
@@ -24,18 +24,23 @@ public static class GetProjectById
 
     public sealed record ResponseRole
     {
-        public required int ProjectRoleId { get; set; }
-        public required int RoleId { get; set; }
-        public required string Name { get; set; }
+        public required string ProjectRoleId { get; set; }
+        public required string RoleId { get; set; }
+        public required string RoleName { get; set; }
+        
+        /// <summary>
+        // The maximum number of positions for a role,
+        // each to be "filled" by a team member.
+        /// </summary>
         public required int PositionCount { get; set; }
         public required List<ResponseRoleSkill> Skills { get; set; }
     }
 
     public sealed record ResponseRoleSkill
     {
-        public required int ProjectRoleSkillId { get; set; }
-        public required int SkillId { get; set; }
-        public required string Name { get; set; }
+        public required string ProjectRoleSkillId { get; set; }
+        public required string SkillId { get; set; }
+        public required string SkillName { get; set; }
         public required string Proficiency { get; set; }
     }
 
@@ -44,7 +49,7 @@ public static class GetProjectById
         .WithSummary("Get a project by its unique identifier.");
     
     private static async Task<Results<Ok<Response>, NotFound>> GetProjectAsync(
-        int id, ISender sender)
+        string id, ISender sender)
     {
         try
         {
@@ -67,7 +72,7 @@ public static class GetProjectById
                 .Include(p => p.Roles)
                     .ThenInclude(r => r.Skills)
                         .ThenInclude(s => s.Skill)
-                .FirstOrDefaultAsync(p => p.Id == request.Id);
+                .FirstOrDefaultAsync(p => p.Id == Guid.Parse(request.Id));
 
             if (project is null)
             {
@@ -76,7 +81,7 @@ public static class GetProjectById
 
             return new Response
             {
-                Id = project.Id,
+                Id = project.Id.ToString(),
                 Name = project.Name,
                 Description = project.Description,
                 Type = project.Type.ToString(),
@@ -84,16 +89,16 @@ public static class GetProjectById
                 Roles =  project.Roles
                     .Select(r => new ResponseRole
                     {
-                        ProjectRoleId = r.Id,
-                        RoleId = r.RoleId,
-                        Name = r.Role.Name,
+                        ProjectRoleId = r.Id.ToString(),
+                        RoleId = r.RoleId.ToString(),
+                        RoleName = r.Role.Name,
                         PositionCount = r.PositionCount,
                         Skills = r.Skills
                             .Select(s => new ResponseRoleSkill
                             {
-                               ProjectRoleSkillId = s.Id,
-                               SkillId = s.SkillId,
-                               Name = s.Skill.Name,
+                               ProjectRoleSkillId = s.Id.ToString(),
+                               SkillId = s.SkillId.ToString(),
+                               SkillName = s.Skill.Name,
                                Proficiency = s.Proficiency.ToString()
                             })
                             .ToList()

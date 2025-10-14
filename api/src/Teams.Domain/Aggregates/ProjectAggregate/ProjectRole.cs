@@ -9,12 +9,16 @@ namespace Teams.Domain.Aggregates.ProjectAggregate;
 /// </remarks>
 public class ProjectRole : Entity
 {
-    public int ProjectId { get; private set; }
+    public Guid ProjectId { get; private set; }
     
-    public int RoleId { get; private set; }
+    public Guid RoleId { get; private set; }
     
     public Role Role { get; private set; }
     
+    /// <summary>
+    // The maximum number of positions for a role,
+    // each to be "filled" by a team member.
+    /// </summary>
     public int PositionCount { get; private set; }
     
     private readonly List<ProjectRoleSkill> _skills;
@@ -26,16 +30,17 @@ public class ProjectRole : Entity
         _skills = new List<ProjectRoleSkill>();
     }
     
-    public ProjectRole(int projectId, int roleId, int positionCount) : this()
+    public ProjectRole(Guid id, Guid projectId, Guid roleId, int positionCount) : this()
     {
+        Id = id;
         ProjectId = projectId;
         RoleId = roleId;
         PositionCount = positionCount;
     }
 
-    public void AddProjectSkill(int skillId, Proficiency proficiency)
+    public void AddProjectSkill(Guid id, Guid skillId, Proficiency proficiency)
     {
-        var skill = new ProjectRoleSkill(Id, skillId, proficiency);
+        var skill = new ProjectRoleSkill(id, Id, skillId, proficiency);
         _skills.Add(skill);
     }
 }
