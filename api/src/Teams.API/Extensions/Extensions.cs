@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.CreateProject;
+using Teams.API.Features.Roles;
 using Teams.API.Features.Skills;
 using Teams.API.Logging;
 using Teams.API.Validation;
@@ -161,10 +162,12 @@ internal static class Extensions
     {
         var projectsMapGroup = app.MapGroup("/api/projects").WithTags("Projects");
         var skillsMapGroup = app.MapGroup("/api/skills").WithTags("Skills");
+        var rolesMapGroup = app.MapGroup("/api/roles").WithTags("Roles");
         
         GetProjectById.MapEndpoint(projectsMapGroup); 
         CreateProjectEndpoint.Map(projectsMapGroup);
         
         GetSkillsEndpoint.Map(skillsMapGroup);
+        GetRolesEndpoint.Map(rolesMapGroup);
     }
 }
