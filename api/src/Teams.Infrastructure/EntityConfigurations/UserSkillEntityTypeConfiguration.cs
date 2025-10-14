@@ -9,20 +9,9 @@ public class UserSkillEntityTypeConfiguration : IEntityTypeConfiguration<UserSki
 {
     public void Configure(EntityTypeBuilder<UserSkill> builder)
     {
-        builder.ToTable("user_skills");
-        
-        builder.Property(us => us.Id)
-            .HasColumnName("id");
-        
-        builder.Property(us => us.UserId)
-            .HasColumnName("user_id");
-
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(us => us.UserId);
-        
-        builder.Property(us => us.SkillId)
-            .HasColumnName("skill_id");
         
         builder.HasOne(us => us.Skill)
             .WithMany()
@@ -30,7 +19,6 @@ public class UserSkillEntityTypeConfiguration : IEntityTypeConfiguration<UserSki
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Property(us => us.Proficiency)
-            .HasColumnName("proficiency")
             .HasConversion<int>()
             .IsRequired();
     }
