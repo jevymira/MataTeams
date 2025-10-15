@@ -164,11 +164,14 @@ internal static class Extensions
     public static void MapEndpoints(this IEndpointRouteBuilder app)
     {
         var projectsMapGroup = app.MapGroup("/api/projects").WithTags("Projects");
+        var teamsMapGroup = app.MapGroup("/api/projects/{projectId}/teams").WithTags("Project Teams");
         var skillsMapGroup = app.MapGroup("/api/skills").WithTags("Skills");
         var rolesMapGroup = app.MapGroup("/api/roles").WithTags("Roles");
         
         GetProjectById.MapEndpoint(projectsMapGroup); 
         CreateProjectEndpoint.Map(projectsMapGroup);
+        
+        AddTeamToProjectEndpoint.Map(teamsMapGroup);
         
         GetSkillsEndpoint.Map(skillsMapGroup);
         GetRolesEndpoint.Map(rolesMapGroup);

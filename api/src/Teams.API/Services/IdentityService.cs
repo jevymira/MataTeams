@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 namespace Teams.API.Services;
 
 /// <remarks>
@@ -9,8 +11,10 @@ namespace Teams.API.Services;
 public class IdentityService(IHttpContextAccessor context) : IIdentityService
 {
     public string GetUserIdentity()
-        =>  context.HttpContext?.User.FindFirst("sub")?.Value; 
+        => context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
+        // TODO: refactor into: context.HttpContext?.User.FindFirst("sub")?.Value;
+        // requires corresponding change to be made in Identity.API.
     
     public string GetUserName()
-        =>  context.HttpContext?.User.Identity?.Name;
+        => context.HttpContext?.User.Identity?.Name;
 }

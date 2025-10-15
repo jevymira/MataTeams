@@ -15,8 +15,9 @@ public class Team : Entity, IAggregateRoot
     
     private readonly List<TeamMember> _membershipRequests;
 
-    public Team(string name)
+    public Team(Guid id, string name)
     {
+        Id = id;
         Name = name;
         _members = [];
         _membershipRequests = [];
