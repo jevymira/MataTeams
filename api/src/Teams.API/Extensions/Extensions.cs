@@ -6,6 +6,7 @@ using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.CreateProject;
 using Teams.API.Features.Roles;
 using Teams.API.Features.Skills;
+using Teams.API.Features.Teams.AddTeamToProject;
 using Teams.API.Logging;
 using Teams.API.Services;
 using Teams.API.Validation;
@@ -106,10 +107,10 @@ internal static class Extensions
                 }
                 
                 var user = context.Set<User>()
-                    .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUser:IdentityGuid"]);
+                    .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUsers:0:IdentityGuid"]);
                 if (user == null)
                 {
-                    user = new User(Guid.CreateVersion7(), builder.Configuration["SeedUser:IdentityGuid"]!);
+                    user = new User(Guid.CreateVersion7(), builder.Configuration["SeedUsers:0:IdentityGuid"]!);
                     context.Set<User>().Add(user);
                     context.SaveChanges();
                 }
@@ -120,6 +121,15 @@ internal static class Extensions
                 {
                     userSkill = new UserSkill(Guid.CreateVersion7(), user.Id, js.Id, Proficiency.Interested);
                     context.Set<UserSkill>().Add(userSkill);
+                    context.SaveChanges();
+                }
+                
+                var user2 =  context.Set<User>()
+                    .FirstOrDefault(u => u.IdentityGuid == builder.Configuration["SeedUsers:1:IdentityGuid"]);
+                if (user2 == null)
+                {
+                    user2 = new User(Guid.CreateVersion7(), builder.Configuration["SeedUsers:1:IdentityGuid"]!);
+                    context.Set<User>().Add(user2);
                     context.SaveChanges();
                 }
                 
