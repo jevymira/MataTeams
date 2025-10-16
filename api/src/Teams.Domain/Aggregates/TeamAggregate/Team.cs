@@ -5,11 +5,11 @@ namespace Teams.Domain.Aggregates.TeamAggregate;
 public class Team : Entity, IAggregateRoot
 {
     public string Name { get; private set; }
+
+    public Guid LeaderId { get; private set; }
     
     // Private collection fields; for rationale, refer to MS reference repository at
     // https://github.com/dotnet/eShop/blob/main/src/Ordering.Domain/AggregatesModel/OrderAggregate/Order.cs
-
-    public Guid LeaderId { get; private set; }
     
     private readonly List<TeamMember> _members;
     
