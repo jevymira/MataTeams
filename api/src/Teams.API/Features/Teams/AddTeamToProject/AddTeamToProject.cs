@@ -31,9 +31,11 @@ public static class AddTeamToProjectEndpoint
         [FromRoute] string projectId,
         IMediator mediator) 
     {
-        var guid = await mediator.Send(new AddTeamToProjectCommand 
+        var teamId = await mediator.Send(new AddTeamToProjectCommand 
             { Name = request.Name, ProjectId = projectId });
-        return (guid is not null) ? TypedResults.Created($"/{guid}") : TypedResults.Forbid();
+        return (teamId is not null) 
+            ? TypedResults.Created($"/api/projects/{projectId}/teams/{teamId}")
+            : TypedResults.Forbid();
     }
     
 }
