@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.CreateProject;
+using Teams.API.Features.Roles;
+using Teams.API.Features.Skills;
 using Teams.API.Logging;
 using Teams.API.Validation;
 using Teams.Domain.Aggregates.ProjectAggregate;
@@ -36,6 +38,7 @@ internal static class Extensions
         builder.Services.AddDbContext<TeamDbContext>(options =>
         {
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            options.UseSnakeCaseNamingConvention();
             options.UseSeeding((context, _) =>
             {
                 var java = context.Set<Skill>()
@@ -62,6 +65,24 @@ internal static class Extensions
                 {
                     react = new Skill("React");
                     context.Set<Skill>().Add(react);
+                    context.SaveChanges();
+                }
+                
+                var expressSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Express");
+                if (expressSkill == null)
+                {
+                    expressSkill = new Skill("Express");
+                    context.Set<Skill>().Add(expressSkill);
+                    context.SaveChanges();
+                }
+                
+                var fullstackRole = context.Set<Role>()
+                    .FirstOrDefault(role => role.Name == "Fullstack");
+                if (fullstackRole == null)
+                {
+                    fullstackRole = new Role("Fullstack");
+                    context.Set<Role>().Add(fullstackRole);
                     context.SaveChanges();
                 }
                 
@@ -112,7 +133,7 @@ internal static class Extensions
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
                         user.Id);
-                    // Add `Frontend` Role with `JavaScript` and `React Skills.
+                    // Add `Frontend` Role with `JavaScript` and `React` Skills.
                     project.AddProjectRole(Guid.CreateVersion7(), frontendRole.Id, 2);
                     project.Roles.First().AddProjectSkill(Guid.CreateVersion7(), js.Id, Proficiency.Beginner);
                     project.Roles.First().AddProjectSkill(Guid.CreateVersion7(), react.Id, Proficiency.Interested);
@@ -140,10 +161,14 @@ internal static class Extensions
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)
     {
-        var projectsMapGroup = app.MapGroup("/api/projects")
-            .WithTags("Projects");
+        var projectsMapGroup = app.MapGroup("/api/projects").WithTags("Projects");
+        var skillsMapGroup = app.MapGroup("/api/skills").WithTags("Skills");
+        var rolesMapGroup = app.MapGroup("/api/roles").WithTags("Roles");
         
         GetProjectById.MapEndpoint(projectsMapGroup); 
         CreateProjectEndpoint.Map(projectsMapGroup);
+        
+        GetSkillsEndpoint.Map(skillsMapGroup);
+        GetRolesEndpoint.Map(rolesMapGroup);
     }
 }
