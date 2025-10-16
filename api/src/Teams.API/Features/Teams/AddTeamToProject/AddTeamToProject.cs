@@ -55,12 +55,12 @@ internal sealed class AddTeamToProjectCommandHandler(
             .Where(p => p.OwnerId == user!.Id)
             .ToListAsync(cancellationToken);
         
-        if (!projects.Any(p => p.OwnerId.ToString() == user!.Id.ToString()))
+        if (!projects.Any(p => p.OwnerId == user!.Id))
         {
             return null;
         }
 
-        var team = new Team(Guid.CreateVersion7(), request.Name);
+        var team = new Team(Guid.CreateVersion7(), request.Name, user!.Id);
         context.Teams.Add(team);
         await context.SaveChangesAsync(cancellationToken);
 
