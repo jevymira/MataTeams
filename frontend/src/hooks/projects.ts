@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { ProjectsContext } from "../context/Projects"
+import { ProjectsContext } from '../context/projects'
 import { ProjectsContextType, Project } from '../types'
 import { convertJSONToProject } from '../utilities/convertJSONToProject'
 
