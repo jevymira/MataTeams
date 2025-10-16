@@ -8,14 +8,8 @@ using Teams.Infrastructure;
 
 namespace Teams.API.Features.Teams.AddTeamToProject;
 
-public sealed record AddTeamToProjectRequest
-{
-    public required string Name { get; init; }
-};
-
 public sealed record AddTeamToProjectCommand : IRequest<string?>
 {
-    public required string Name { get; init; }
     public required string ProjectId { get; init; }
 }
 
@@ -27,12 +21,10 @@ public static class AddTeamToProjectEndpoint
         .RequireAuthorization();
 
     private static async Task<Results<Created, ForbidHttpResult>> AddTeamToProjectAsync(
-        AddTeamToProjectRequest request,
         [FromRoute] string projectId,
         IMediator mediator) 
     {
-        var teamId = await mediator.Send(new AddTeamToProjectCommand 
-            { Name = request.Name, ProjectId = projectId });
+        var teamId = await mediator.Send(new AddTeamToProjectCommand { ProjectId = projectId });
         return (teamId is not null) 
             ? TypedResults.Created($"/api/projects/{projectId}/teams/{teamId}")
             : TypedResults.Forbid();
@@ -62,7 +54,7 @@ internal sealed class AddTeamToProjectCommandHandler(
             return null;
         }
 
-        var team = new Team(Guid.CreateVersion7(), request.Name, user!.Id);
+        var team = new Team(Guid.CreateVersion7(), user!.Id);
         context.Teams.Add(team);
         await context.SaveChangesAsync(cancellationToken);
 

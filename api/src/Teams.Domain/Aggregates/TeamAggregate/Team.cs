@@ -4,8 +4,6 @@ namespace Teams.Domain.Aggregates.TeamAggregate;
 
 public class Team : Entity, IAggregateRoot
 {
-    public string Name { get; private set; }
-
     public Guid LeaderId { get; private set; }
     
     // Private collection fields; for rationale, refer to MS reference repository at
@@ -17,10 +15,9 @@ public class Team : Entity, IAggregateRoot
     
     private readonly List<TeamMember> _membershipRequests;
 
-    public Team(Guid id, string name, Guid leaderId)
+    public Team(Guid id, Guid leaderId)
     {
         Id = id;
-        Name = name;
         LeaderId = leaderId;
         _members = [];
         _membershipRequests = [];
