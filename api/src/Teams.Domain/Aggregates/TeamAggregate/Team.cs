@@ -9,15 +9,19 @@ public class Team : Entity, IAggregateRoot
     // Private collection fields; for rationale, refer to MS reference repository at
     // https://github.com/dotnet/eShop/blob/main/src/Ordering.Domain/AggregatesModel/OrderAggregate/Order.cs
 
+    public Guid LeaderId { get; private set; }
+    
     private readonly List<TeamMember> _members;
     
     public IReadOnlyCollection<TeamMember> Members => _members.AsReadOnly();
     
     private readonly List<TeamMember> _membershipRequests;
 
-    public Team(string name)
+    public Team(Guid id, string name, Guid leaderId)
     {
+        Id = id;
         Name = name;
+        LeaderId = leaderId;
         _members = [];
         _membershipRequests = [];
     }

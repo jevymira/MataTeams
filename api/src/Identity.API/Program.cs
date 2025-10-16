@@ -26,7 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         var hasher = new PasswordHasher<ApplicationUser>();
 
         var testUser = context.Set<ApplicationUser>()
-            .FirstOrDefault(u => u.UserName == "user");
+            .FirstOrDefault(u => u.UserName == builder.Configuration["SeedUser:UserName"]);
         if (testUser == null)
         {
             testUser = new ApplicationUser()
@@ -41,6 +41,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
             testUser.PasswordHash = hasher
                 .HashPassword(testUser, builder.Configuration["SeedUser:Password"]!);
             context.Set<ApplicationUser>().Add(testUser);
+            context.SaveChanges();
+        }
+        
+        var testUser2 = context.Set<ApplicationUser>()
+            .FirstOrDefault(u => u.UserName == "name");
+        if (testUser2 == null)
+        {
+            testUser2 = new ApplicationUser
+            {
+                UserName = "name",
+                NormalizedUserName = "name".ToUpper(),
+                Email = "name@email.com",
+                NormalizedEmail = "name@email.com".ToUpper(),
+                SecurityStamp = Guid.NewGuid().ToString(),
+            };
+            testUser2.PasswordHash = hasher
+                .HashPassword(testUser2, builder.Configuration["SeedUser:Password"]!);
+            context.Set<ApplicationUser>().Add(testUser2);
             context.SaveChanges();
         }
 

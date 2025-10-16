@@ -34,7 +34,7 @@ A CSUN student-project matchmaker.
    * **EF Core** tools CLI: `cd src/Identity.API` > `dotnet ef database update`
 4. Create another `secrets.json`, this time for `Teams.API`. Copy over the same values from `Identity.API` except for:
    * `Database` defined for `"DefaultConnection"`, since it should differ to produce a separate database, e.g., `matateams` without the `_identity` postfix. (This carries the additional benefit of making error resolution described in other sections less painful.)
-   * `"IdentityGuid"`, the unique identifier of the `ApplicationUser` seeded to table `AspNetUsers`. Query the `AspNetUsers` table in your local identity database to obtain this value; e.g, run `SELECT "Id" FROM "AspNetUsers";`.
+   * `"IdentityGuid"`, the unique identifiers of the `ApplicationUser` entities seeded to table `AspNetUsers`. Query the `AspNetUsers` table in your local identity database to obtain these values; e.g, run `SELECT "Id" FROM "AspNetUsers";`.
 
 ```
 {
@@ -46,13 +46,18 @@ A CSUN student-project matchmaker.
         "ValidIssuer": "",
         "SecurityKey": ""
     },
-    "SeedUser": {
-        "IdentityGuid": ""
+    "SeedUsers": [
+    {
+      "IdentityGuid": ""
+    },
+    {
+      "IdentityGuid": ""
     }
+  ]
 }
 ```
 
-5. Create and seed the core database with a sample domain `User` (tied to the `IdentityUser`) and sample `Project`/`Skill` entities:
+5. Create and seed the core database with sample domain `User` entities (tied to their respective `IdentityUser`) and sample `Project`/`Skill` entities:
    * **Rider**: (right-click) Entity Framework Core > Update Database... > Migrations project: `Teams.Infrastructure` + Startup project: `Teams.API` > OK
    * **EF Core tools CLI**: `cd src` >`dotnet ef database update --project Teams.Infrastructure --startup-project Teams.API`
 

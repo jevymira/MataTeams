@@ -6,7 +6,9 @@ using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.CreateProject;
 using Teams.API.Features.Roles;
 using Teams.API.Features.Skills;
+using Teams.API.Features.Teams.AddTeamToProject;
 using Teams.API.Logging;
+using Teams.API.Services;
 using Teams.API.Validation;
 using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Domain.SharedKernel;
@@ -105,10 +107,10 @@ internal static class Extensions
                 }
                 
                 var user = context.Set<User>()
-                    .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUser:IdentityGuid"]);
+                    .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUsers:0:IdentityGuid"]);
                 if (user == null)
                 {
-                    user = new User(Guid.CreateVersion7(), builder.Configuration["SeedUser:IdentityGuid"]!);
+                    user = new User(Guid.CreateVersion7(), builder.Configuration["SeedUsers:0:IdentityGuid"]!);
                     context.Set<User>().Add(user);
                     context.SaveChanges();
                 }
@@ -119,6 +121,15 @@ internal static class Extensions
                 {
                     userSkill = new UserSkill(Guid.CreateVersion7(), user.Id, js.Id, Proficiency.Interested);
                     context.Set<UserSkill>().Add(userSkill);
+                    context.SaveChanges();
+                }
+                
+                var user2 =  context.Set<User>()
+                    .FirstOrDefault(u => u.IdentityGuid == builder.Configuration["SeedUsers:1:IdentityGuid"]);
+                if (user2 == null)
+                {
+                    user2 = new User(Guid.CreateVersion7(), builder.Configuration["SeedUsers:1:IdentityGuid"]!);
+                    context.Set<User>().Add(user2);
                     context.SaveChanges();
                 }
                 
@@ -157,16 +168,20 @@ internal static class Extensions
         builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
         
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddTransient<IIdentityService, IdentityService>();
     }
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)
     {
         var projectsMapGroup = app.MapGroup("/api/projects").WithTags("Projects");
+        var teamsMapGroup = app.MapGroup("/api/projects/{projectId}/teams").WithTags("Project Teams");
         var skillsMapGroup = app.MapGroup("/api/skills").WithTags("Skills");
         var rolesMapGroup = app.MapGroup("/api/roles").WithTags("Roles");
         
         GetProjectById.MapEndpoint(projectsMapGroup); 
         CreateProjectEndpoint.Map(projectsMapGroup);
+        
+        AddTeamToProjectEndpoint.Map(teamsMapGroup);
         
         GetSkillsEndpoint.Map(skillsMapGroup);
         GetRolesEndpoint.Map(rolesMapGroup);
