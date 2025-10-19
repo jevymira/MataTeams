@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Teams.API.Services;
-using Teams.Domain.Aggregates.TeamAggregate;
+using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Infrastructure;
 
 namespace Teams.API.Features.Teams.AddTeamToProject;

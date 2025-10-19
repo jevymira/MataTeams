@@ -1,8 +1,8 @@
 ﻿using Teams.Domain.SeedWork;
 
-namespace Teams.Domain.Aggregates.TeamAggregate;
+namespace Teams.Domain.Aggregates.ProjectAggregate;
 
-public class Team : Entity, IAggregateRoot
+public class Team : Entity
 {
     public Guid LeaderId { get; private set; }
     

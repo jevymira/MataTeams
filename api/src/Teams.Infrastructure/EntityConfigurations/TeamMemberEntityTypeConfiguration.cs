@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Teams.Domain.Aggregates.TeamAggregate;
+using Teams.Domain.Aggregates.ProjectAggregate;
 
 namespace Teams.Infrastructure.EntityConfigurations;
 

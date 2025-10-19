@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Teams.Domain.Aggregates.ProjectAggregate;
-using Teams.Domain.Aggregates.TeamAggregate;
 using Teams.Domain.Aggregates.UserAggregate;
 using Teams.Domain.SharedKernel;
 using Teams.Infrastructure.EntityConfigurations;

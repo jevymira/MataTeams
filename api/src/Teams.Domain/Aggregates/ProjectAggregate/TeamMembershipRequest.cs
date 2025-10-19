@@ -1,6 +1,6 @@
 using Teams.Domain.SeedWork;
 
-namespace Teams.Domain.Aggregates.TeamAggregate;
+namespace Teams.Domain.Aggregates.ProjectAggregate;
 
 public class TeamMembershipRequest : Entity
 {

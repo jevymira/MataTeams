@@ -1,4 +1,4 @@
-namespace Teams.Domain.Aggregates.TeamAggregate;
+namespace Teams.Domain.Aggregates.ProjectAggregate;
 
 public enum TeamMembershipRequestStatus
 {
