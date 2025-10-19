@@ -1,12 +1,20 @@
-import Project from '../../components/project/ProjectCard'
+// libraries
+import { Container } from '@chakra-ui/react'
+import { useContext } from 'react'
 
+// context
+import { AuthContext } from '../../context/auth'
+
+// types
+import { AuthContextType } from '../../types'
 
 function Profile() {
-
+const { username } = useContext(AuthContext) as AuthContextType
     return (
-        <div>
-            Profile page!
-        </div>
+        <Container>
+            Welcome back, {username}!
+        </Container>
+
     )
   }
   

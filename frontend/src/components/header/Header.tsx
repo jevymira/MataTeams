@@ -1,3 +1,4 @@
+import { Avatar, AvatarGroup } from '@chakra-ui/react'
 import { Link } from 'react-router'
 import './Header.css'
 
@@ -9,10 +10,14 @@ export const Header = () => {
         <h1>Mata Teams</h1>
         </Link>
         <div>
-          <Link to='/profile' className='profileLink'>
-              My Profile
-          </Link>
-          <Link to='/login'>Log Out</Link>
+          <AvatarGroup>
+            <Link to='/profile' className='profileLink'>
+            <Avatar.Root>
+              <Avatar.Fallback />
+              <Avatar.Image />
+            </Avatar.Root>
+            </Link>
+          </AvatarGroup>
         </div>
     </div>
   </div>

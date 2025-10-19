@@ -27,8 +27,7 @@ export function useLogin(username: string, password: string) {
             }).then((resJSON) => {
                 const token = resJSON['token']
                 setToken(token)
-                navigate("/")
-                
+                navigate("/")     
             }).catch((err) => {
                 console.error(err)
             })
