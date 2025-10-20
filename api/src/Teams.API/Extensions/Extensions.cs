@@ -3,10 +3,10 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects;
+using Teams.API.Features.Projects.AddTeamToProject;
 using Teams.API.Features.Projects.CreateProject;
 using Teams.API.Features.Roles;
 using Teams.API.Features.Skills;
-using Teams.API.Features.Teams.AddTeamToProject;
 using Teams.API.Logging;
 using Teams.API.Services;
 using Teams.API.Validation;
@@ -173,17 +173,16 @@ internal static class Extensions
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)
     {
-        var projectsMapGroup = app.MapGroup("/api/projects").WithTags("Projects");
-        var teamsMapGroup = app.MapGroup("/api/projects/{projectId}/teams").WithTags("Project Teams");
-        var skillsMapGroup = app.MapGroup("/api/skills").WithTags("Skills");
-        var rolesMapGroup = app.MapGroup("/api/roles").WithTags("Roles");
+        var projectsGroup = app.MapGroup("/api/projects").WithTags("Projects");
+        var teamsGroup = projectsGroup.MapGroup("/{projectId}/teams").WithTags("Project Teams");
+        var skillsGroup = app.MapGroup("/api/skills").WithTags("Skills");
+        var rolesGroup = app.MapGroup("/api/roles").WithTags("Roles");
         
-        GetProjectById.MapEndpoint(projectsMapGroup); 
-        CreateProjectEndpoint.Map(projectsMapGroup);
+        GetProjectById.MapEndpoint(projectsGroup); 
+        CreateProjectEndpoint.Map(projectsGroup);
+        AddTeamToProjectEndpoint.Map(teamsGroup);
         
-        AddTeamToProjectEndpoint.Map(teamsMapGroup);
-        
-        GetSkillsEndpoint.Map(skillsMapGroup);
-        GetRolesEndpoint.Map(rolesMapGroup);
+        GetSkillsEndpoint.Map(skillsGroup);
+        GetRolesEndpoint.Map(rolesGroup);
     }
 }

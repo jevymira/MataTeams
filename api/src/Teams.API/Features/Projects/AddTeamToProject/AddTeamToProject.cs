@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Teams.API.Services;
 using Teams.Infrastructure;
 
-namespace Teams.API.Features.Teams.AddTeamToProject;
+namespace Teams.API.Features.Projects.AddTeamToProject;
 
 public sealed record AddTeamToProjectCommand(string ProjectId) : IRequest<string?>;
 
