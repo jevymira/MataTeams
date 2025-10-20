@@ -4,6 +4,7 @@ export const getLocalValue = (key: string, initValue: string | Function) => {
     if (typeof window === 'undefined') return initValue;
 
     const itemRaw : string | null = localStorage.getItem(key)
+
     if (itemRaw !== null && itemRaw !== undefined) {
         const localValue = JSON.parse(itemRaw);
         return localValue
