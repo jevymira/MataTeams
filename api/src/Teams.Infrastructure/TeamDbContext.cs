@@ -17,7 +17,8 @@ public class TeamDbContext : DbContext
     public DbSet<Project> Projects { get; set; }
     public DbSet<ProjectRole> ProjectRoles { get; set; }
     public DbSet<ProjectRoleSkill> ProjectRoleSkills { get; set; }
-    public DbSet<Team> Teams {  get; set; }
+    public DbSet<Team> Teams { get; set; }
+    
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,6 +29,7 @@ public class TeamDbContext : DbContext
         modelBuilder.ApplyConfiguration(new SkillEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TeamEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TeamMemberEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new TeamMembershipRequestEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserSkillEntityTypeConfiguration());
     }

@@ -4,9 +4,9 @@ namespace Teams.Domain.Aggregates.ProjectAggregate;
 
 public class TeamMembershipRequest : Entity
 {
-    public int TeamId { get; private set; }
+    public Guid TeamId { get; private set; }
     
-    public int UserId { get; private set; }
+    public Guid UserId { get; private set; }
     
     public TeamMembershipRequestStatus Status { get; private set; }
 }
