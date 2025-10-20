@@ -15,9 +15,8 @@ public class Team : Entity
     
     private readonly List<TeamMember> _membershipRequests;
 
-    public Team(Guid id, Guid leaderId)
+    public Team(Guid leaderId)
     {
-        Id = id;
         LeaderId = leaderId;
         _members = [];
         _membershipRequests = [];

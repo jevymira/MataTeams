@@ -3,15 +3,11 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Teams.API.Services;
-using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Infrastructure;
 
 namespace Teams.API.Features.Teams.AddTeamToProject;
 
-public sealed record AddTeamToProjectCommand : IRequest<string?>
-{
-    public required string ProjectId { get; init; }
-}
+public sealed record AddTeamToProjectCommand(string ProjectId) : IRequest<string?>;
 
 public static class AddTeamToProjectEndpoint
 {
@@ -20,16 +16,22 @@ public static class AddTeamToProjectEndpoint
         .WithSummary("Add a team to a project.")
         .RequireAuthorization();
 
-    private static async Task<Results<Created, ForbidHttpResult>> AddTeamToProjectAsync(
+    private static async Task<Results<Created, NotFound, ForbidHttpResult>> AddTeamToProjectAsync(
         [FromRoute] string projectId,
-        IMediator mediator) 
+        IMediator mediator)
     {
-        var teamId = await mediator.Send(new AddTeamToProjectCommand { ProjectId = projectId });
-        return (teamId is not null) 
-            ? TypedResults.Created($"/api/projects/{projectId}/teams/{teamId}")
-            : TypedResults.Forbid();
+        try
+        {
+            var teamId = await mediator.Send(new AddTeamToProjectCommand(projectId));
+            return (teamId is not null)
+                ? TypedResults.Created($"/api/projects/{projectId}/teams/{teamId}")
+                : TypedResults.Forbid();
+        }
+        catch (KeyNotFoundException)
+        {
+            return TypedResults.NotFound();
+        }
     }
-    
 }
 
 internal sealed class AddTeamToProjectCommandHandler(
@@ -40,24 +42,17 @@ internal sealed class AddTeamToProjectCommandHandler(
     public async Task<string?> Handle(
         AddTeamToProjectCommand request, CancellationToken cancellationToken)
     {
-        var userIdentityGuid = identityService.GetUserIdentity();
+        var project = await context.Projects
+            .Include(project => project.Teams)
+            .FirstOrDefaultAsync(p => p.Id == new Guid(request.ProjectId), cancellationToken)
+            ?? throw new KeyNotFoundException();
         
         var user = await context.Users
-            .FirstOrDefaultAsync(u => u.IdentityGuid == userIdentityGuid, cancellationToken);
-
-        var projects = await context.Projects
-            .Where(p => p.OwnerId == user!.Id)
-            .ToListAsync(cancellationToken);
+            .FirstOrDefaultAsync(u => u.IdentityGuid == identityService.GetUserIdentity(),
+                cancellationToken);
         
-        if (!projects.Any(p => p.OwnerId == user!.Id))
-        {
-            return null;
-        }
-
-        var team = new Team(Guid.CreateVersion7(), user!.Id);
-        context.Teams.Add(team);
+        var team = project.AddTeamToProject(user!.Id);
         await context.SaveChangesAsync(cancellationToken);
-
-        return team.Id.ToString();
+        return team?.Id.ToString();
     }
 }
