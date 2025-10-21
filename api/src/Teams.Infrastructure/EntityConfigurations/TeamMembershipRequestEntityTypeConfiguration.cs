@@ -12,10 +12,10 @@ public class TeamMembershipRequestEntityTypeConfiguration : IEntityTypeConfigura
         builder.Property(r => r.Status)
             .HasConversion<string>()
             .IsRequired();
-
-        builder.HasOne<Team>()
+        
+        builder.HasOne<ProjectRole>()
             .WithMany()
-            .HasForeignKey(r => r.TeamId);
+            .HasForeignKey(r => r.ProjectRoleId);
         
         builder.HasOne<User>()
             .WithMany()
