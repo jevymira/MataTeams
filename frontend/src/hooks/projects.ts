@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { ProjectsContext } from '../context/projects'
-import { ProjectsContextType, Project } from '../types'
+import { ProjectsContextType, Project, Skill } from '../types'
 import { convertJSONToProject } from '../utilities/convertJSONToProject'
 
 
@@ -66,4 +66,31 @@ export function useGetAllProjects() {
     }
 
     return [projects, getProjects] as const
+}
+
+export function useGetSkills() {
+    const [skills, setSkills] = useState<Skill[]>([])
+
+    const getSkills = async () => {
+        const options = {
+            method: 'GET'
+        }
+        
+        try {   
+            fetch(`https://localhost:7260/api/skills`).then(res => {
+                console.log(res)
+                if (res.status !== 200) {
+                    throw new Error(res.statusText)
+                }
+
+                return res.json()
+            }).then(json => {          
+                setSkills(json)
+            })
+        } catch(e) {
+            setSkills([])
+            console.error(e)
+        }
+    }
+    return [skills, getSkills] as const
 }
