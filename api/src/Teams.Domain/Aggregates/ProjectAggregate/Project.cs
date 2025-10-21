@@ -62,8 +62,16 @@ public class Project : Entity
          return null;
       }
       
-      var team = new Team(userId);
+      var team = new Team(Id, userId);
       _teams.Add(team);
       return team;
+   }
+
+   public TeamMembershipRequest AddTeamMembershipRequest(Guid teamId, Guid userId, Guid projectRoleId)
+   {
+      // TODO: validate that the role is not already at capacity
+      var team = _teams.FirstOrDefault(t => t.Id == teamId)
+         ?? throw new KeyNotFoundException($"{nameof(Team)} not found with id: {teamId}.");
+      return team.AddMembershipRequest(userId, projectRoleId);
    }
 }

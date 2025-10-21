@@ -4,6 +4,8 @@ namespace Teams.Domain.Aggregates.ProjectAggregate;
 
 public class Team : Entity
 {
+    public Guid ProjectId { get; private set; }
+    
     public Guid LeaderId { get; private set; }
     
     // Private collection fields; for rationale, refer to MS reference repository at
@@ -13,30 +15,23 @@ public class Team : Entity
     
     public IReadOnlyCollection<TeamMember> Members => _members.AsReadOnly();
     
-    private readonly List<TeamMember> _membershipRequests;
+    private readonly List<TeamMembershipRequest> _membershipRequests;
+    
+    public IReadOnlyCollection<TeamMembershipRequest> MembershipRequests => _membershipRequests.AsReadOnly();
 
-    public Team(Guid leaderId)
+    public Team(Guid projectId, Guid leaderId)
     {
+        ProjectId = projectId;
         LeaderId = leaderId;
         _members = [];
         _membershipRequests = [];
     }
 
-    /*
-    public void AddMember(int userId, int roleId)
+    public TeamMembershipRequest AddMembershipRequest(Guid userId, Guid projectRoleId)
     {
-        var existingMember = _members.SingleOrDefault(m => m.Id == userId);
-        
-        if (existingMember != null)
-        {
-            //
-        }
-        else
-        {
-            // TODO: validate that member is not requesting to join a fully-filled role 
-            var newMember = new TeamMember(Id, userId);
-            _members.Add(newMember);
-        }
+        // TODO: validate that the user is not already a team member
+        var request = new TeamMembershipRequest(Id, userId, projectRoleId);
+        _membershipRequests.Add(request);
+        return request;
     }
-    */
 }
