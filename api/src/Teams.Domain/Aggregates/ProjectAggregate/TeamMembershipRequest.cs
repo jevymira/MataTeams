@@ -19,4 +19,10 @@ public class TeamMembershipRequest : Entity
         ProjectRoleId = projectRoleId;
         Status = TeamMembershipRequestStatus.Pending;
     }
+    
+    public TeamMembershipRequest UpdateStatus(TeamMembershipRequestStatus status)
+    {
+        Status = status;
+        return this;
+    }
 }

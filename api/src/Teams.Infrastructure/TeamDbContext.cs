@@ -18,6 +18,8 @@ public class TeamDbContext : DbContext
     public DbSet<ProjectRole> ProjectRoles { get; set; }
     public DbSet<ProjectRoleSkill> ProjectRoleSkills { get; set; }
     public DbSet<Team> Teams { get; set; }
+    public DbSet<TeamMember> TeamMembers { get; set; }
+    public DbSet<TeamMembershipRequest> TeamMembershipRequests { get; set; }
     
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

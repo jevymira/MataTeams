@@ -34,4 +34,10 @@ public class Team : Entity
         _membershipRequests.Add(request);
         return request;
     }
+
+    public TeamMembershipRequest RespondToMembershipRequest(Guid requestId, TeamMembershipRequestStatus status)
+    {
+        var request = _membershipRequests.FirstOrDefault(r => r.Id == requestId);
+        return request!.UpdateStatus(status);
+    }
 }

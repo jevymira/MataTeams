@@ -74,4 +74,16 @@ public class Project : Entity
          ?? throw new KeyNotFoundException($"{nameof(Team)} not found with id: {teamId}.");
       return team.AddMembershipRequest(userId, projectRoleId);
    }
+
+   public TeamMembershipRequest RespondToMembershipRequest(Guid membershipRequestId, TeamMembershipRequestStatus newStatus)
+   {
+      // TODO validate that position count not yet met for desired project role
+      
+      var team = _teams
+         .FirstOrDefault(t => t.MembershipRequests
+            .Any(m => m.Id == membershipRequestId))
+         ??  throw new KeyNotFoundException($"Membership request not found with id: {membershipRequestId}.");
+
+      return team.RespondToMembershipRequest(membershipRequestId, newStatus);
+   }
 }
