@@ -12,7 +12,7 @@ public sealed record AddTeamToProjectCommand(string ProjectId) : IRequest<string
 public static class AddTeamToProjectEndpoint
 {
     public static void Map(RouteGroupBuilder group) => group
-        .MapPost("", AddTeamToProjectAsync)
+        .MapPost("{projectId}/teams", AddTeamToProjectAsync)
         .WithSummary("Add a team to a project.")
         .RequireAuthorization();
 

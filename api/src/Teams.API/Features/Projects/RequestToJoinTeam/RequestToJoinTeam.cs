@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Teams.API.Services;
 using Teams.Infrastructure;
 
-namespace Teams.API.Features.Requests;
+namespace Teams.API.Features.Projects.RequestToJoinTeam;
 
 public sealed record JoinTeamRequest
 {
@@ -30,8 +30,8 @@ public sealed record RequestToJoinTeamRequest
 public static class RequestToJoinTeam
 {
     public static void MapEndpoint(RouteGroupBuilder builder) => builder
-        .MapPost("", RequestToJoinTeamAsync)
-        .WithSummary("Create a request for the user to join the specified team, for a role.")
+        .MapPost("{teamId}/requests", RequestToJoinTeamAsync)
+        .WithSummary("Create a request by the user to join a specified team, for a project role.")
         .RequireAuthorization();
     
     private static async Task<Results<Created<RequestToJoinTeamRequest>, NotFound<string>>> RequestToJoinTeamAsync(
