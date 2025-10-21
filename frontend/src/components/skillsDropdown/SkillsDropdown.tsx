@@ -1,13 +1,14 @@
 // libraries
-import { useEffect, useState } from 'react'
-import { Portal, Select, createListCollection } from '@chakra-ui/react'
+import { useEffect, useState, useMemo } from 'react'
+import { Combobox, Portal, Select, createListCollection, Wrap, Badge } from '@chakra-ui/react'
 // types
 import { Skill } from '../../types'
 import { useGetSkills } from '../../hooks/projects'
 
 function SkillsDropdown() {
     const [skills, getSkills] = useGetSkills()
-    const [userSkill, selectUserSkill] = useState<string[]>([])
+    const [searchValue, setSearchValue] = useState("")
+    const [selectedSkills, setSelectedSkills] = useState<string[]>([])
 
     useEffect(() => {
         getSkills()
@@ -19,33 +20,56 @@ function SkillsDropdown() {
         itemToValue: (skill) => skill.name,
     })
 
+      const filteredItems = useMemo(
+        () =>
+        skills.filter((item) =>
+            item.name.toLowerCase().includes(searchValue.toLowerCase()),
+        ),
+        [searchValue],
+    )
+
+    const handleValueChange = (details: Combobox.ValueChangeDetails) => {
+        setSelectedSkills(details.value)
+    }
+
     return (
-        <Select.Root collection={skillsCollection} 
+        <Combobox.Root collection={skillsCollection} 
+            multiple
             size="sm" 
-            value={userSkill}
-            onValueChange={(e) => selectUserSkill(e.value)} >
-            <Select.Control>
-                <Select.Trigger>
-                <Select.ValueText placeholder="Select skill" />
-                </Select.Trigger>
-                <Select.IndicatorGroup>
-                <Select.Indicator />
-                </Select.IndicatorGroup>
-            </Select.Control>
+            value={selectedSkills}
+            onValueChange={handleValueChange}
+            onInputValueChange={(details) => setSearchValue(details.inputValue)} >
+            <Wrap gap="2">
+                {selectedSkills.map((skill) => (
+                <Badge key={skill}>{skill}</Badge>
+                ))}
+            </Wrap>
+            <Combobox.Label>Select skills for your role in the project</Combobox.Label>
+            
+            <Combobox.Control>
+                <Combobox.Input />
+                <Combobox.IndicatorGroup>
+                <Combobox.Trigger />
+                </Combobox.IndicatorGroup>
+            </Combobox.Control>
 
             <Portal>
-                <Select.Positioner>
-                    <Select.Content>
-                        {skillsCollection.items.map((skill) => (
-                            <Select.Item item={skill} key={skill.id}>
+                <Combobox.Positioner>
+                    <Combobox.Content>
+                        <Combobox.ItemGroup>
+                            <Combobox.ItemGroupLabel>Skills</Combobox.ItemGroupLabel>
+                        {filteredItems.map((skill) => (
+                            <Combobox.Item item={skill} key={skill.id}>
                             {skill.name}
-                            <Select.ItemIndicator />
-                        </Select.Item>
+                            <Combobox.ItemIndicator />
+                        </Combobox.Item>
                         ))}
-                    </Select.Content>
-                </Select.Positioner>
+                        <Combobox.Empty>No skills found</Combobox.Empty>
+                        </Combobox.ItemGroup>
+                    </Combobox.Content>
+                </Combobox.Positioner>
             </Portal>
-        </Select.Root>
+        </Combobox.Root>
     )
 }
 
