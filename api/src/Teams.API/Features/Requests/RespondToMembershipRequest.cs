@@ -65,28 +65,33 @@ internal sealed class RespondToMemberShipRequestHandler(TeamDbContext context)
         RespondToMembershipRequestCommand request,
         CancellationToken cancellationToken)
     {
-        var membershipRequest = await context.TeamMembershipRequests
-            .FirstOrDefaultAsync(r => r.Id == new Guid(request.MembershipRequestId),
-                cancellationToken)
-            .Select(r => r)
-            ?? throw new KeyNotFoundException($"Request with ID {request.MembershipRequestId} not found");
+        var membershipRequestId = await context.TeamMembershipRequests
+            .Where(r => r.Id == new Guid(request.MembershipRequestId))
+            .Select(r => r.TeamId)
+            .FirstOrDefaultAsync(cancellationToken);
 
+        if (membershipRequestId == Guid.Empty)
+        {
+            throw new KeyNotFoundException($"Request with ID {request.MembershipRequestId} not found");
+        }
+        
         var project = await context.Projects
+            .Include(p => p.Roles)
             .Include(p => p.Teams)
                 .ThenInclude(t => t.MembershipRequests)
-            .FirstOrDefaultAsync(p => p.Teams.Any(t => t.Id == membershipRequest.TeamId), cancellationToken);
+            .FirstOrDefaultAsync(p => p.Teams.Any(t => t.Id == membershipRequestId), cancellationToken);
 
-        project!.RespondToMembershipRequest(new Guid(request.MembershipRequestId),
+        var updatedMembershipRequest = project!.RespondToMembershipRequest(new Guid(request.MembershipRequestId),
             Enum.Parse<TeamMembershipRequestStatus>(request.NewStatus));
         
         await context.SaveChangesAsync(cancellationToken);
 
         return new RespondToMembershipRequestResponse
         {
-            TeamId = membershipRequest.TeamId.ToString(),
-            UserId = membershipRequest.UserId.ToString(),
-            ProjectRoleId = membershipRequest.ProjectRoleId.ToString(),
-            Status = membershipRequest.Status.ToString()
+            TeamId = updatedMembershipRequest.TeamId.ToString(),
+            UserId = updatedMembershipRequest.UserId.ToString(),
+            ProjectRoleId = updatedMembershipRequest.ProjectRoleId.ToString(),
+            Status = updatedMembershipRequest.Status.ToString()
         };
     }
 }

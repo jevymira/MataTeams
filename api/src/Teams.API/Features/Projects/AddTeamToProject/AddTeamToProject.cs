@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Teams.API.Services;
 using Teams.Infrastructure;
@@ -17,7 +16,7 @@ public static class AddTeamToProjectEndpoint
         .RequireAuthorization();
 
     private static async Task<Results<Created, NotFound, ForbidHttpResult>> AddTeamToProjectAsync(
-        [FromRoute] string projectId,
+        string projectId,
         IMediator mediator)
     {
         try

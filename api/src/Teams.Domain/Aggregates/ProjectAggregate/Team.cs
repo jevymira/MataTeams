@@ -35,9 +35,23 @@ public class Team : Entity
         return request;
     }
 
-    public TeamMembershipRequest RespondToMembershipRequest(Guid requestId, TeamMembershipRequestStatus status)
+    public TeamMembershipRequest RespondToMembershipRequest(
+        Guid requestId,
+        TeamMembershipRequestStatus status,
+        int positionLimit)
     {
+        // Validate that there are open positions for the indicated project role, on this team.
+        if (status == TeamMembershipRequestStatus.Approved)
+        {
+            var positionsFilledForRole = _members.Count(c => c.ProjectRoleId == requestId);
+            if (positionsFilledForRole == positionLimit)
+            {
+                throw new InvalidOperationException(
+                    $"Position count for project role with id: {requestId} is at capacity.");
+            }
+        }
         var request = _membershipRequests.FirstOrDefault(r => r.Id == requestId);
+        _members.Add(new TeamMember(Id, request!.UserId, request.ProjectRoleId));
         return request!.UpdateStatus(status);
     }
 }

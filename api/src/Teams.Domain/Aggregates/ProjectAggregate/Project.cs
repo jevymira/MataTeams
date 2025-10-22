@@ -77,13 +77,19 @@ public class Project : Entity
 
    public TeamMembershipRequest RespondToMembershipRequest(Guid membershipRequestId, TeamMembershipRequestStatus newStatus)
    {
-      // TODO validate that position count not yet met for desired project role
-      
       var team = _teams
          .FirstOrDefault(t => t.MembershipRequests
             .Any(m => m.Id == membershipRequestId))
-         ??  throw new KeyNotFoundException($"Membership request not found with id: {membershipRequestId}.");
+         ?? throw new KeyNotFoundException($"Membership request not found with id: {membershipRequestId}.");
 
-      return team.RespondToMembershipRequest(membershipRequestId, newStatus);
+      var projectRoleId = team.MembershipRequests
+         .FirstOrDefault(m => m.Id == membershipRequestId)!
+         .ProjectRoleId;
+      
+      var positionLimit = _roles
+         .FirstOrDefault(r => r.Id == projectRoleId)!
+         .PositionCount;
+      
+      return team.RespondToMembershipRequest(membershipRequestId, newStatus, positionLimit);
    }
 }
