@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.AddTeamToProject;
 using Teams.API.Features.Projects.CreateProject;
+using Teams.API.Features.Projects.GetAllTeamMembershipRequests;
 using Teams.API.Features.Projects.RequestToJoinTeam;
 using Teams.API.Features.Requests;
 using Teams.API.Features.Roles;
@@ -177,7 +178,7 @@ internal static class Extensions
     {
         var projectsGroup = app.MapGroup("/api/projects").WithTags("Projects");
         var teamsGroup = app.MapGroup("/api/teams").WithTags("Project Teams");
-        var requestsGroup = app.MapGroup("requests").WithTags("Team Requests");
+        var requestsGroup = app.MapGroup("/api/requests").WithTags("Team Requests");
         var skillsGroup = app.MapGroup("/api/skills").WithTags("Skills");
         var rolesGroup = app.MapGroup("/api/roles").WithTags("Roles");
         
@@ -185,7 +186,7 @@ internal static class Extensions
         CreateProjectEndpoint.Map(projectsGroup);
         AddTeamToProjectEndpoint.Map(projectsGroup);
         RequestToJoinTeam.MapEndpoint(teamsGroup);
-        // GetAllTeamMembershipRequests.MapEndpoint(teamsGroup);
+        GetAllTeamMembershipRequests.MapEndpoint(teamsGroup);
         RespondToMembershipRequest.MapEndpoint(requestsGroup);
         
         GetSkillsEndpoint.Map(skillsGroup);
