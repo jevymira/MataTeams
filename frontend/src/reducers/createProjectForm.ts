@@ -1,4 +1,4 @@
-import { CreateProject, DefaultRole, ProjectFormAction } from '../types'
+import { CreateProject, DefaultProjectRole, DefaultRole, ProjectFormAction } from '../types'
 
 export const createProjectFormReducer = (state: CreateProject, action: ProjectFormAction) => {
     switch (action.type) {
@@ -11,7 +11,7 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
         case 'ADD_ROLE': {
             return {
                 ...state,
-                role: [...state.roles, DefaultRole]
+                roles: [...state.roles, DefaultProjectRole]
             }
         }
         case 'REMOVE_ROLE': {
@@ -24,12 +24,27 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
                 })
             }
         }
-        case 'UPDATE_ROLE': {
+        case 'UPDATE_ROLE_SKILLS': {
             return {
                 ...state,
                 roles: state.roles.filter((r, i) => {
                     if (i == action.payload.index) {
-                        return action.payload.role
+                        return {...r, skills: action.payload.skills}
+                    } else {
+                        return r
+                    }
+                })
+            }
+        }
+        case 'UPDATE_ROLE_POSITION_COUNT': {
+            return {
+                ...state,
+                roles: state.roles.map((r, i) => {
+                    console.log('index')
+                    console.log(i)
+                    if (i == action.payload.index) {
+                        console.log({...r, positionCount: action.payload.posititionCount})
+                        return {...r, positionCount: action.payload.posititionCount}
                     } else {
                         return r
                     }
@@ -37,4 +52,12 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
             }
         }
     }
+}
+
+export const defaultCreateProject: CreateProject = {
+    name: '',
+    description: '',
+    type: '',
+    status: '',
+    roles: []
 }

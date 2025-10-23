@@ -1,20 +1,30 @@
 // libraries 
-import { useState } from "react"
+import { Dispatch, useState } from "react"
 
 // components
 import { Container, NumberInput } from "@chakra-ui/react"
 import SkillsDropdown from "../skillsDropdown/SkillsDropdown"
+import RolesDropdown from "../roleDropdown/RoleDropdown"
 
 // styles
 import './AddRoleForm.css'
-import RolesDropdown from "../roleDropdown/RoleDropdown"
 
-function AddRoleForm() {
-    const [skills, setSkills] = useState<string[]>([])
-    const [roleNumber, setRoleNumber] = useState<string>("0")
+// types 
+import { ProjectFormAction, ProjectRole } from '../../types'
 
-    const setFormSkills = (skillData: string[]) => {
-        setSkills(skillData)
+type AddRoleFormProps = {
+    index: number
+    role: ProjectRole
+    dispatch: Dispatch<ProjectFormAction>
+}
+
+function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
+    const setFormSkills = (skills: string[]) => {
+        dispatch({type: 'UPDATE_ROLE_SKILLS', payload: {skills, index}})
+    }
+
+    const setRoleNumber = (posititionCount: string) => {
+        dispatch({type: 'UPDATE_ROLE_POSITION_COUNT', payload: {posititionCount, index}})
     }
 
     return (
@@ -23,7 +33,7 @@ function AddRoleForm() {
             <RolesDropdown labelText="Select role type"/>
         </div>
         <NumberInput.Root
-            value={roleNumber}
+            value={role.positionCount}
             onValueChange={(e) => setRoleNumber(e.value)}>
         <NumberInput.Label>How many people for this role?</NumberInput.Label>
         <NumberInput.ValueText />

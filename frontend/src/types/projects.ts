@@ -4,20 +4,46 @@ export type Project = {
     description: string
     type: string
     status: string
-    roles: Role[]
+    roles: ProjectRole[]
 }
-
 
 export type CreateProject = Omit<Project, "id">
 
-export type ProjectRoleFormData = {
-    role: Role
+export type ProjectsContextType = {
+    projects: Array<Project>
+    setProjects: (projects: Array<Project>) => void
+}
+
+//**** PROJECT ROLES ****/
+export type ProjectRole = {
+    roleID: string
+    roleName: string
+    positionCount: string
+    skills: Skill[]
+}
+
+export type ProjectRoleFormSkills = {
+    skills: string[]
     index: number
 }
 
+export type ProjectRoleFormPositionCount = {
+    posititionCount: string
+    index: number
+}
+
+export const DefaultProjectRole : ProjectRole = {
+    roleID: '',
+    roleName: '',
+    positionCount: '0',
+    skills: []
+}
+
+
+//**** ROLES ****/
 export const DefaultRole : Role = {
     id: '',
-    name: ''
+    name: '',
 }
 
 export type Role = {
@@ -25,18 +51,8 @@ export type Role = {
     name: string
 }
 
-export type ProjectRole = {
-    roleID: string
-    positionCount: string
-    skills: Skill[]
-}
-
+//**** SKILLS ****/
 export type Skill = {
     id: string
     name: string
-}
-
-export type ProjectsContextType = {
-    projects: Array<Project>
-    setProjects: (projects: Array<Project>) => void
 }
