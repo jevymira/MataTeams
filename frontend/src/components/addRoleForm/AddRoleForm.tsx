@@ -11,17 +11,20 @@ import RolesDropdown from "../roleDropdown/RoleDropdown"
 
 function AddRoleForm() {
     const [skills, setSkills] = useState<string[]>([])
+    const [roleNumber, setRoleNumber] = useState<string>("0")
 
     const setFormSkills = (skillData: string[]) => {
         setSkills(skillData)
     }
-    
+
     return (
         <Container maxWidth={500}>
         <div className="dropdownWrapper">
             <RolesDropdown labelText="Select role type"/>
         </div>
-        <NumberInput.Root>
+        <NumberInput.Root
+            value={roleNumber}
+            onValueChange={(e) => setRoleNumber(e.value)}>
         <NumberInput.Label>How many people for this role?</NumberInput.Label>
         <NumberInput.ValueText />
         <NumberInput.Control>

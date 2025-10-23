@@ -10,6 +10,11 @@ export type Project = {
 
 export type CreateProject = Omit<Project, "id">
 
+export type ProjectRoleFormData = {
+    role: Role
+    index: number
+}
+
 export const DefaultRole : Role = {
     id: '',
     name: ''
