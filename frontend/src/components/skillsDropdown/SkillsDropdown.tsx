@@ -5,7 +5,12 @@ import { Combobox, Portal, Select, createListCollection, Wrap, Badge } from '@ch
 import { Skill } from '../../types'
 import { useGetSkills } from '../../hooks/projects'
 
-function SkillsDropdown() {
+type SkillsDropdownProps = {
+    labelText: string
+    setFormSkills: (skills: string[]) => void
+}
+
+const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
     const [skills, getSkills] = useGetSkills()
     const [searchValue, setSearchValue] = useState("")
     const [selectedSkills, setSelectedSkills] = useState<string[]>([])
@@ -30,6 +35,7 @@ function SkillsDropdown() {
 
     const handleValueChange = (details: Combobox.ValueChangeDetails) => {
         setSelectedSkills(details.value)
+        setFormSkills(details.value)
     }
 
     return (
@@ -39,12 +45,12 @@ function SkillsDropdown() {
             value={selectedSkills}
             onValueChange={handleValueChange}
             onInputValueChange={(details) => setSearchValue(details.inputValue)} >
-            <Wrap gap="2">
+            <Wrap gap="1">
                 {selectedSkills.map((skill) => (
                 <Badge key={skill}>{skill}</Badge>
                 ))}
             </Wrap>
-            <Combobox.Label>Select skills for your role in the project</Combobox.Label>
+            <Combobox.Label>{labelText}</Combobox.Label>
             
             <Combobox.Control>
                 <Combobox.Input />

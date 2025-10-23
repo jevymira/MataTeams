@@ -4,14 +4,15 @@ export type Project = {
     description: string
     type: string
     status: string
+    roles: Role[]
 }
 
-export type CreateProjectForm = {
-    name: string
-    description: string
-    type: string
-    status: string
-    roles: Role[]
+
+export type CreateProject = Omit<Project, "id">
+
+export const DefaultRole : Role = {
+    id: '',
+    name: ''
 }
 
 export type Role = {
