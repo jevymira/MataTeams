@@ -2,6 +2,7 @@ using MassTransit.Initializers;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Teams.API.Services;
 using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Infrastructure;
 
@@ -32,7 +33,7 @@ public static class RespondToMembershipRequest
 {
     public static void MapEndpoint(RouteGroupBuilder builder) => builder
         .MapPatch("{requestId}/status", RespondToMembershipRequestAsync)
-        .WithSummary("")
+        .WithSummary("Respond to a Pending membership request, to mark as Approved or Rejected. On approval, adds user to the team.")
         .RequireAuthorization();
     
     private static async Task<Results<Ok<RespondToMembershipRequestResponse>, NotFound<string>>> RespondToMembershipRequestAsync(

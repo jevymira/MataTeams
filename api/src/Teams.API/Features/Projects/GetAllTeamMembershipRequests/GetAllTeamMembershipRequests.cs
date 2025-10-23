@@ -24,7 +24,8 @@ public sealed record TeamMembershipRequestViewModel
 public static class GetAllTeamMembershipRequests
 {
     public static void MapEndpoint(RouteGroupBuilder builder) => builder
-        .MapGet("{teamId}/requests", GetAllTeamMembershipRequestsAsync);
+        .MapGet("{teamId}/requests", GetAllTeamMembershipRequestsAsync)
+        .WithSummary("Get all membership requests for a team; optionally, filter by request status");
 
     private static async Task<Results<Ok<IEnumerable<TeamMembershipRequestViewModel>>, NotFound<string>>> GetAllTeamMembershipRequestsAsync(
         string teamId,
