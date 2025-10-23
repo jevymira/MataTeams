@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Teams.Infrastructure;
@@ -11,9 +12,11 @@ using Teams.Infrastructure;
 namespace Teams.Infrastructure.Migrations
 {
     [DbContext(typeof(TeamDbContext))]
-    partial class TeamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251019201004_AddTeamsNavigationToProject")]
+    partial class AddTeamsNavigationToProject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,7 +142,7 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("leader_id");
 
-                    b.Property<Guid>("ProjectId")
+                    b.Property<Guid?>("ProjectId")
                         .HasColumnType("uuid")
                         .HasColumnName("project_id");
 
@@ -162,10 +165,6 @@ namespace Teams.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("ProjectRoleId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("project_role_id");
-
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uuid")
                         .HasColumnName("team_id");
@@ -177,55 +176,10 @@ namespace Teams.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_team_members");
 
-                    b.HasIndex("ProjectRoleId")
-                        .HasDatabaseName("ix_team_members_project_role_id");
-
                     b.HasIndex("TeamId")
                         .HasDatabaseName("ix_team_members_team_id");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_team_members_user_id");
-
                     b.ToTable("team_members", (string)null);
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.TeamMembershipRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("ProjectRoleId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("project_role_id");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("status");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("team_id");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_team_membership_requests");
-
-                    b.HasIndex("ProjectRoleId")
-                        .HasDatabaseName("ix_team_membership_requests_project_role_id");
-
-                    b.HasIndex("TeamId")
-                        .HasDatabaseName("ix_team_membership_requests_team_id");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_team_membership_requests_user_id");
-
-                    b.ToTable("team_membership_requests", (string)null);
                 });
 
             modelBuilder.Entity("Teams.Domain.Aggregates.UserAggregate.User", b =>
@@ -373,57 +327,17 @@ namespace Teams.Infrastructure.Migrations
                     b.HasOne("Teams.Domain.Aggregates.ProjectAggregate.Project", null)
                         .WithMany("Teams")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_teams_projects_project_id");
                 });
 
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.TeamMember", b =>
                 {
-                    b.HasOne("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_team_members_project_roles_project_role_id");
-
                     b.HasOne("Teams.Domain.Aggregates.ProjectAggregate.Team", null)
                         .WithMany("Members")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_team_members_teams_team_id");
-
-                    b.HasOne("Teams.Domain.Aggregates.UserAggregate.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_team_members_users_user_id");
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.TeamMembershipRequest", b =>
-                {
-                    b.HasOne("Teams.Domain.Aggregates.ProjectAggregate.ProjectRole", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_team_membership_requests_project_roles_project_role_id");
-
-                    b.HasOne("Teams.Domain.Aggregates.ProjectAggregate.Team", null)
-                        .WithMany("MembershipRequests")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_team_membership_requests_teams_team_id");
-
-                    b.HasOne("Teams.Domain.Aggregates.UserAggregate.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_team_membership_requests_users_user_id");
                 });
 
             modelBuilder.Entity("Teams.Domain.Aggregates.UserAggregate.UserSkill", b =>
@@ -460,8 +374,6 @@ namespace Teams.Infrastructure.Migrations
             modelBuilder.Entity("Teams.Domain.Aggregates.ProjectAggregate.Team", b =>
                 {
                     b.Navigation("Members");
-
-                    b.Navigation("MembershipRequests");
                 });
 #pragma warning restore 612, 618
         }
