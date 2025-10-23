@@ -75,13 +75,24 @@ public class Project : Entity
       return team.AddMembershipRequest(userId, projectRoleId);
    }
 
-   public TeamMembershipRequest RespondToMembershipRequest(Guid membershipRequestId, TeamMembershipRequestStatus newStatus)
+   public TeamMembershipRequest RespondToMembershipRequest(
+      Guid userId,
+      Guid membershipRequestId,
+      TeamMembershipRequestStatus newStatus)
    {
       var team = _teams
          .FirstOrDefault(t => t.MembershipRequests
             .Any(m => m.Id == membershipRequestId))
          ?? throw new KeyNotFoundException($"Membership request not found with id: {membershipRequestId}.");
 
+      // Validate that the user providing the response has team-level permissions
+      // (i.e., is Project Owner)
+      if (userId != team.LeaderId)
+      {
+         throw new UnauthorizedAccessException("User lacks team-level permissions to manage membership requests " +
+                                               "(is not team leader).");
+      }
+      
       var projectRoleId = team.MembershipRequests
          .FirstOrDefault(m => m.Id == membershipRequestId)!
          .ProjectRoleId;

@@ -59,7 +59,9 @@ public static class RespondToMembershipRequest
     }
 }
 
-internal sealed class RespondToMemberShipRequestHandler(TeamDbContext context)
+internal sealed class RespondToMemberShipRequestHandler(
+    TeamDbContext context,
+    IIdentityService identityService)
     : IRequestHandler<RespondToMembershipRequestCommand, RespondToMembershipRequestResponse>
 {
     public async Task<RespondToMembershipRequestResponse> Handle(
@@ -82,7 +84,14 @@ internal sealed class RespondToMemberShipRequestHandler(TeamDbContext context)
                 .ThenInclude(t => t.MembershipRequests)
             .FirstOrDefaultAsync(p => p.Teams.Any(t => t.Id == membershipRequestId), cancellationToken);
 
-        var updatedMembershipRequest = project!.RespondToMembershipRequest(new Guid(request.MembershipRequestId),
+        var userId = await context.Users
+            .Where(u => u.IdentityGuid == identityService.GetUserIdentity())
+            .Select(u => u.Id)
+            .SingleOrDefaultAsync(cancellationToken);
+        
+        var updatedMembershipRequest = project!.RespondToMembershipRequest(
+            userId,
+            new Guid(request.MembershipRequestId),
             Enum.Parse<TeamMembershipRequestStatus>(request.NewStatus));
         
         await context.SaveChangesAsync(cancellationToken);
