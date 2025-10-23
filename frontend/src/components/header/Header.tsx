@@ -18,6 +18,7 @@ export const Header = () => {
             </Avatar.Root>
             </Link>
           </AvatarGroup>
+          <Link to='/login' className='profileLink'>Log Out</Link>
         </div>
     </div>
   </div>
