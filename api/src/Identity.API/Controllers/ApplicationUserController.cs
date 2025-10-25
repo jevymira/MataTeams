@@ -8,7 +8,7 @@ using LoginRequest = Identity.API.Dtos.LoginRequest;
 namespace Identity.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/auth")]
 public class ApplicationUserController : ControllerBase
 {
     private readonly ILogger<ApplicationUserController> _logger;
@@ -25,7 +25,8 @@ public class ApplicationUserController : ControllerBase
         _jwtManager = jwtManager;
     }
     
-    [HttpPost("/login")]
+    [HttpPost("login")]
+    [HttpPost("/login")] // Deprecated.
     public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
     {
         var user = await _userManager.FindByNameAsync(request.UserName);
@@ -47,7 +48,7 @@ public class ApplicationUserController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("/register")]
+    [HttpPost("register")]
     public async Task<IActionResult> RegisterAsync([FromBody] RegistrationRequest request)
     {
         // By default in Identity, UserName and Email are the same value.
