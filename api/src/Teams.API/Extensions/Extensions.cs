@@ -10,6 +10,7 @@ using Teams.API.Features.Projects.RequestToJoinTeam;
 using Teams.API.Features.Requests;
 using Teams.API.Features.Roles;
 using Teams.API.Features.Skills;
+using Teams.API.Features.Users;
 using Teams.API.Logging;
 using Teams.API.Services;
 using Teams.API.Validation;
@@ -113,7 +114,7 @@ internal static class Extensions
                     .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUsers:0:IdentityGuid"]);
                 if (user == null)
                 {
-                    user = new User(Guid.CreateVersion7(), builder.Configuration["SeedUsers:0:IdentityGuid"]!);
+                    user = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:0:IdentityGuid"]!);
                     context.Set<User>().Add(user);
                     context.SaveChanges();
                 }
@@ -131,7 +132,7 @@ internal static class Extensions
                     .FirstOrDefault(u => u.IdentityGuid == builder.Configuration["SeedUsers:1:IdentityGuid"]);
                 if (user2 == null)
                 {
-                    user2 = new User(Guid.CreateVersion7(), builder.Configuration["SeedUsers:1:IdentityGuid"]!);
+                    user2 = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:1:IdentityGuid"]!);
                     context.Set<User>().Add(user2);
                     context.SaveChanges();
                 }
@@ -191,5 +192,8 @@ internal static class Extensions
         
         GetSkillsEndpoint.Map(skillsGroup);
         GetRolesEndpoint.Map(rolesGroup);
+        
+        var usersGroup = app.MapGroup("/api/users").WithTags("Users");
+        CreateProfile.MapEndpoint(usersGroup);
     }
 }

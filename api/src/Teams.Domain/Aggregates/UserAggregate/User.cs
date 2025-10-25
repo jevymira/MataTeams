@@ -7,18 +7,40 @@ public class User : Entity
 {  
     public string IdentityGuid { get; private set; }
     
+    public string FirstName { get; private set; }
+    
+    public string LastName { get; private set; }
+    
+    public bool IsFacultyOrStaff { get; private set; }
+    
+    private readonly List<string> _programs;
+    
+    /// <summary>
+    /// Academic program(s) of involvement, e.g., Computer Science.
+    /// For a complete list, see https://www.csun.edu/node/11001/academic-programs
+    /// </summary>
+    /// <remarks>
+    /// "Program" is term that works for students as well as faculty,
+    /// and that tonally suits areas also considered art forms (e.g., "Film").
+    /// </remarks>
+    public IReadOnlyCollection<string> Programs => _programs.AsReadOnly();
+    
     private readonly List<UserSkill> _userSkills;
     
     // public IReadOnlyCollection<UserSkill> UserSkills => _userSkills.AsReadOnly();
 
     protected User()
     {
+        _programs = new List<string>();
         _userSkills = new List<UserSkill>();
     }
     
-    public User(Guid id, string identityGuid) : this()
+    public User(Guid id, string firstname, string lastname, bool isFacultyOrStaff, string identityGuid) : this()
     {
         Id = id;
+        FirstName = firstname;
+        LastName = lastname;
+        IsFacultyOrStaff = isFacultyOrStaff;
         IdentityGuid = !string.IsNullOrWhiteSpace(identityGuid)
             ? identityGuid 
             : throw new ArgumentNullException(nameof(identityGuid));
@@ -27,15 +49,13 @@ public class User : Entity
     /// <remarks>
     /// Avoids passing in raw skill IDs, to ensure the `Skill` is valid.
     /// </remarks>
-    /*
     public void AddSkill(Skill skill, Proficiency proficiency)
     {
         if (_userSkills.Any(s => s.SkillId == skill.Id))
             throw new InvalidOperationException($"Skill with ID {skill.Id} is already added.");
         
-        _userSkills.Add(new UserSkill(Id, skill.Id, proficiency));
+        _userSkills.Add(new UserSkill(Guid.CreateVersion7(), Id, skill.Id, proficiency));
     }
-    */
 
     /*
     public void UpdateSkillProficiency(int skillId, Proficiency newProficiency)
