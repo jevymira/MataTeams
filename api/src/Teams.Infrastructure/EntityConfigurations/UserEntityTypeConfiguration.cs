@@ -8,6 +8,7 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        
+        builder.HasMany(u => u.Skills)
+            .WithMany(); // prevents UserID column on Skill table
     }
 }

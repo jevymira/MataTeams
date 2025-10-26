@@ -15,17 +15,6 @@ public sealed class CreateProjectCommandValidator : AbstractValidator<CreateProj
         RuleForEach(command => command.Roles).ChildRules(role =>
         {
             role.RuleFor(r => r.PositionCount).GreaterThan(0);
-            role.RuleForEach(r => r.Skills).ChildRules(skill =>
-            {
-                skill.RuleFor(s => s.Proficiency)
-                    .Must(BeAValidProficiency)
-                    .WithMessage(s => $"Proficiency '{s.Proficiency}' is invalid.");
-            });
         });
-    }
-
-    private bool BeAValidProficiency(string proficiency)
-    {
-        return Enum.TryParse<Proficiency>(proficiency, true, out _);
     }
 }

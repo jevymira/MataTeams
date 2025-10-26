@@ -41,7 +41,6 @@ public static class GetProjectById
         public required string ProjectRoleSkillId { get; set; }
         public required string SkillId { get; set; }
         public required string SkillName { get; set; }
-        public required string Proficiency { get; set; }
     }
 
     public static void MapEndpoint(RouteGroupBuilder group) => group 
@@ -71,7 +70,6 @@ public static class GetProjectById
                     .ThenInclude(r => r.Role)
                 .Include(p => p.Roles)
                     .ThenInclude(r => r.Skills)
-                        .ThenInclude(s => s.Skill)
                 .FirstOrDefaultAsync(p => p.Id == Guid.Parse(request.Id));
 
             if (project is null)
@@ -97,9 +95,8 @@ public static class GetProjectById
                             .Select(s => new ResponseRoleSkill
                             {
                                ProjectRoleSkillId = s.Id.ToString(),
-                               SkillId = s.SkillId.ToString(),
-                               SkillName = s.Skill.Name,
-                               Proficiency = s.Proficiency.ToString()
+                               SkillId = s.Id.ToString(),
+                               SkillName = s.Name
                             })
                             .ToList()
                     })

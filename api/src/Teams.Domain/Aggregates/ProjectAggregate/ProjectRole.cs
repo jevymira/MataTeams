@@ -21,13 +21,13 @@ public class ProjectRole : Entity
     /// </summary>
     public int PositionCount { get; private set; }
     
-    private readonly List<ProjectRoleSkill> _skills;
+    private readonly List<Skill> _skills;
     
-    public IReadOnlyCollection<ProjectRoleSkill> Skills => _skills.AsReadOnly();
+    public IReadOnlyCollection<Skill> Skills => _skills.AsReadOnly();
 
     protected ProjectRole()
     {
-        _skills = new List<ProjectRoleSkill>();
+        _skills = new List<Skill>();
     }
     
     public ProjectRole(Guid id, Guid projectId, Guid roleId, int positionCount) : this()
@@ -38,9 +38,8 @@ public class ProjectRole : Entity
         PositionCount = positionCount;
     }
 
-    public void AddProjectSkill(Guid id, Guid skillId, Proficiency proficiency)
+    public void AddProjectSkill(Skill skill)
     {
-        var skill = new ProjectRoleSkill(id, Id, skillId, proficiency);
         _skills.Add(skill);
     }
 }

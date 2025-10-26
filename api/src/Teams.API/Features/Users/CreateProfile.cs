@@ -82,7 +82,7 @@ internal sealed class CreateProfileCommandHandler(
         
         foreach (var skill in skills)
         {
-            user.AddSkill(skill, Proficiency.Proficient); // TODO: remove proficiencies
+            user.AddSkill(skill);
         }
         
         context.Users.Add(user);

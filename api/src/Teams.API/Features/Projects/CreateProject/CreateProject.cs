@@ -22,12 +22,7 @@ public sealed record CreateProjectRequestRole(
     // The maximum number of positions for a role,
     // each to be "filled" by a team member.
     int PositionCount,
-    List<CreateProjectRequestRoleSkill> Skills);
-
-// Full record rather than Value Tuple for representation in Swagger docs.
-public sealed record CreateProjectRequestRoleSkill(
-    string SkillId,
-    string Proficiency);
+    List<string> SkillIds);
 
 public sealed record CreateProjectCommand : IRequest<bool>
 {
@@ -100,15 +95,18 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
             ProjectType.FromName(request.Type),
             status, 
             owner!.Id);
-
+        
+        
         foreach (var role in request.Roles)
         {
             var projectRole = project.AddProjectRole(projectRoleId, Guid.Parse(role.RoleId), role.PositionCount);
+            var skills = await context.Skills
+                .Where(s => role.SkillIds.Contains(s.Id.ToString()))
+                .ToListAsync(cancellationToken);
             
-            foreach (var skill in role.Skills)
+            foreach (var skill in skills)
             {
-                Enum.TryParse<Proficiency>(skill.Proficiency, out var proficiency);
-                projectRole.AddProjectSkill(Guid.CreateVersion7(), Guid.Parse(skill.SkillId), proficiency);
+                projectRole.AddProjectSkill(skill);
             }
         }
         
