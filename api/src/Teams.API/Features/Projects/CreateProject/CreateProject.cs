@@ -98,12 +98,8 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
 
         var owner = await context.Users
             .FirstOrDefaultAsync(m => m.IdentityGuid == request.OwnerIdentityGuid, cancellationToken);
-
-        var projectId = Guid.CreateVersion7();
-        var projectRoleId = Guid.CreateVersion7();
         
         var project = new Project(
-            projectId,
             request.Name,
             request.Description,
             ProjectType.FromName(request.Type),
@@ -112,7 +108,7 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
         
         foreach (var role in request.Roles)
         {
-            var projectRole = project.AddProjectRole(projectRoleId, Guid.Parse(role.RoleId), role.PositionCount);
+            var projectRole = project.AddProjectRole(Guid.Parse(role.RoleId), role.PositionCount);
             var skills = await context.Skills
                 .Where(s => role.SkillIds.Contains(s.Id.ToString()))
                 .ToListAsync(cancellationToken);
@@ -137,7 +133,7 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
             .FirstOrDefaultAsync(m => m.Id == project.Id, cancellationToken);
         
         await publishEndpoint.Publish(new ProjectCreated(
-            projectId, 
+            project.Id, 
             project.Name,
             project.Description,
             project.Type.Name,

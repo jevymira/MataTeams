@@ -33,12 +33,12 @@ public class Project : Entity
       _teams = new List<Team>();
    }
 
-   public Project(Guid id, string name, string description, ProjectType type, ProjectStatus status, Guid ownerId) : this()
+   public Project(string name, string description, ProjectType type, ProjectStatus status, Guid ownerId) : this()
    {
       if (!type.AllowedStatuses.Contains(status))
          throw new InvalidOperationException("Invalid status for project type.");
 
-      Id = id;
+      Id = Guid.CreateVersion7();
       Name = name;
       Description = description;
       Type = type;
@@ -46,9 +46,9 @@ public class Project : Entity
       OwnerId = ownerId;
    }
 
-   public ProjectRole AddProjectRole(Guid projectRoleId, Guid roleId, int positionCount)
+   public ProjectRole AddProjectRole(Guid roleId, int positionCount)
    {
-      var projectRole = new ProjectRole(projectRoleId, Id, roleId, positionCount);
+      var projectRole = new ProjectRole(Id, roleId, positionCount);
       _roles.Add(projectRole);
       return projectRole;
    }

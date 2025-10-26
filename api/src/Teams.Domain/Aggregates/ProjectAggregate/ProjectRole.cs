@@ -30,9 +30,9 @@ public class ProjectRole : Entity
         _skills = new List<Skill>();
     }
     
-    public ProjectRole(Guid id, Guid projectId, Guid roleId, int positionCount) : this()
+    public ProjectRole(Guid projectId, Guid roleId, int positionCount) : this()
     {
-        Id = id;
+        Id = Guid.CreateVersion7();
         ProjectId = projectId;
         RoleId = roleId;
         PositionCount = positionCount;

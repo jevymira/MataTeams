@@ -135,18 +135,17 @@ internal static class Extensions
                 if (project == null)
                 {
                     project = new Project(
-                        Guid.CreateVersion7(),
                         "Sample Project",
                         "Sample Text.",
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
                         user.Id);
                     // Add `Frontend` Role with `JavaScript` and `React` Skills.
-                    project.AddProjectRole(Guid.CreateVersion7(), frontendRole.Id, 2);
+                    project.AddProjectRole(frontendRole.Id, 2);
                     project.Roles.First().AddProjectSkill(js);
                     project.Roles.First().AddProjectSkill(react);
                     // Add `Backend` Role with `Java` Skill.
-                    project.AddProjectRole(Guid.CreateVersion7(), backendRole.Id, 2);
+                    project.AddProjectRole(backendRole.Id, 2);
                     project.Roles.Last().AddProjectSkill(java);
                     context.Set<Project>().Add(project);
                     context.SaveChanges();
