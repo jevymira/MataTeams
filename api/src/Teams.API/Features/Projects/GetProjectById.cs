@@ -45,7 +45,8 @@ public static class GetProjectById
 
     public static void MapEndpoint(RouteGroupBuilder group) => group 
         .MapGet("/{id}", GetProjectAsync)
-        .WithSummary("Get a project by its unique identifier.");
+        .WithSummary("Get a project by its unique identifier.")
+        .WithName(nameof(GetProjectById));
     
     private static async Task<Results<Ok<Response>, NotFound>> GetProjectAsync(
         string id, ISender sender)
