@@ -43,10 +43,9 @@ public static class GetProjectById
         public required string SkillName { get; set; }
     }
 
-    public static void MapEndpoint(RouteGroupBuilder group) => group 
+    public static void MapEndpoint(RouteGroupBuilder group) => group
         .MapGet("/{id}", GetProjectAsync)
-        .WithSummary("Get a project by its unique identifier.")
-        .WithName(nameof(GetProjectById));
+        .WithSummary("Get a project by its unique identifier.");
     
     private static async Task<Results<Ok<Response>, NotFound>> GetProjectAsync(
         string id, ISender sender)

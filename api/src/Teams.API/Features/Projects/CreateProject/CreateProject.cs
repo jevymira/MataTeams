@@ -24,7 +24,7 @@ public sealed record CreateProjectRequestRole(
     int PositionCount,
     List<string> SkillIds);
 
-public sealed record CreateProjectCommand() : IRequest<CreateProjectResponse>
+public sealed record CreateProjectCommand() : IRequest<string>
 {
     public required string Name { get; init; }
     public required string Description { get; init; }
@@ -38,32 +38,6 @@ public sealed record CreateProjectCommand() : IRequest<CreateProjectResponse>
     public required string OwnerIdentityGuid { get; init; }
 }
 
-public sealed record CreateProjectResponse
-{
-    public required string Id { get; init; }
-    public required string Name { get; init; }
-    public required string Description { get; init; }
-    public required string Type { get; init; }
-    public required string Status { get; init; }
-    public required List<Role> Roles { get; init; }
-
-    public sealed record Role
-    {
-        public required string ProjectRoleId { get; init; }
-        public required string RoleId { get; init; }
-        public required string RoleName { get; init; }
-        public required int PositionCount { get; init; }
-        public required List<Skill> Skills { get; init; }
-    }
-
-    public sealed record Skill
-    {
-        public required string ProjectRoleSkillId { get; init; }
-        public required string SkillId { get; init; }
-        public required string SkillName { get; init; }
-    }
-}
-
 public class CreateProjectEndpoint
 {
     public static void Map(RouteGroupBuilder group) => group
@@ -71,10 +45,10 @@ public class CreateProjectEndpoint
         .RequireAuthorization()
         .WithSummary("Create a new project. Define roles and associated skills for each.");
 
-    private static async Task<Results<Created<CreateProjectResponse>, BadRequest<string>>> CreateProjectAsync(
+    private static async Task<Created> CreateProjectAsync(
         CreateProjectRequest request, ISender sender, IHttpContextAccessor accessor)
     {
-        var result = await sender.Send(new CreateProjectCommand
+        var projectId = await sender.Send(new CreateProjectCommand
         {
             Name = request.Name,
             Description = request.Description,
@@ -84,15 +58,15 @@ public class CreateProjectEndpoint
             OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
         });
 
-        return TypedResults.Created($"api/projects/{result.Id}", result);
+        return TypedResults.Created($"api/projects/{projectId}");
     }
 }
 
 internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublishEndpoint publishEndpoint)
-    : IRequestHandler<CreateProjectCommand, CreateProjectResponse>
+    : IRequestHandler<CreateProjectCommand, string>
 {
 
-    public async Task<CreateProjectResponse> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
         Enum.TryParse<ProjectStatus>(request.Status, true, out var status);
 
@@ -122,15 +96,6 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
         context.Projects.Add(project);
 
         await context.SaveChangesAsync(cancellationToken);
-
-        // To load in Role.
-        project = await context.Projects
-            .AsNoTracking()
-            .Include(p => p.Roles)
-                .ThenInclude(p => p.Role)
-            .Include(p => p.Roles)
-                .ThenInclude(p => p.Skills)
-            .FirstOrDefaultAsync(m => m.Id == project.Id, cancellationToken);
         
         await publishEndpoint.Publish(new ProjectCreated(
             project.Id, 
@@ -141,30 +106,6 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
             owner.Id
         ), cancellationToken);
 
-        return new CreateProjectResponse
-        {
-            Id = project.Id.ToString(),
-            Name = project.Name,
-            Description = project.Description,
-            Type = project.Type.ToString(),
-            Status = project.Status.ToString(),
-            Roles = project.Roles
-                .Select(r => new CreateProjectResponse.Role
-                {
-                    ProjectRoleId = r.Id.ToString(),
-                    RoleId = r.RoleId.ToString(),
-                    RoleName = r.Role.Name,
-                    PositionCount = r.PositionCount,
-                    Skills = r.Skills
-                        .Select(s => new CreateProjectResponse.Skill
-                        {
-                            ProjectRoleSkillId = s.Id.ToString(),
-                            SkillId = s.Id.ToString(),
-                            SkillName = s.Name
-                        })
-                        .ToList()
-                })
-                .ToList()
-        };
+        return project.Id.ToString();
     }
 }
