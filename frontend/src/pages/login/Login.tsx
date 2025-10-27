@@ -29,5 +29,6 @@ export const Login = () => {
       setPassword(e.target.value)
     }}/>
     <Button onClick={e => handleSubmit(e)}>Log In</Button>
+    <br /><Link to='/signup'>Sign up</Link>
   </Container>
 )}
