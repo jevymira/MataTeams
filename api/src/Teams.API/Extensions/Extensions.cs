@@ -115,16 +115,8 @@ internal static class Extensions
                 if (user == null)
                 {
                     user = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:0:IdentityGuid"]!);
+                    user.AddSkill(js);
                     context.Set<User>().Add(user);
-                    context.SaveChanges();
-                }
-                
-                var userSkill = context.Set<UserSkill>()
-                    .FirstOrDefault(s => s.UserId == user.Id);
-                if (userSkill == null)
-                {
-                    userSkill = new UserSkill(Guid.CreateVersion7(), user.Id, js.Id, Proficiency.Interested);
-                    context.Set<UserSkill>().Add(userSkill);
                     context.SaveChanges();
                 }
                 
@@ -133,6 +125,7 @@ internal static class Extensions
                 if (user2 == null)
                 {
                     user2 = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:1:IdentityGuid"]!);
+                    user2.AddSkill(java);
                     context.Set<User>().Add(user2);
                     context.SaveChanges();
                 }
@@ -142,19 +135,18 @@ internal static class Extensions
                 if (project == null)
                 {
                     project = new Project(
-                        Guid.CreateVersion7(),
                         "Sample Project",
                         "Sample Text.",
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
                         user.Id);
                     // Add `Frontend` Role with `JavaScript` and `React` Skills.
-                    project.AddProjectRole(Guid.CreateVersion7(), frontendRole.Id, 2);
-                    project.Roles.First().AddProjectSkill(Guid.CreateVersion7(), js.Id, Proficiency.Beginner);
-                    project.Roles.First().AddProjectSkill(Guid.CreateVersion7(), react.Id, Proficiency.Interested);
+                    project.AddProjectRole(frontendRole.Id, 2);
+                    project.Roles.First().AddProjectSkill(js);
+                    project.Roles.First().AddProjectSkill(react);
                     // Add `Backend` Role with `Java` Skill.
-                    project.AddProjectRole(Guid.CreateVersion7(), backendRole.Id, 2);
-                    project.Roles.Last().AddProjectSkill(Guid.CreateVersion7(), java.Id, Proficiency.Intermediate);
+                    project.AddProjectRole(backendRole.Id, 2);
+                    project.Roles.Last().AddProjectSkill(java);
                     context.Set<Project>().Add(project);
                     context.SaveChanges();
                 }

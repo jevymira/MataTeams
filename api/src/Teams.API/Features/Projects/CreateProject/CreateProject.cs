@@ -22,14 +22,9 @@ public sealed record CreateProjectRequestRole(
     // The maximum number of positions for a role,
     // each to be "filled" by a team member.
     int PositionCount,
-    List<CreateProjectRequestRoleSkill> Skills);
+    List<string> SkillIds);
 
-// Full record rather than Value Tuple for representation in Swagger docs.
-public sealed record CreateProjectRequestRoleSkill(
-    string SkillId,
-    string Proficiency);
-
-public sealed record CreateProjectCommand : IRequest<bool>
+public sealed record CreateProjectCommand() : IRequest<string>
 {
     public required string Name { get; init; }
     public required string Description { get; init; }
@@ -48,67 +43,53 @@ public class CreateProjectEndpoint
     public static void Map(RouteGroupBuilder group) => group
         .MapPost("", CreateProjectAsync)
         .RequireAuthorization()
-        .WithSummary("Create a new project.");
+        .WithSummary("Create a new project. Define roles and associated skills for each.");
 
-    private static async Task<Results<Ok, BadRequest<string>, ProblemHttpResult>> CreateProjectAsync(
+    private static async Task<Created> CreateProjectAsync(
         CreateProjectRequest request, ISender sender, IHttpContextAccessor accessor)
     {
-        try
+        var projectId = await sender.Send(new CreateProjectCommand
         {
-            var result = await sender.Send(new CreateProjectCommand
-            {
-                Name = request.Name,
-                Description = request.Description,
-                Type = request.Type,
-                Status = request.Status,
-                Roles = request.Roles,
-                OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-            });
+            Name = request.Name,
+            Description = request.Description,
+            Type = request.Type,
+            Status = request.Status,
+            Roles = request.Roles,
+            OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+        });
 
-            if (!result)
-            {
-                return TypedResults.Problem(detail: "Create project failed to process.", statusCode: 500);
-            }
-
-            return TypedResults.Ok();
-        }
-        catch (Exception ex)
-        {
-            return TypedResults.BadRequest(ex.Message);
-        }
+        return TypedResults.Created($"api/projects/{projectId}");
     }
 }
 
 internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublishEndpoint publishEndpoint)
-    : IRequestHandler<CreateProjectCommand, bool>
+    : IRequestHandler<CreateProjectCommand, string>
 {
 
-    public async Task<bool> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
         Enum.TryParse<ProjectStatus>(request.Status, true, out var status);
 
         var owner = await context.Users
             .FirstOrDefaultAsync(m => m.IdentityGuid == request.OwnerIdentityGuid, cancellationToken);
-
-        var projectId = Guid.CreateVersion7();
-        var projectRoleId = Guid.CreateVersion7();
         
         var project = new Project(
-            projectId,
             request.Name,
             request.Description,
             ProjectType.FromName(request.Type),
             status, 
             owner!.Id);
-
+        
         foreach (var role in request.Roles)
         {
-            var projectRole = project.AddProjectRole(projectRoleId, Guid.Parse(role.RoleId), role.PositionCount);
+            var projectRole = project.AddProjectRole(Guid.Parse(role.RoleId), role.PositionCount);
+            var skills = await context.Skills
+                .Where(s => role.SkillIds.Contains(s.Id.ToString()))
+                .ToListAsync(cancellationToken);
             
-            foreach (var skill in role.Skills)
+            foreach (var skill in skills)
             {
-                Enum.TryParse<Proficiency>(skill.Proficiency, out var proficiency);
-                projectRole.AddProjectSkill(Guid.CreateVersion7(), Guid.Parse(skill.SkillId), proficiency);
+                projectRole.AddProjectSkill(skill);
             }
         }
         
@@ -117,7 +98,7 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
         await context.SaveChangesAsync(cancellationToken);
         
         await publishEndpoint.Publish(new ProjectCreated(
-            projectId, 
+            project.Id, 
             project.Name,
             project.Description,
             project.Type.Name,
@@ -125,6 +106,6 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
             owner.Id
         ), cancellationToken);
 
-        return true;
+        return project.Id.ToString();
     }
 }

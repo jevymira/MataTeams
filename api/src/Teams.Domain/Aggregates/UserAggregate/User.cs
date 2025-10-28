@@ -25,14 +25,14 @@ public class User : Entity
     /// </remarks>
     public IReadOnlyCollection<string> Programs => _programs.AsReadOnly();
     
-    private readonly List<UserSkill> _userSkills;
+    private readonly List<Skill> skills;
     
-    // public IReadOnlyCollection<UserSkill> UserSkills => _userSkills.AsReadOnly();
+    public IReadOnlyCollection<Skill> Skills => skills.AsReadOnly();
 
     protected User()
     {
         _programs = new List<string>();
-        _userSkills = new List<UserSkill>();
+        skills = new List<Skill>();
     }
     
     public User(Guid id, string firstname, string lastname, bool isFacultyOrStaff, string identityGuid) : this()
@@ -49,12 +49,12 @@ public class User : Entity
     /// <remarks>
     /// Avoids passing in raw skill IDs, to ensure the `Skill` is valid.
     /// </remarks>
-    public void AddSkill(Skill skill, Proficiency proficiency)
+    public void AddSkill(Skill skill)
     {
-        if (_userSkills.Any(s => s.SkillId == skill.Id))
+        if (skills.Any(s => s.Id == skill.Id))
             throw new InvalidOperationException($"Skill with ID {skill.Id} is already added.");
         
-        _userSkills.Add(new UserSkill(Guid.CreateVersion7(), Id, skill.Id, proficiency));
+        skills.Add(skill);
     }
 
     /*
