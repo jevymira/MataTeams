@@ -1,8 +1,22 @@
 import { useContext, useState } from 'react'
+
+// context
 import { ProjectsContext } from '../context/projects'
-import { ProjectsContextType, Project, Skill } from '../types'
+
+// types
+import { ProjectsContextType, Project, Skill, Role, CreateProject } from '../types'
+
+// utilities
 import { convertJSONToProject } from '../utilities/convertJSONToProject'
 
+
+export function useCreateProject(createProjectData: CreateProject) {
+    const createProject = async () => {
+        const options = {
+            method: 'POST'
+        }
+    }
+}
 
 export function useGetProjectByID(id: string) {
     const [project, setProject] = useState<Project>();
@@ -93,4 +107,31 @@ export function useGetSkills() {
         }
     }
     return [skills, getSkills] as const
+}
+
+export function useGetRoles() {
+    const [roles, setRoles] = useState<Role[]>([])
+
+    const getRoles = async () => {
+        const options = {
+            method: 'GET'
+        }
+        
+        try {   
+            fetch(`https://localhost:7260/api/roles`).then(res => {
+                console.log(res)
+                if (res.status !== 200) {
+                    throw new Error(res.statusText)
+                }
+
+                return res.json()
+            }).then(json => {          
+                setRoles(json)
+            })
+        } catch(e) {
+            setRoles([])
+            console.error(e)
+        }
+    }
+    return [roles, getRoles] as const
 }
