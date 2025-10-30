@@ -3,7 +3,7 @@ import { CreateProject, DefaultProjectRole, DefaultRole, ProjectFormAction } fro
 export const createProjectFormReducer = (state: CreateProject, action: ProjectFormAction) => {
     switch (action.type) {
         case 'SET_PROJECT_NAME': {
-            return {...state, description: action.payload}
+            return {...state, name: action.payload}
         }
         case 'SET_PROJECT_DESCRIPTION': {
             return {...state, description: action.payload}
@@ -40,10 +40,7 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
             return {
                 ...state,
                 roles: state.roles.map((r, i) => {
-                    console.log('index')
-                    console.log(i)
                     if (i == action.payload.index) {
-                        console.log({...r, positionCount: action.payload.posititionCount})
                         return {...r, positionCount: action.payload.posititionCount}
                     } else {
                         return r

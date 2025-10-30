@@ -10,12 +10,30 @@ import { ProjectsContextType, Project, Skill, Role, CreateProject } from '../typ
 import { convertJSONToProject } from '../utilities/convertJSONToProject'
 
 
-export function useCreateProject(createProjectData: CreateProject) {
+export function useCreateProject(createProjectData: CreateProject, token: string) {
     const createProject = async () => {
-        const options = {
-            method: 'POST'
+        const headers = {
+            'method': 'POST',
+            'body': JSON.stringify(createProjectData),
+            'Content-Type': 'application/json',
+            'authorization': `Bearer ${token}`
+        }
+
+        try {
+            fetch('https://localhost:7260/api/projects', headers).then(res => {
+                if (res.status !== 201) {
+                    throw new Error(res.statusText)
+                }
+                return res.json()
+            }).then(json => {
+                console.log(json)
+            })
+        } catch (e) {
+            console.error(e)
         }
     }
+
+    return [createProject] as const
 }
 
 export function useGetProjectByID(id: string) {
@@ -92,7 +110,6 @@ export function useGetSkills() {
         
         try {   
             fetch(`https://localhost:7260/api/skills`).then(res => {
-                console.log(res)
                 if (res.status !== 200) {
                     throw new Error(res.statusText)
                 }
