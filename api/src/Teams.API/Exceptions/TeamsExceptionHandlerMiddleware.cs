@@ -15,6 +15,9 @@ public class TeamsExceptionHandlerMiddleware : AbstractExceptionHandlerMiddlewar
             case UnauthorizedAccessException:
                 code = HttpStatusCode.Forbidden;
                 break;
+            case InvalidOperationException:
+                code = HttpStatusCode.Conflict;
+                break;
             default:
                 code = HttpStatusCode.InternalServerError;
                 break;

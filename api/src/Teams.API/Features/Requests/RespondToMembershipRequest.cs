@@ -82,6 +82,8 @@ internal sealed class RespondToMemberShipRequestHandler(
             .Include(p => p.Roles)
             .Include(p => p.Teams)
                 .ThenInclude(t => t.MembershipRequests)
+            .Include(p => p.Teams)
+                .ThenInclude(p => p.Members)
             .FirstOrDefaultAsync(p => p.Teams.Any(t => t.Id == membershipRequestId), cancellationToken);
 
         var userId = await context.Users

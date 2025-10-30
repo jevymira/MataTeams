@@ -99,6 +99,6 @@ public class Project : Entity
          .FirstOrDefault(r => r.Id == projectRoleId)!
          .PositionCount;
       
-      return team.RespondToMembershipRequest(membershipRequestId, newStatus, positionLimit);
+      return team.RespondToMembershipRequest(membershipRequestId, projectRoleId, newStatus, positionLimit);
    }
 }

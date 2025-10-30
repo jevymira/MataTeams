@@ -37,14 +37,15 @@ public class Team : Entity
 
     public TeamMembershipRequest RespondToMembershipRequest(
         Guid requestId,
+        Guid projectRoleId,
         TeamMembershipRequestStatus status,
         int positionLimit)
     {
         // Validate that there are open positions for the indicated project role, on this team.
         if (status == TeamMembershipRequestStatus.Approved)
         {
-            var positionsFilledForRole = _members.Count(c => c.ProjectRoleId == requestId);
-            if (positionsFilledForRole == positionLimit)
+            var positionsFilledForRole = _members.Count(c => c.ProjectRoleId == projectRoleId);
+            if (positionsFilledForRole >= positionLimit)
             {
                 throw new InvalidOperationException(
                     $"Position count for project role with id: {requestId} is at capacity.");
