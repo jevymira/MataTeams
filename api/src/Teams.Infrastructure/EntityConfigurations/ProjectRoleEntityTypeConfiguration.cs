@@ -13,9 +13,8 @@ public class ProjectRoleEntityTypeConfiguration : IEntityTypeConfiguration<Proje
             .WithMany()
             .HasForeignKey(pr => pr.RoleId)
             .OnDelete(DeleteBehavior.Restrict);
-        
-        builder.HasMany<ProjectRoleSkill>(prs => prs.Skills)
-            .WithOne()
-            .HasForeignKey(prs => prs.ProjectRoleId);
+
+        builder.HasMany<Skill>(pr => pr.Skills)
+            .WithMany();
     }
 }

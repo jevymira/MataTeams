@@ -3,10 +3,14 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects;
+using Teams.API.Features.Projects.AddTeamToProject;
 using Teams.API.Features.Projects.CreateProject;
+using Teams.API.Features.Projects.GetAllTeamMembershipRequests;
+using Teams.API.Features.Projects.RequestToJoinTeam;
+using Teams.API.Features.Requests;
 using Teams.API.Features.Roles;
 using Teams.API.Features.Skills;
-using Teams.API.Features.Teams.AddTeamToProject;
+using Teams.API.Features.Users;
 using Teams.API.Logging;
 using Teams.API.Services;
 using Teams.API.Validation;
@@ -110,17 +114,9 @@ internal static class Extensions
                     .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUsers:0:IdentityGuid"]);
                 if (user == null)
                 {
-                    user = new User(Guid.CreateVersion7(), builder.Configuration["SeedUsers:0:IdentityGuid"]!);
+                    user = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:0:IdentityGuid"]!);
+                    user.AddSkill(js);
                     context.Set<User>().Add(user);
-                    context.SaveChanges();
-                }
-                
-                var userSkill = context.Set<UserSkill>()
-                    .FirstOrDefault(s => s.UserId == user.Id);
-                if (userSkill == null)
-                {
-                    userSkill = new UserSkill(Guid.CreateVersion7(), user.Id, js.Id, Proficiency.Interested);
-                    context.Set<UserSkill>().Add(userSkill);
                     context.SaveChanges();
                 }
                 
@@ -128,7 +124,8 @@ internal static class Extensions
                     .FirstOrDefault(u => u.IdentityGuid == builder.Configuration["SeedUsers:1:IdentityGuid"]);
                 if (user2 == null)
                 {
-                    user2 = new User(Guid.CreateVersion7(), builder.Configuration["SeedUsers:1:IdentityGuid"]!);
+                    user2 = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:1:IdentityGuid"]!);
+                    user2.AddSkill(java);
                     context.Set<User>().Add(user2);
                     context.SaveChanges();
                 }
@@ -138,19 +135,18 @@ internal static class Extensions
                 if (project == null)
                 {
                     project = new Project(
-                        Guid.CreateVersion7(),
                         "Sample Project",
                         "Sample Text.",
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
                         user.Id);
                     // Add `Frontend` Role with `JavaScript` and `React` Skills.
-                    project.AddProjectRole(Guid.CreateVersion7(), frontendRole.Id, 2);
-                    project.Roles.First().AddProjectSkill(Guid.CreateVersion7(), js.Id, Proficiency.Beginner);
-                    project.Roles.First().AddProjectSkill(Guid.CreateVersion7(), react.Id, Proficiency.Interested);
+                    project.AddProjectRole(frontendRole.Id, 2);
+                    project.Roles.First().AddProjectSkill(js);
+                    project.Roles.First().AddProjectSkill(react);
                     // Add `Backend` Role with `Java` Skill.
-                    project.AddProjectRole(Guid.CreateVersion7(), backendRole.Id, 2);
-                    project.Roles.Last().AddProjectSkill(Guid.CreateVersion7(), java.Id, Proficiency.Intermediate);
+                    project.AddProjectRole(backendRole.Id, 2);
+                    project.Roles.Last().AddProjectSkill(java);
                     context.Set<Project>().Add(project);
                     context.SaveChanges();
                 }
@@ -173,17 +169,23 @@ internal static class Extensions
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)
     {
-        var projectsMapGroup = app.MapGroup("/api/projects").WithTags("Projects");
-        var teamsMapGroup = app.MapGroup("/api/projects/{projectId}/teams").WithTags("Project Teams");
-        var skillsMapGroup = app.MapGroup("/api/skills").WithTags("Skills");
-        var rolesMapGroup = app.MapGroup("/api/roles").WithTags("Roles");
+        var projectsGroup = app.MapGroup("/api/projects").WithTags("Projects");
+        var teamsGroup = app.MapGroup("/api/teams").WithTags("Project Teams");
+        var requestsGroup = app.MapGroup("/api/requests").WithTags("Team Requests");
+        var skillsGroup = app.MapGroup("/api/skills").WithTags("Skills");
+        var rolesGroup = app.MapGroup("/api/roles").WithTags("Roles");
         
-        GetProjectById.MapEndpoint(projectsMapGroup); 
-        CreateProjectEndpoint.Map(projectsMapGroup);
+        GetProjectById.MapEndpoint(projectsGroup); 
+        CreateProjectEndpoint.Map(projectsGroup);
+        AddTeamToProjectEndpoint.Map(projectsGroup);
+        RequestToJoinTeam.MapEndpoint(teamsGroup);
+        GetAllTeamMembershipRequests.MapEndpoint(teamsGroup);
+        RespondToMembershipRequest.MapEndpoint(requestsGroup);
         
-        AddTeamToProjectEndpoint.Map(teamsMapGroup);
+        GetSkillsEndpoint.Map(skillsGroup);
+        GetRolesEndpoint.Map(rolesGroup);
         
-        GetSkillsEndpoint.Map(skillsMapGroup);
-        GetRolesEndpoint.Map(rolesMapGroup);
+        var usersGroup = app.MapGroup("/api/users").WithTags("Users");
+        CreateProfile.MapEndpoint(usersGroup);
     }
 }
