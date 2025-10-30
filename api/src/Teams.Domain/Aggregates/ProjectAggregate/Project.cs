@@ -1,3 +1,4 @@
+using Teams.Domain.Aggregates.UserAggregate;
 using Teams.Domain.SeedWork;
 using Teams.Domain.SharedKernel;
 
@@ -26,6 +27,8 @@ public class Project : Entity
    public IReadOnlyCollection<Team> Teams => _teams.AsReadOnly();
 
    public Guid OwnerId { get; private set; }
+   
+   public User Owner { get; private set; }
 
    protected Project()
    {
@@ -53,16 +56,11 @@ public class Project : Entity
       return projectRole;
    }
 
-   public Team? AddTeamToProject(Guid userId)
+   public Team? AddTeamToProject(Guid leaderId)
    {
       // TODO: check flag for open creation of teams by users other than project owner
-
-      if (userId != OwnerId) // TODO: extract out into handler, to be invoked at service level
-      {
-         return null;
-      }
       
-      var team = new Team(Id, userId);
+      var team = new Team(Id, leaderId);
       _teams.Add(team);
       return team;
    }
