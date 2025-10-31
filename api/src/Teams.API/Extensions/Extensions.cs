@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using System.Text;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects;
@@ -27,9 +29,10 @@ internal static class Extensions
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
         var services = builder.Services;
-        
+
         builder.Services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
+            {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateAudience = true,
@@ -39,7 +42,8 @@ internal static class Extensions
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecurityKey"]!))
-                });
+                };
+            });
 
         builder.Services.AddDbContext<TeamDbContext>(options =>
         {
@@ -165,6 +169,8 @@ internal static class Extensions
         
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddTransient<IIdentityService, IdentityService>();
+        builder.Services.AddSingleton<IAuthorizationHandler, ProjectIsOwnerAuthorizationHandler>();
+        builder.Services.AddSingleton<IAuthorizationHandler, TeamIsLeaderAuthorizationHandler>();
     }
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)

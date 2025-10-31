@@ -14,6 +14,7 @@ public sealed record GetAllTeamMembershipRequestsQuery : IRequest<IEnumerable<Te
 
 public sealed record TeamMembershipRequestViewModel
 {
+    public required string Id { get; init; }
     public required string TeamId { get; init; }
     public required string UserId { get; init; }
     // public required string UserName { get; init; }
@@ -60,6 +61,7 @@ internal sealed class GetAllTeamMembershipRequestsHandler(TeamDbContext context)
                 || r.Status == Enum.Parse<TeamMembershipRequestStatus>(request.Status))
             .Select(r => new TeamMembershipRequestViewModel
             {
+                Id = r.Id.ToString(),
                 TeamId = r.TeamId.ToString(),
                 UserId = r.UserId.ToString(),
                 ProjectRoleId = r.ProjectRoleId.ToString(),

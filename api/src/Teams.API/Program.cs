@@ -1,5 +1,7 @@
 using Microsoft.OpenApi.Models;
+using Teams.API.Exceptions;
 using Teams.API.Extensions;
+using Teams.API.Services;
 using Teams.API.Validation;
 using Teams.Infrastructure.Messaging;
 
@@ -9,7 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddCors();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("EditProjectPolicy", policy =>
+        policy.Requirements.Add(new IsOwnerRequirement()));
+    options.AddPolicy("ManageMembersPolicy", policy =>
+        policy.Requirements.Add(new IsLeaderRequirement()));
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>
 {
@@ -47,6 +55,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ValidationExceptionHandlingMiddleware>();
+app.UseMiddleware<TeamsExceptionHandlerMiddleware>();
 
 app.UseCors(option => option.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 

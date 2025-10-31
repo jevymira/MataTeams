@@ -9,7 +9,7 @@ public class TeamEntityTypeConfiguration : IEntityTypeConfiguration<Team>
 {
     public void Configure(EntityTypeBuilder<Team> builder)
     {
-        builder.HasOne<User>()
+        builder.HasOne<User>(t => t.Leader)
             .WithMany()
             .HasForeignKey(t => t.LeaderId);
     }

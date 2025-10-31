@@ -30,7 +30,7 @@ public class ProjectEntityTypeConfiguration : IEntityTypeConfiguration<Project>
 
         builder.Property(p => p.OwnerId);
         
-        builder.HasOne<User>()
+        builder.HasOne<User>(u => u.Owner)
             .WithMany()
             .HasForeignKey(p => p.OwnerId)
             .HasPrincipalKey(u => u.Id)
