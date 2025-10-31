@@ -15,6 +15,8 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("EditProjectPolicy", policy =>
         policy.Requirements.Add(new IsOwnerRequirement()));
+    options.AddPolicy("ManageMembersPolicy", policy =>
+        policy.Requirements.Add(new IsLeaderRequirement()));
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>

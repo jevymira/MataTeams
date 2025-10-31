@@ -1,4 +1,5 @@
-﻿using Teams.Domain.SeedWork;
+﻿using Teams.Domain.Aggregates.UserAggregate;
+using Teams.Domain.SeedWork;
 
 namespace Teams.Domain.Aggregates.ProjectAggregate;
 
@@ -7,6 +8,8 @@ public class Team : Entity
     public Guid ProjectId { get; private set; }
     
     public Guid LeaderId { get; private set; }
+    
+    public User Leader { get; private set; }
     
     // Private collection fields; for rationale, refer to MS reference repository at
     // https://github.com/dotnet/eShop/blob/main/src/Ordering.Domain/AggregatesModel/OrderAggregate/Order.cs

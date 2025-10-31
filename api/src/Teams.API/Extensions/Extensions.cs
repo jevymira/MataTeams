@@ -170,6 +170,7 @@ internal static class Extensions
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddTransient<IIdentityService, IdentityService>();
         builder.Services.AddSingleton<IAuthorizationHandler, ProjectIsOwnerAuthorizationHandler>();
+        builder.Services.AddSingleton<IAuthorizationHandler, TeamIsLeaderAuthorizationHandler>();
     }
 
     public static void MapEndpoints(this IEndpointRouteBuilder app)
