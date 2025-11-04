@@ -10,7 +10,7 @@ import RolesDropdown from "../roleDropdown/RoleDropdown"
 import './AddRoleForm.css'
 
 // types 
-import { ProjectFormAction, ProjectRole } from '../../types'
+import { ProjectFormAction, ProjectRole, Skill } from '../../types'
 
 type AddRoleFormProps = {
     index: number
@@ -19,12 +19,13 @@ type AddRoleFormProps = {
 }
 
 function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
-    const setFormSkills = (skills: string[]) => {
+    const setFormSkills = (skills: Skill[]) => {
         dispatch({type: 'UPDATE_ROLE_SKILLS', payload: {skills, index}})
     }
 
     const setRoleNumber = (posititionCount: string) => {
         dispatch({type: 'UPDATE_ROLE_POSITION_COUNT', payload: {posititionCount, index}})
+        console.log(role)
     }
 
     return (

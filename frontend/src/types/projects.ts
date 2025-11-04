@@ -19,11 +19,11 @@ export type ProjectRole = {
     roleID: string
     roleName: string
     positionCount: string
-    skills: Skill[]
+    skillIDs: string[]
 }
 
 export type ProjectRoleFormSkills = {
-    skills: string[]
+    skills: Skill[]
     index: number
 }
 
@@ -36,7 +36,7 @@ export const DefaultProjectRole : ProjectRole = {
     roleID: '',
     roleName: '',
     positionCount: '0',
-    skills: []
+    skillIDs: []
 }
 
 

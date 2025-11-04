@@ -7,7 +7,7 @@ import { useGetSkills } from '../../hooks/projects'
 
 type SkillsDropdownProps = {
     labelText: string
-    setFormSkills: (skills: string[]) => void
+    setFormSkills: (skills: Skill[]) => void
 }
 
 const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
@@ -22,20 +22,23 @@ const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
     const skillsCollection = createListCollection<Skill>({
         items: skills ?? [],
         itemToString: (skill) => skill.name,
-        itemToValue: (skill) => skill.name,
+        itemToValue: (skill) => skill.id,
     })
 
       const filteredItems = useMemo(
         () =>
-        skills.filter((item) =>
-            item.name.toLowerCase().includes(searchValue.toLowerCase()),
+        skills.filter((skill) =>
+            skill.name.toLowerCase().includes(searchValue.toLowerCase()),
         ),
         [searchValue],
     )
 
     const handleValueChange = (details: Combobox.ValueChangeDetails) => {
+        console.log("HANDLING VALUE CHANGE:")
+        console.log(details)
+        console.log(skills)
         setSelectedSkills(details.value)
-        setFormSkills(details.value)
+        setFormSkills(details.items)
     }
 
     return (
@@ -47,7 +50,7 @@ const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
             onInputValueChange={(details) => setSearchValue(details.inputValue)} >
             <Wrap gap="1">
                 {selectedSkills.map((skill) => (
-                <Badge key={skill}>{skill}</Badge>
+                <Badge key={skill}>{skills.find(s => s.id == skill)?.name}</Badge>
                 ))}
             </Wrap>
             <Combobox.Label>{labelText}</Combobox.Label>

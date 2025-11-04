@@ -18,11 +18,12 @@ export function useCreateProject(createProjectData: CreateProject, token: string
             'Content-Type': 'application/json',
             'authorization': `Bearer ${token}`
         }
-
+        console.log(JSON.stringify(createProjectData))
         try {
             fetch('https://localhost:7260/api/projects', headers).then(res => {
                 if (res.status !== 201) {
-                    throw new Error(res.statusText)
+                    console.error(res.statusText)
+                    // TODO: set error state
                 }
                 return res.json()
             }).then(json => {

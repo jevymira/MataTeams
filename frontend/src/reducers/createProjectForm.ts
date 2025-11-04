@@ -1,4 +1,4 @@
-import { CreateProject, DefaultProjectRole, DefaultRole, ProjectFormAction } from '../types'
+import { CreateProject, DefaultProjectRole, DefaultRole, ProjectFormAction, ProjectRole } from '../types'
 
 export const createProjectFormReducer = (state: CreateProject, action: ProjectFormAction) => {
     switch (action.type) {
@@ -18,18 +18,18 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
             return {
                 ...state,
                 roles: state.roles.filter((r, i) => {
-                    if (i !== action.payload) {
-                        return r
-                    }
+                    return (i !== action.payload)
                 })
             }
         }
         case 'UPDATE_ROLE_SKILLS': {
+            console.log(state)
             return {
                 ...state,
-                roles: state.roles.filter((r, i) => {
+                roles: state.roles.map((r, i) => {
                     if (i == action.payload.index) {
-                        return {...r, skills: action.payload.skills}
+                        // var newRole: ProjectRole = r
+                        return {...r, skillIDs: action.payload.skills.map(skill => skill.id)}
                     } else {
                         return r
                     }
@@ -37,11 +37,14 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
             }
         }
         case 'UPDATE_ROLE_POSITION_COUNT': {
+            console.log('update role pos count')
             return {
                 ...state,
                 roles: state.roles.map((r, i) => {
                     if (i == action.payload.index) {
-                        return {...r, positionCount: action.payload.posititionCount}
+                        var newRole: ProjectRole = r
+                        newRole.positionCount = action.payload.posititionCount
+                        return newRole
                     } else {
                         return r
                     }
