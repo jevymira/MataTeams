@@ -1,5 +1,6 @@
 using MassTransit.Initializers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Teams.API.Services;
@@ -34,7 +35,8 @@ public static class RespondToMembershipRequest
     public static void MapEndpoint(RouteGroupBuilder builder) => builder
         .MapPatch("{requestId}/status", RespondToMembershipRequestAsync)
         .WithSummary("Respond to a Pending membership request, to mark as Approved or Rejected. On approval, adds user to the team.")
-        .RequireAuthorization();
+        .RequireAuthorization()
+        .Produces(StatusCodes.Status403Forbidden);
     
     private static async Task<Results<Ok<RespondToMembershipRequestResponse>, NotFound<string>>> RespondToMembershipRequestAsync(
         string requestId,
@@ -60,6 +62,7 @@ public static class RespondToMembershipRequest
 }
 
 internal sealed class RespondToMemberShipRequestHandler(
+    IAuthorizationService authorizationService,
     TeamDbContext context,
     IIdentityService identityService)
     : IRequestHandler<RespondToMembershipRequestCommand, RespondToMembershipRequestResponse>
@@ -68,22 +71,29 @@ internal sealed class RespondToMemberShipRequestHandler(
         RespondToMembershipRequestCommand request,
         CancellationToken cancellationToken)
     {
-        var membershipRequestId = await context.TeamMembershipRequests
+        var membershipRequest = await context.TeamMembershipRequests
             .Where(r => r.Id == new Guid(request.MembershipRequestId))
-            .Select(r => r.TeamId)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (membershipRequestId == Guid.Empty)
-        {
-            throw new KeyNotFoundException($"Request with ID {request.MembershipRequestId} not found");
-        }
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw new KeyNotFoundException($"Request with ID {request.MembershipRequestId} not found");
         
         var project = await context.Projects
             .Include(p => p.Roles)
             .Include(p => p.Teams)
                 .ThenInclude(t => t.MembershipRequests)
-            .FirstOrDefaultAsync(p => p.Teams.Any(t => t.Id == membershipRequestId), cancellationToken);
+            .Include(p => p.Teams)
+                .ThenInclude(t => t.Members)
+            .Include(p => p.Teams)
+                .ThenInclude(t => t.Leader)
+            .FirstOrDefaultAsync(p => p.Teams.Any(t => t.Id == membershipRequest.TeamId), cancellationToken);
 
+        var team = project.Teams.FirstOrDefault(t => t.Id == membershipRequest.TeamId);
+        
+        var authorizationResult = await authorizationService.AuthorizeAsync(identityService.GetUser(), team, [new IsLeaderRequirement()]);
+        if (!authorizationResult.Succeeded)
+        {
+            throw new UnauthorizedAccessException("User lacks permission to manage membership requests for this team.");
+        }
+        
         var userId = await context.Users
             .Where(u => u.IdentityGuid == identityService.GetUserIdentity())
             .Select(u => u.Id)

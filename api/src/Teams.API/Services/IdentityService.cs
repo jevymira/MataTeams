@@ -17,4 +17,7 @@ public class IdentityService(IHttpContextAccessor context) : IIdentityService
     
     public string GetUserName()
         => context.HttpContext?.User.Identity?.Name;
+    
+    public ClaimsPrincipal GetUser()
+        => context.HttpContext.User;
 }
