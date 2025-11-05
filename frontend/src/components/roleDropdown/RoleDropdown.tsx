@@ -11,6 +11,7 @@ type RolesDropdownProps = {
 
 const RolesDropdown = ({labelText}: RolesDropdownProps) => {
     const [roles, getRoles] = useGetRoles()
+    console.log(roles)
     const [selectedRoles, setSelectedRoles] = useState<string[]>([])
 
     useEffect(() => {
@@ -19,8 +20,8 @@ const RolesDropdown = ({labelText}: RolesDropdownProps) => {
 
     const rolesCollection = createListCollection<Role>({
         items: roles ?? [],
-        itemToString: (skill) => skill.name,
-        itemToValue: (skill) => skill.name,
+        itemToString: (role) => role.name,
+        itemToValue: (role) => role.id,
     })
 
 

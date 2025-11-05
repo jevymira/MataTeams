@@ -34,9 +34,6 @@ const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
     )
 
     const handleValueChange = (details: Combobox.ValueChangeDetails) => {
-        console.log("HANDLING VALUE CHANGE:")
-        console.log(details)
-        console.log(skills)
         setSelectedSkills(details.value)
         setFormSkills(details.items)
     }

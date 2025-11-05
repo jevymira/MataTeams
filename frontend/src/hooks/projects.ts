@@ -7,21 +7,26 @@ import { ProjectsContext } from '../context/projects'
 import { ProjectsContextType, Project, Skill, Role, CreateProject } from '../types'
 
 // utilities
-import { convertJSONToProject } from '../utilities/convertJSONToProject'
+import { convertJSONToProject, convertProjectToJSON } from '../utilities/convertJSONToProject'
 
 
 export function useCreateProject(createProjectData: CreateProject, token: string) {
     const createProject = async () => {
-        const headers = {
-            'method': 'POST',
-            'body': JSON.stringify(createProjectData),
+        console.log(token)
+        const options = {
+            method: 'POST',
+            body: convertProjectToJSON(createProjectData),
+            headers: {
             'Content-Type': 'application/json',
-            'authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
+            }
+
         }
-        console.log(JSON.stringify(createProjectData))
+        console.log(convertProjectToJSON(createProjectData))
         try {
-            fetch('https://localhost:7260/api/projects', headers).then(res => {
+            fetch('https://localhost:7260/api/projects', options).then(res => {
                 if (res.status !== 201) {
+                    console.error(res)
                     console.error(res.statusText)
                     // TODO: set error state
                 }

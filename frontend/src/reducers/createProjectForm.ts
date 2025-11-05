@@ -23,13 +23,12 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
             }
         }
         case 'UPDATE_ROLE_SKILLS': {
-            console.log(state)
             return {
                 ...state,
                 roles: state.roles.map((r, i) => {
                     if (i == action.payload.index) {
                         // var newRole: ProjectRole = r
-                        return {...r, skillIDs: action.payload.skills.map(skill => skill.id)}
+                        return {...r, skillIds: action.payload.skills.map(skill => skill.id)}
                     } else {
                         return r
                     }
@@ -37,7 +36,6 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
             }
         }
         case 'UPDATE_ROLE_POSITION_COUNT': {
-            console.log('update role pos count')
             return {
                 ...state,
                 roles: state.roles.map((r, i) => {
@@ -57,7 +55,7 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
 export const defaultCreateProject: CreateProject = {
     name: '',
     description: '',
-    type: '',
-    status: '',
+    type: 'ARCS',
+    status: 'Planning',
     roles: []
 }

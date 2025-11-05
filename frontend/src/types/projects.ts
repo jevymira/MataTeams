@@ -16,10 +16,16 @@ export type ProjectsContextType = {
 
 //**** PROJECT ROLES ****/
 export type ProjectRole = {
-    roleID: string
+    roleId: string
     roleName: string
     positionCount: string
-    skillIDs: string[]
+    skillIds: string[]
+}
+
+export type ProjectRoleForm = {
+    roleId: string
+    positionCount: number
+    skillIds: string[]
 }
 
 export type ProjectRoleFormSkills = {
@@ -33,10 +39,10 @@ export type ProjectRoleFormPositionCount = {
 }
 
 export const DefaultProjectRole : ProjectRole = {
-    roleID: '',
+    roleId: '0199eef1-d1bd-75e9-8c25-39531d023e73',
     roleName: '',
     positionCount: '0',
-    skillIDs: []
+    skillIds: []
 }
 
 
