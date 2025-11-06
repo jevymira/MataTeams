@@ -12,27 +12,22 @@ import { convertJSONToProject, convertProjectToJSON } from '../utilities/convert
 
 export function useCreateProject(createProjectData: CreateProject, token: string) {
     const createProject = async () => {
-        console.log(token)
         const options = {
             method: 'POST',
             body: convertProjectToJSON(createProjectData),
             headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
             }
 
         }
-        console.log(convertProjectToJSON(createProjectData))
         try {
             fetch('https://localhost:7260/api/projects', options).then(res => {
                 if (res.status !== 201) {
                     console.error(res)
-                    console.error(res.statusText)
                     // TODO: set error state
                 }
-                return res.json()
-            }).then(json => {
-                console.log(json)
+                return res
             })
         } catch (e) {
             console.error(e)
@@ -142,7 +137,6 @@ export function useGetRoles() {
         
         try {   
             fetch(`https://localhost:7260/api/roles`).then(res => {
-                console.log(res)
                 if (res.status !== 200) {
                     throw new Error(res.statusText)
                 }

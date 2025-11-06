@@ -11,7 +11,6 @@ type RolesDropdownProps = {
 
 const RolesDropdown = ({labelText}: RolesDropdownProps) => {
     const [roles, getRoles] = useGetRoles()
-    console.log(roles)
     const [selectedRoles, setSelectedRoles] = useState<string[]>([])
 
     useEffect(() => {

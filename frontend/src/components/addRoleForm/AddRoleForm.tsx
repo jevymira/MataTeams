@@ -25,7 +25,7 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
 
     const setRoleNumber = (posititionCount: string) => {
         dispatch({type: 'UPDATE_ROLE_POSITION_COUNT', payload: {posititionCount, index}})
-        console.log(role)
+
     }
 
     return (
