@@ -1,6 +1,7 @@
 .headerContainer {
     width: 100%;
     max-height: 100px;
+    padding-top: 8px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -16,8 +17,8 @@
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
-    width: 950px;
-    max-width: 75%;
+    /* width: 1050px; */
+    width: 85%;
 }
 
 .homeLink {

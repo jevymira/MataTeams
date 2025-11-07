@@ -23,7 +23,7 @@ function CreateProjectForm() {
     const [createProject] = useCreateProject(formState, token)
  
     return (
-        <Container maxWidth={500}>
+        <Container maxWidth={500} style={{paddingTop: '20px'}}>
             <Field.Root>
                 <Field.Label>
                     <Field.RequiredIndicator />
