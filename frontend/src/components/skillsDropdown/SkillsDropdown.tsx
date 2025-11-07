@@ -5,7 +5,12 @@ import { Combobox, Portal, Select, createListCollection, Wrap, Badge } from '@ch
 import { Skill } from '../../types'
 import { useGetSkills } from '../../hooks/projects'
 
-function SkillsDropdown() {
+type SkillsDropdownProps = {
+    labelText: string
+    setFormSkills: (skills: Skill[]) => void
+}
+
+const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
     const [skills, getSkills] = useGetSkills()
     const [searchValue, setSearchValue] = useState("")
     const [selectedSkills, setSelectedSkills] = useState<string[]>([])
@@ -17,19 +22,20 @@ function SkillsDropdown() {
     const skillsCollection = createListCollection<Skill>({
         items: skills ?? [],
         itemToString: (skill) => skill.name,
-        itemToValue: (skill) => skill.name,
+        itemToValue: (skill) => skill.id,
     })
 
       const filteredItems = useMemo(
         () =>
-        skills.filter((item) =>
-            item.name.toLowerCase().includes(searchValue.toLowerCase()),
+        skills.filter((skill) =>
+            skill.name.toLowerCase().includes(searchValue.toLowerCase()),
         ),
         [searchValue],
     )
 
     const handleValueChange = (details: Combobox.ValueChangeDetails) => {
         setSelectedSkills(details.value)
+        setFormSkills(details.items)
     }
 
     return (
@@ -39,12 +45,12 @@ function SkillsDropdown() {
             value={selectedSkills}
             onValueChange={handleValueChange}
             onInputValueChange={(details) => setSearchValue(details.inputValue)} >
-            <Wrap gap="2">
+            <Wrap gap="1">
                 {selectedSkills.map((skill) => (
-                <Badge key={skill}>{skill}</Badge>
+                <Badge key={skill}>{skills.find(s => s.id == skill)?.name}</Badge>
                 ))}
             </Wrap>
-            <Combobox.Label>Select skills for your role in the project</Combobox.Label>
+            <Combobox.Label>{labelText}</Combobox.Label>
             
             <Combobox.Control>
                 <Combobox.Input />

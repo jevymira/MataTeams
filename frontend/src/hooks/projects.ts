@@ -1,8 +1,41 @@
 import { useContext, useState } from 'react'
-import { ProjectsContext } from '../context/projects'
-import { ProjectsContextType, Project, Skill } from '../types'
-import { convertJSONToProject } from '../utilities/convertJSONToProject'
 
+// context
+import { ProjectsContext } from '../context/projects'
+
+// types
+import { ProjectsContextType, Project, Skill, Role, CreateProject } from '../types'
+
+// utilities
+import { convertJSONToProject, convertProjectToJSON } from '../utilities/convertJSONToProject'
+
+
+export function useCreateProject(createProjectData: CreateProject, token: string) {
+    const createProject = async () => {
+        const options = {
+            method: 'POST',
+            body: convertProjectToJSON(createProjectData),
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+
+        }
+        try {
+            fetch('https://localhost:7260/api/projects', options).then(res => {
+                if (res.status !== 201) {
+                    console.error(res)
+                    // TODO: set error state
+                }
+                return res
+            })
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    return [createProject] as const
+}
 
 export function useGetProjectByID(id: string) {
     const [project, setProject] = useState<Project>();
@@ -78,7 +111,6 @@ export function useGetSkills() {
         
         try {   
             fetch(`https://localhost:7260/api/skills`).then(res => {
-                console.log(res)
                 if (res.status !== 200) {
                     throw new Error(res.statusText)
                 }
@@ -93,4 +125,30 @@ export function useGetSkills() {
         }
     }
     return [skills, getSkills] as const
+}
+
+export function useGetRoles() {
+    const [roles, setRoles] = useState<Role[]>([])
+
+    const getRoles = async () => {
+        const options = {
+            method: 'GET'
+        }
+        
+        try {   
+            fetch(`https://localhost:7260/api/roles`).then(res => {
+                if (res.status !== 200) {
+                    throw new Error(res.statusText)
+                }
+
+                return res.json()
+            }).then(json => {          
+                setRoles(json)
+            })
+        } catch(e) {
+            setRoles([])
+            console.error(e)
+        }
+    }
+    return [roles, getRoles] as const
 }

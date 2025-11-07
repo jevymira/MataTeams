@@ -17,6 +17,7 @@ import AuthContextProvider from './context/auth'
 
 // style
 import './App.css'
+import CreateProjectForm from './components/createProjectForm/CreateProjectForm'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Header />
             <Routes>
               <Route path='/' element={<PrivateRoute outlet={<Projects />} />} />
+              <Route path='/new' element={<PrivateRoute outlet={<CreateProjectForm />} />} />
               <Route path='/project/:id' element={<PrivateRoute outlet={<ProjectView />} />} />
               <Route path='/profile' element={<PrivateRoute outlet={<Profile />} />} />
               <Route path='/login' element={<Login />} />
