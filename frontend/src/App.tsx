@@ -8,6 +8,7 @@ import Projects from './pages/projects/Projects'
 import Profile from './pages/profile/Profile'
 import { NotFound } from './pages/notFound/NotFound'
 import { Login } from './pages/login/Login'
+import { Signup } from './pages/signup/signup'
 import PrivateRoute from './components/privateRoute/PrivateRoute'
 import ProjectView from './pages/projectView/ProjectView'
 
@@ -32,6 +33,7 @@ function App() {
               <Route path='/project/:id' element={<PrivateRoute outlet={<ProjectView />} />} />
               <Route path='/profile' element={<PrivateRoute outlet={<Profile />} />} />
               <Route path='/login' element={<Login />} />
+              <Route path='/signup' element={<Signup />}/>
               <Route path="*" element={<NotFound />}></Route>
             </Routes>
           </div>
