@@ -29,26 +29,26 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
     }
 
     return (
-        <Container maxWidth={500}>
-        <div className="dropdownWrapper">
-            <RolesDropdown labelText="Select role type"/>
-        </div>
-        <NumberInput.Root
-            value={role.positionCount}
-            onValueChange={(e) => setRoleNumber(e.value)}>
-        <NumberInput.Label>How many people for this role?</NumberInput.Label>
-        <NumberInput.ValueText />
-        <NumberInput.Control>
-            <NumberInput.IncrementTrigger />
-            <NumberInput.DecrementTrigger />
-        </NumberInput.Control>
-        <NumberInput.Scrubber />
-        <NumberInput.Input />
-        </NumberInput.Root>
-        <div className="dropdownWrapper">
-            <SkillsDropdown setFormSkills={setFormSkills} labelText="Select skills for this role in the project"/>
-        </div>
-        </Container>
+        <>
+            <div className="dropdownWrapper">
+                <RolesDropdown labelText="Select role type"/>
+            </div>
+            <NumberInput.Root
+                value={role.positionCount}
+                style={{marginBottom: '25px'}}
+                onValueChange={(e) => setRoleNumber(e.value)}>
+            <NumberInput.Label>How many people for this role?</NumberInput.Label>
+            <NumberInput.Control>
+                <NumberInput.IncrementTrigger />
+                <NumberInput.DecrementTrigger />
+            </NumberInput.Control>
+            <NumberInput.Scrubber />
+            <NumberInput.Input />
+            </NumberInput.Root>
+            <div className="dropdownWrapper">
+                <SkillsDropdown setFormSkills={setFormSkills} labelText="Select skills for this role in the project"/>
+            </div>
+        </>
         
     )
 }
