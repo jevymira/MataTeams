@@ -2,7 +2,7 @@
 import { Dispatch, useState } from "react"
 
 // components
-import { Container, NumberInput } from "@chakra-ui/react"
+import { Box, Container, NumberInput } from "@chakra-ui/react"
 import SkillsDropdown from "../skillsDropdown/SkillsDropdown"
 import RolesDropdown from "../roleDropdown/RoleDropdown"
 
@@ -29,7 +29,7 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
     }
 
     return (
-        <>
+        <Box borderRadius={'5px'} borderWidth={'1px'} borderColor={'var(--secondary)'} marginBottom={'25px'} padding={'10px'}>
             <div className="dropdownWrapper">
                 <RolesDropdown labelText="Select role type"/>
             </div>
@@ -48,7 +48,7 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
             <div className="dropdownWrapper">
                 <SkillsDropdown setFormSkills={setFormSkills} labelText="Select skills for this role in the project"/>
             </div>
-        </>
+        </Box>
         
     )
 }
