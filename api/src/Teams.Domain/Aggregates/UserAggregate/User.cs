@@ -25,14 +25,14 @@ public class User : Entity
     /// </remarks>
     public IReadOnlyCollection<string> Programs => _programs.AsReadOnly();
     
-    private readonly List<Skill> skills;
+    private readonly List<Skill> _skills;
     
-    public IReadOnlyCollection<Skill> Skills => skills.AsReadOnly();
+    public IReadOnlyCollection<Skill> Skills => _skills.AsReadOnly();
 
     protected User()
     {
         _programs = new List<string>();
-        skills = new List<Skill>();
+        _skills = new List<Skill>();
     }
     
     public User(Guid id, string firstname, string lastname, bool isFacultyOrStaff, string identityGuid) : this()
@@ -51,29 +51,19 @@ public class User : Entity
     /// </remarks>
     public void AddSkill(Skill skill)
     {
-        if (skills.Any(s => s.Id == skill.Id))
+        if (_skills.Any(s => s.Id == skill.Id))
             throw new InvalidOperationException($"Skill with ID {skill.Id} is already added.");
         
-        skills.Add(skill);
+        _skills.Add(skill);
     }
 
-    /*
-    public void UpdateSkillProficiency(int skillId, Proficiency newProficiency)
+    public void RemoveSkill(Skill skill)
     {
-        var userSkill = _userSkills.FirstOrDefault(s => s.SkillId == skillId);
-        if (userSkill == null)
-            throw new InvalidOperationException($"Skill with ID {skillId} not found.");
-        
-        userSkill.Proficiency = newProficiency;
-    }
+        var userSkill =  _skills.FirstOrDefault(s => s.Id == skill.Id);
 
-    public void RemoveSkill(int skillId)
-    {
-        var userSkill =  _userSkills.FirstOrDefault(s => s.SkillId == skillId);
-        if (userSkill == null)
-            throw new InvalidOperationException($"Skill with ID {skillId} not found.");
-        
-        _userSkills.Remove(userSkill);
+        if (userSkill is not null)
+        {
+            _skills.Remove(userSkill);
+        }
     }
-    */
 }
