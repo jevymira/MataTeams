@@ -1,9 +1,15 @@
 // libraries
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router'
-import { Button } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 import { LuPlus } from "react-icons/lu"
+
+// context
+import { AuthContext } from '../../context/auth'
+
+//types
+import { AuthContextType } from '../../types'
 
 // components
 import ProjectCard from '../../components/project/ProjectCard'
@@ -17,7 +23,8 @@ import { useGetAllProjects } from '../../hooks/projects'
 import './Projects.css'
 
 function Projects() {
-  const [projects, getProjects] = useGetAllProjects()
+  const { token } = useContext(AuthContext) as AuthContextType
+  const [projects, getProjects] = useGetAllProjects(token)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -29,25 +36,27 @@ function Projects() {
   }
 
   return (
-  <div className='projectsWrapper'>
+  <Flex direction={'row'}>
     <Sidebar />
-    <div className='projectsPageHeader'>
-      <Searchbar />
-      <Button aria-label="Create new Project" onClick={routeToNewProject}>
-        <LuPlus /> New Project
-      </Button>
-      {/* <Link to="/new">Create new Project </Link> */}
-    </div>
-    {projects === null || projects.length < 1? <div>Loading...</div> : (
-      <div className="">
-        {projects.map((p) => {
-          return (
-            <ProjectCard project={p}/>
-          )
-        })}
+    <Flex direction={'column'}>
+      <div className='projectsPageHeader'>
+        <Searchbar />
+        <Button aria-label="Create new Project" onClick={routeToNewProject}>
+          <LuPlus /> New Project
+        </Button>
+        {/* <Link to="/new">Create new Project </Link> */}
       </div>
-    )}
-    </div>)
+      {projects === null || projects.length < 1? <div>Loading...</div> : (
+        <div className="">
+          {projects.map((p) => {
+            return (
+              <ProjectCard project={p}/>
+            )
+          })}
+        </div>
+      )}
+    </Flex>
+    </Flex>)
 }
   
   export default Projects;
