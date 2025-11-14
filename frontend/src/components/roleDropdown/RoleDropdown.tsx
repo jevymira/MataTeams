@@ -25,7 +25,7 @@ const RolesDropdown = ({labelText}: RolesDropdownProps) => {
 
 
     return (
-    <Select.Root collection={rolesCollection} size="sm" width="320px">
+    <Select.Root collection={rolesCollection}>
       <Select.HiddenSelect />
       <Select.Label>{labelText}</Select.Label>
       <Select.Control>

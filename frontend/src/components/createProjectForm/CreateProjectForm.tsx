@@ -6,9 +6,6 @@ import { LuUserPlus } from "react-icons/lu"
 // hooks
 import { useCreateProject } from '../../hooks/projects'
 
-// components
-import SkillsDropdown from '../skillsDropdown/SkillsDropdown'
-
 // context
 import { AuthContext } from '../../context/auth'
 
@@ -17,6 +14,9 @@ import { AuthContextType } from '../../types'
 import AddRoleForm from '../addRoleForm/AddRoleForm'
 import { createProjectFormReducer, defaultCreateProject } from '../../reducers/createProjectForm'
 
+// style
+import './CreateProjectForm.css'
+
 function CreateProjectForm() {
     const [formState, dispatch] = useReducer(createProjectFormReducer, defaultCreateProject)
     const { token } = useContext(AuthContext) as AuthContextType
@@ -24,7 +24,7 @@ function CreateProjectForm() {
  
     return (
         <Container maxWidth={500} style={{paddingTop: '20px'}}>
-            <Field.Root>
+            <Field.Root style={{paddingBottom: '25px'}}>
                 <Field.Label>
                     <Field.RequiredIndicator />
                     <Text>Project Name</Text>
@@ -37,7 +37,7 @@ function CreateProjectForm() {
                 </Field.ErrorText>
             </Field.Root>
 
-            <Field.Root>
+            <Field.Root style={{paddingBottom: '25px'}}>
                 <Field.Label>
                     <Field.RequiredIndicator />
                     <Text>Description</Text>
@@ -49,17 +49,19 @@ function CreateProjectForm() {
                     <Text>Project name must be longer than one character!</Text>
                 </Field.ErrorText>
             </Field.Root>
-            <IconButton onClick={(e) => {
-                dispatch({type: 'ADD_ROLE'})
-            }}>
-                <LuUserPlus aria-label="Add new role"/>
-            </IconButton>
             {formState.roles.map((r, i) => {
                 return <AddRoleForm index={i} dispatch={dispatch} key={i} role={r} />
             })}
-            <Button onClick={createProject}>
-                <Text>Submit</Text>
-            </Button>
+            <div className='formButtons'>
+                <IconButton onClick={(e) => {
+                    dispatch({type: 'ADD_ROLE'})
+                }}>
+                    <LuUserPlus aria-label="Add new role"/>
+                </IconButton>
+                <Button style={{marginLeft: '5px'}} onClick={createProject}>
+                    <Text>Submit</Text>
+                </Button>
+            </div>
         </Container>
 
     )

@@ -37,12 +37,16 @@ export function useCreateProject(createProjectData: CreateProject, token: string
     return [createProject] as const
 }
 
-export function useGetProjectByID(id: string) {
+export function useGetProjectByID(id: string, token: string) {
     const [project, setProject] = useState<Project>();
 
     const getProjectByID = async () => {
         const options = {
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
         }
         try {
             fetch(`https://localhost:7260/api/projects/${id}`).then(res => {
@@ -64,34 +68,31 @@ export function useGetProjectByID(id: string) {
     return [project, getProjectByID] as const
 }
 
-export function useGetAllProjects() {
+export function useGetAllProjects(token: string) {
     const { projects, setProjects } = useContext(ProjectsContext) as ProjectsContextType
 
     const getProjects = async () => {
         const options = {
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
         }
         
         try {
-            var projectsFromServer: Array<Project> = []
-            for (let i = 1; i < 6; i++) {
-                fetch('https://localhost:7260/api/projects/' + i, options).then(res => {
-                    if (res.status !== 200) {
-                        console.error('error!')
-                        return -1
-                    }
+           // var projectsFromServer: Array<Project> = []
+            fetch('https://localhost:7260/api/projects/', options).then(res => {
+                if (res.status !== 200) {
+                    console.error('error!')
+                    return -1
+                }
 
-                    return res.json()
-                }).then(jsonRes => {
-                    // TODO: this approach causing flickering, it is a 
-                    // workaround until we have a /get all projects endpoint
-                    let project: Project = convertJSONToProject(jsonRes)
-                    projectsFromServer = [...projectsFromServer, project]
-                }).then(() => {
-                    setProjects(projectsFromServer)
-                })
-            }
-            
+                return res.json()
+            }).then(jsonRes => {
+                console.log(jsonRes)
+                setProjects(jsonRes['projects'])
+            })
         } catch (e) {
             console.error(e)
             return e

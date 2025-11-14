@@ -44,14 +44,13 @@ const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
             size="sm" 
             value={selectedSkills}
             onValueChange={handleValueChange}
-            onInputValueChange={(details) => setSearchValue(details.inputValue)} >
+            onInputValueChange={(details) => setSearchValue(details.inputValue)}>
+            <Combobox.Label>{labelText}</Combobox.Label>
             <Wrap gap="1">
                 {selectedSkills.map((skill) => (
                 <Badge key={skill}>{skills.find(s => s.id == skill)?.name}</Badge>
                 ))}
             </Wrap>
-            <Combobox.Label>{labelText}</Combobox.Label>
-            
             <Combobox.Control>
                 <Combobox.Input />
                 <Combobox.IndicatorGroup>
