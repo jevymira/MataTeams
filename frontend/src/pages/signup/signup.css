@@ -1,0 +1,14 @@
+.background {
+    background-color: black;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Form {
+    background-color: white;
+    padding-bottom: 15px;
+    border-radius: 25px;
+    transform: translateY(-100px);
+}

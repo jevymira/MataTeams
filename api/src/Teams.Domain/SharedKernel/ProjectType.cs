@@ -27,6 +27,68 @@ public sealed class ProjectType : IEquatable<ProjectType>
         }
     );
 
+    /// <summary>
+    /// Denotes independent faculty projects, as distinct from those by university
+    /// organizations such as ARCS.
+    /// </summary>
+    public static readonly ProjectType Faculty = new ProjectType(
+        "Faculty",
+        new List<ProjectStatus>
+        {
+            ProjectStatus.Draft,
+            ProjectStatus.Planning,
+            ProjectStatus.Active,
+            ProjectStatus.Completed,
+            ProjectStatus.Closed
+        }
+    );
+
+    /// <summary>
+    /// Denotes projects by student university clubs.
+    /// </summary>
+    public static readonly ProjectType Club = new ProjectType(
+        "Club",
+        new List<ProjectStatus>
+        {
+            ProjectStatus.Draft,
+            ProjectStatus.Planning,
+            ProjectStatus.Active,
+            ProjectStatus.Completed,
+            ProjectStatus.Closed
+        }
+    );
+
+    /// <summary>
+    /// Denotes student projects for project-based courses, e.g., COMP 490/L.
+    /// </summary>
+    public static readonly ProjectType Class = new ProjectType(
+        "Class",
+        new List<ProjectStatus>
+        {
+            ProjectStatus.Draft,
+            ProjectStatus.Planning,
+            ProjectStatus.Active,
+            ProjectStatus.Completed,
+            ProjectStatus.Closed
+        }
+    );
+
+    /// <summary>
+    /// Denotes student-created and led projects, without strong associations
+    /// to any campus organizations or university faculty.
+    /// </summary>
+    public static readonly ProjectType Personal = new ProjectType(
+        "Personal",
+        new List<ProjectStatus>
+        {
+            ProjectStatus.Draft,
+            ProjectStatus.Planning,
+            ProjectStatus.Active,
+            ProjectStatus.Completed,
+            ProjectStatus.Closed
+        }
+    );
+
     public static readonly ProjectType Film = new ProjectType(
         "Film",
         new List<ProjectStatus>()
@@ -39,7 +101,7 @@ public sealed class ProjectType : IEquatable<ProjectType>
         }
     );
     
-    public static IEnumerable<ProjectType> All => [Arcs, Film];
+    public static IEnumerable<ProjectType> All => [Arcs, Faculty, Club, Class, Personal, Film];
     
     /// <summary>
     /// Creates a ProjectType based on string, e.g., from user input,

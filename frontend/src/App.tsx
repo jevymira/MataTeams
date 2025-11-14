@@ -8,6 +8,7 @@ import Projects from './pages/projects/Projects'
 import Profile from './pages/profile/Profile'
 import { NotFound } from './pages/notFound/NotFound'
 import { Login } from './pages/login/Login'
+import { Signup } from './pages/signup/signup'
 import PrivateRoute from './components/privateRoute/PrivateRoute'
 import ProjectView from './pages/projectView/ProjectView'
 
@@ -17,6 +18,7 @@ import AuthContextProvider from './context/auth'
 
 // style
 import './App.css'
+import CreateProjectForm from './components/createProjectForm/CreateProjectForm'
 
 function App() {
   return (
@@ -27,9 +29,11 @@ function App() {
             <Header />
             <Routes>
               <Route path='/' element={<PrivateRoute outlet={<Projects />} />} />
+              <Route path='/new' element={<PrivateRoute outlet={<CreateProjectForm />} />} />
               <Route path='/project/:id' element={<PrivateRoute outlet={<ProjectView />} />} />
               <Route path='/profile' element={<PrivateRoute outlet={<Profile />} />} />
               <Route path='/login' element={<Login />} />
+              <Route path='/signup' element={<Signup />}/>
               <Route path="*" element={<NotFound />}></Route>
             </Routes>
           </div>

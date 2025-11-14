@@ -18,10 +18,8 @@ function Profile() {
     }
 
     return (
-        <Container>
+        <Container style={{paddingTop: '20px'}}>
             <Text>Welcome back, {username}!</Text>
-            {!showCreateProjectForm && <Button onClick={toggleCreateProjectForm}>Create New Project</Button>}
-            {showCreateProjectForm && <CreateProjectForm />}
         </Container>
 
     )
