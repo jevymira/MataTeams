@@ -12,11 +12,12 @@ public class TeamMemberEntityTypeConfiguration : IEntityTypeConfiguration<TeamMe
         // No `Member` entity exists; instead it forms join with `User`.
         // As a result, table name defaults to "team_member" (singular),
         // if not defined explicitly as here.
-        builder.ToTable("team_members");
+        builder.ToTable("TeamMembers");
 
         builder.HasOne<User>()
             .WithMany()
-            .HasForeignKey(u => u.UserId);
+            .HasForeignKey(u => u.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
         
         builder.HasOne<ProjectRole>()
             .WithMany()
