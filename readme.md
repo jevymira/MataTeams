@@ -79,7 +79,7 @@ A CSUN student-project matchmaker.
 
 1. Install Microsoft SQL Server 2022 (Developer ed.) and SQL Server Management Studio.
 
-2. Within directory `MataTeams/api`, update the `Identity.API` and `Teams.API` connection strings:
+2. Within directory `MataTeams/api`, run the following .NET CLI commands:
 
 ```
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
@@ -88,9 +88,6 @@ dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
     "Server=localhost;Database=MataTeams;Integrated Security=True;TrustServerCertificate=True;" \
     --project src/Identity.API
-```
-
-```
 dotnet user-secrets set "SeedUsers:0:IdentityGuid" \
     "00000000-0000-0000-0000-000000000000" \
     --project src/Teams.API
@@ -99,7 +96,7 @@ dotnet user-secrets set "SeedUsers:1:IdentityGuid" \
     --project src/Teams.API
 ```
 
-3. Generate the databases; run the following within directory `MataTeams/api`:
+3. Within the same directory, `MataTeams/api`, run the following EF Core CLI commands:
 
 ```
 dotnet ef database update --project src/Identity.API
@@ -108,7 +105,7 @@ dotnet ef database update --project src/Teams.Infrastructure --startup-project s
 
 #### Linux (Docker)
 
-1. Pull the Microsoft SQL Server 2022 image and define a password (as here):
+1. Pull the Microsoft SQL Server 2022 image:
 
 ```
 docker pull mcr.microsoft.com/mssql/server:2022-latest
@@ -120,7 +117,9 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Passw0rd" \
 
 (MS SQL Server can also be installed natively.)
 
-2. Within directory `MataTeams/api`, update the `Identity.API` and `Teams.API` connection strings (broadly similar between containers and native installations):
+2. Within directory `MataTeams/api`, run the following .NET CLI commands:
+
+(Connection strings should be broadly similar between containerized and Linux-native versions.)
 
 ```
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
@@ -129,9 +128,6 @@ dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
     "Data Source=localhost;Initial Catalog=MataTeams;User ID=SA;Password=Passw0rd;TrustServerCertificate=True" \
     --project src/Teams.API
-```
-
-```
 dotnet user-secrets set "SeedUsers:0:IdentityGuid" \
     "00000000-0000-0000-0000-000000000000" \
     --project src/Teams.API
@@ -140,7 +136,7 @@ dotnet user-secrets set "SeedUsers:1:IdentityGuid" \
     --project src/Teams.API
 ```
 
-3. Generate the databases; run the following within directory `MataTeams/api`:
+3. Within the same directory, `MataTeams/api`, run the following EF Core CLI commands:
 
 ```
 dotnet ef database update --project src/Identity.API
