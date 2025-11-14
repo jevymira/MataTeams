@@ -109,7 +109,7 @@ dotnet ef database update --project src/Teams.Infrastructure --startup-project s
 
 ```
 docker pull mcr.microsoft.com/mssql/server:2022-latest
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Passw0rd" \      
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=P@ssw0rd" \      
    -p 1433:1433 --name sql2022 --hostname sql2022 \
    -d \
    mcr.microsoft.com/mssql/server:2022-latest
@@ -123,10 +123,10 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Passw0rd" \
 
 ```
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
-    "Data Source=localhost;Initial Catalog=MataTeamsIdentity;User ID=SA;Password=Passw0rd;TrustServerCertificate=True" \
+    "Data Source=localhost;Initial Catalog=MataTeamsIdentity;User ID=SA;Password=P@ssw0rd;TrustServerCertificate=True" \
     --project src/Identity.API
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
-    "Data Source=localhost;Initial Catalog=MataTeams;User ID=SA;Password=Passw0rd;TrustServerCertificate=True" \
+    "Data Source=localhost;Initial Catalog=MataTeams;User ID=SA;Password=P@ssw0rd;TrustServerCertificate=True" \
     --project src/Teams.API
 dotnet user-secrets set "SeedUsers:0:IdentityGuid" \
     "00000000-0000-0000-0000-000000000000" \
