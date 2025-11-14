@@ -6,6 +6,7 @@
     position: -webkit-sticky;
     position: sticky;
     left: 0;
+    top: 100px;
     padding-left: 20px;
     text-align: left;
     border-right: solid;

@@ -1,4 +1,4 @@
-import { CreateProject, DefaultProjectRole, DefaultRole, ProjectFormAction, ProjectRole } from '../types'
+import { CreateProject, DefaultProjectRoleCreate, DefaultRole, ProjectFormAction, ProjectRole } from '../types'
 
 export const createProjectFormReducer = (state: CreateProject, action: ProjectFormAction) => {
     switch (action.type) {
@@ -11,7 +11,7 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
         case 'ADD_ROLE': {
             return {
                 ...state,
-                roles: [...state.roles, DefaultProjectRole]
+                roles: [...state.roles, DefaultProjectRoleCreate]
             }
         }
         case 'REMOVE_ROLE': {

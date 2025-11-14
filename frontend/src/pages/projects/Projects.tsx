@@ -2,7 +2,7 @@
 import { useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router'
-import { Button, Flex } from '@chakra-ui/react'
+import { Button, Flex, Container} from '@chakra-ui/react'
 import { LuPlus } from "react-icons/lu"
 
 // context
@@ -47,13 +47,13 @@ function Projects() {
         {/* <Link to="/new">Create new Project </Link> */}
       </div>
       {projects === null || projects.length < 1? <div>Loading...</div> : (
-        <div className="">
+        <Container paddingLeft={'120px'}>
           {projects.map((p) => {
             return (
               <ProjectCard project={p}/>
             )
           })}
-        </div>
+        </Container>
       )}
     </Flex>
     </Flex>)
