@@ -82,25 +82,17 @@ A CSUN student-project matchmaker.
 2. Within directory `MataTeams/api`, run the following .NET CLI commands:
 
 ```
-dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
-    "Server=localhost;Database=MataTeamsIdentity;Integrated Security=True;TrustServerCertificate=True;" \
-    --project src/Identity.API
-dotnet user-secrets set "ConnectionStrings:DefaultConnection" \
-    "Server=localhost;Database=MataTeams;Integrated Security=True;TrustServerCertificate=True;" \
-    --project src/Identity.API
-dotnet user-secrets set "SeedUsers:0:IdentityGuid" \
-    "00000000-0000-0000-0000-000000000000" \
-    --project src/Teams.API
-dotnet user-secrets set "SeedUsers:1:IdentityGuid" \
-    "00000000-0000-0000-0000-000000000001" \ 
-    --project src/Teams.API
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;Database=MataTeamsIdentity;Integrated Security=True;TrustServerCertificate=True;" --project "src\Identity.API"
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;Database=MataTeams;Integrated Security=True;TrustServerCertificate=True;" --project "src\Teams.API"
+dotnet user-secrets set "SeedUsers:0:IdentityGuid" "00000000-0000-0000-0000-000000000000" --project "src\Teams.API"
+dotnet user-secrets set "SeedUsers:1:IdentityGuid" "00000000-0000-0000-0000-000000000001" --project "src\Teams.API"
 ```
 
 3. Within the same directory, `MataTeams/api`, run the following EF Core CLI commands:
 
 ```
-dotnet ef database update --project src/Identity.API
-dotnet ef database update --project src/Teams.Infrastructure --startup-project src/Teams.API
+dotnet ef database update --project src\Identity.API
+dotnet ef database update --project src\Teams.Infrastructure --startup-project src\Teams.API
 ```
 
 #### Linux (Docker)
