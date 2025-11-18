@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.UseSeeding((context, _) =>
     {
         var hasher = new PasswordHasher<ApplicationUser>();
@@ -31,6 +31,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
             testUser = new ApplicationUser()
             {
+                Id = "00000000-0000-0000-0000-000000000000",
                 UserName = builder.Configuration["SeedUser:UserName"],
                 NormalizedUserName = builder.Configuration["SeedUser:UserName"]!.ToUpper(),
                 Email = builder.Configuration["SeedUser:Email"],
@@ -50,6 +51,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
             testUser2 = new ApplicationUser
             {
+                Id = "00000000-0000-0000-0000-000000000001",
                 UserName = "name",
                 NormalizedUserName = "name".ToUpper(),
                 Email = "name@email.com",
