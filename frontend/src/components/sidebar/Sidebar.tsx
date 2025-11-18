@@ -9,6 +9,5 @@ export const Sidebar = () => {
   <div className='sidebar'>
     <div className='sideBarItem'>Featured</div>
     <Link to='/' className='sideBarItem'>Projects</Link>
-    <div className='sideBarItem'>Classes</div>
   </div>
 )}

@@ -2,7 +2,7 @@
 import { Dispatch, useState } from "react"
 
 // components
-import { Container, NumberInput } from "@chakra-ui/react"
+import { Box, Container, NumberInput } from "@chakra-ui/react"
 import SkillsDropdown from "../skillsDropdown/SkillsDropdown"
 import RolesDropdown from "../roleDropdown/RoleDropdown"
 
@@ -29,26 +29,26 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
     }
 
     return (
-        <Container maxWidth={500}>
-        <div className="dropdownWrapper">
-            <RolesDropdown labelText="Select role type"/>
-        </div>
-        <NumberInput.Root
-            value={role.positionCount}
-            onValueChange={(e) => setRoleNumber(e.value)}>
-        <NumberInput.Label>How many people for this role?</NumberInput.Label>
-        <NumberInput.ValueText />
-        <NumberInput.Control>
-            <NumberInput.IncrementTrigger />
-            <NumberInput.DecrementTrigger />
-        </NumberInput.Control>
-        <NumberInput.Scrubber />
-        <NumberInput.Input />
-        </NumberInput.Root>
-        <div className="dropdownWrapper">
-            <SkillsDropdown setFormSkills={setFormSkills} labelText="Select skills for this role in the project"/>
-        </div>
-        </Container>
+        <Box borderRadius={'5px'} borderWidth={'1px'} borderColor={'var(--secondary)'} marginBottom={'25px'} padding={'10px'}>
+            <div className="dropdownWrapper">
+                <RolesDropdown labelText="Select role type"/>
+            </div>
+            <NumberInput.Root
+                value={role.positionCount}
+                style={{marginBottom: '25px'}}
+                onValueChange={(e) => setRoleNumber(e.value)}>
+            <NumberInput.Label>How many people for this role?</NumberInput.Label>
+            <NumberInput.Control>
+                <NumberInput.IncrementTrigger />
+                <NumberInput.DecrementTrigger />
+            </NumberInput.Control>
+            <NumberInput.Scrubber />
+            <NumberInput.Input />
+            </NumberInput.Root>
+            <div className="dropdownWrapper">
+                <SkillsDropdown setFormSkills={setFormSkills} labelText="Select skills for this role in the project"/>
+            </div>
+        </Box>
         
     )
 }
