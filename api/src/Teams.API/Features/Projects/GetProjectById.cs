@@ -11,15 +11,13 @@ public static class GetProjectById
     
     public sealed record Response
     {
-        /// <summary>
-        /// The GUID (UUID) of the project.
-        /// </summary> 
         public required string Id { get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
         public required string Type { get; set; }
         public required string Status { get; set; }
         public required List<ResponseRole> Roles { get; set; }
+        public required List<GetProjectByIdTeamViewModel>  Teams { get; set; }
     }
 
     public sealed record ResponseRole
@@ -42,6 +40,8 @@ public static class GetProjectById
         public required string SkillId { get; set; }
         public required string SkillName { get; set; }
     }
+
+    public sealed record GetProjectByIdTeamViewModel(string Id, string Name);
 
     public static void MapEndpoint(RouteGroupBuilder group) => group
         .MapGet("/{id}", GetProjectAsync)
@@ -70,12 +70,10 @@ public static class GetProjectById
                     .ThenInclude(r => r.Role)
                 .Include(p => p.Roles)
                     .ThenInclude(r => r.Skills)
+                .Include(p => p.Teams)
                 .FirstOrDefaultAsync(p => p.Id == Guid.Parse(request.Id));
 
-            if (project is null)
-            {
-                throw new KeyNotFoundException();
-            }
+            if (project is null) throw new KeyNotFoundException();
 
             return new Response
             {
@@ -100,6 +98,9 @@ public static class GetProjectById
                             })
                             .ToList()
                     })
+                    .ToList(),
+                Teams = project.Teams
+                    .Select(t => new GetProjectByIdTeamViewModel(t.Id.ToString(), t.Name))
                     .ToList()
             };
         } 

@@ -21,7 +21,8 @@ public sealed record ProjectViewModel(
     string Description,
     string Type,
     string Status,
-    IEnumerable<ProjectRoleViewModel> Roles
+    IEnumerable<ProjectRoleViewModel> Roles,
+    IEnumerable<GetAllProjectsTeamViewModel> Teams
 );
 
 public sealed record ProjectRoleViewModel(
@@ -35,6 +36,11 @@ public sealed record ProjectRoleViewModel(
 public sealed record ProjectRoleSkillViewModel(
     string SkillId,
     string SkillName
+);
+
+public sealed record GetAllProjectsTeamViewModel(
+    string Id,
+    string Name
 );
     
 public static class GetAllProjectsEndpoint
@@ -72,7 +78,11 @@ internal sealed class GetAllProjectsQueryHandler(
                     r.Skills.Select(s => new ProjectRoleSkillViewModel(
                         s.Id.ToString(),
                         s.Name
-                    ))))
+                    )))),
+                p.Teams.Select(t => new GetAllProjectsTeamViewModel(
+                    t.Id.ToString(),
+                    t.Name
+                ))
             ))
             .ToListAsync<ProjectViewModel>(cancellation);
 
