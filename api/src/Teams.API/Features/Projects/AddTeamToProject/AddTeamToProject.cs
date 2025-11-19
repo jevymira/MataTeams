@@ -7,7 +7,9 @@ using Teams.Infrastructure;
 
 namespace Teams.API.Features.Projects.AddTeamToProject;
 
-public sealed record AddTeamToProjectCommand(string ProjectId) : IRequest<string?>;
+public sealed record AddTeamToProjectRequest(string TeamName);
+
+public sealed record AddTeamToProjectCommand(string TeamName, string ProjectId) : IRequest<string?>;
 
 public static class AddTeamToProjectEndpoint
 {
@@ -19,11 +21,12 @@ public static class AddTeamToProjectEndpoint
 
     private static async Task<Results<Created, NotFound<string>, Conflict<string>>> AddTeamToProjectAsync(
         string projectId,
+        AddTeamToProjectRequest request,
         IMediator mediator)
     {
         try
         {
-            var teamId = await mediator.Send(new AddTeamToProjectCommand(projectId));
+            var teamId = await mediator.Send(new AddTeamToProjectCommand(request.TeamName, projectId));
             return (teamId is not null)
                 ? TypedResults.Created($"/api/projects/{projectId}/teams/{teamId}")
                 : TypedResults.NotFound($"Project not found with ID {projectId}.");
@@ -65,7 +68,7 @@ internal sealed class AddTeamToProjectCommandHandler(
             .FirstOrDefaultAsync(u => u.IdentityGuid == identityService.GetUserIdentity(),
                 cancellation);
         
-        var team = project.AddTeamToProject(user!.Id);
+        var team = project.AddTeamToProject(request.TeamName, user!.Id);
         await context.SaveChangesAsync(cancellation);
         return team?.Id.ToString();
     }
