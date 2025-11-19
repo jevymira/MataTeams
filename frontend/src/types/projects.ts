@@ -7,7 +7,13 @@ export type Project = {
     roles: ProjectRole[]
 }
 
-export type CreateProject = Omit<Project, "id">
+export type CreateProject = {
+    name: string
+    description: string
+    type: string
+    status: string
+    roles: ProjectRoleCreate[]
+}
 
 export type ProjectsContextType = {
     projects: Array<Project>
@@ -16,6 +22,14 @@ export type ProjectsContextType = {
 
 //**** PROJECT ROLES ****/
 export type ProjectRole = {
+    id: string,
+    roleId: string,
+    roleName: string,
+    positionCount: number,
+    skills: Skill[]
+}
+
+export type ProjectRoleCreate = {
     roleId: string
     roleName: string
     positionCount: string
@@ -38,7 +52,7 @@ export type ProjectRoleFormPositionCount = {
     index: number
 }
 
-export const DefaultProjectRole : ProjectRole = {
+export const DefaultProjectRoleCreate : ProjectRoleCreate = {
     roleId: '0199eef1-d1bd-75e9-8c25-39531d023e73',
     roleName: '',
     positionCount: '0',
