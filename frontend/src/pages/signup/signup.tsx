@@ -10,14 +10,7 @@ import SkillsDropdown from '../../components/skillsDropdown/SkillsDropdown'
 import './signup.css'
 import { Skill } from '../../types'
 
-const skills = [
-    {label: "Skill 1", value: 1},
-    {label: "Skill 2", value: 2},
-    {label: "Skill 3", value: 3}
-]
-
 export const Signup = () => {
-
     const handleSetSignupFormSkills = (skills: Skill[]) => {
         console.log(skills)
     }

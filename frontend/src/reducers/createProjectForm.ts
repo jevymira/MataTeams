@@ -15,8 +15,6 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
             }
         }
         case 'SET_ROLE_ID': {
-            console.log("SETTING ROLE ID IN STATE")
-            console.log(action.payload.roleId)
             return {
                 ...state,
                 roles: state.roles.map((r, i) => {

@@ -28,7 +28,6 @@ const RolesDropdown = ({labelText, setRoleId}: RolesDropdownProps) => {
     <Select.Root collection={rolesCollection} 
       value={selectedRole} 
       onValueChange={(e) => {
-        console.log(e.value)
         setSelectedRole(e.value)
         setRoleId(e.value[0])
       }}>
