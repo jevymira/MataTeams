@@ -8,6 +8,7 @@ import SkillsDropdown from '../../components/skillsDropdown/SkillsDropdown'
 
 // style
 import './signup.css'
+import { Skill } from '../../types'
 
 const skills = [
     {label: "Skill 1", value: 1},
@@ -16,6 +17,10 @@ const skills = [
 ]
 
 export const Signup = () => {
+
+    const handleSetSignupFormSkills = (skills: Skill[]) => {
+        console.log(skills)
+    }
 
     return (
         <div className='background'>
@@ -32,7 +37,7 @@ export const Signup = () => {
                 <Input placeholder='Student/Faculty' size='md'/>
                 <p>Enter your major:</p>
                 <Input placeholder='Major' size='md'/>
-                <SkillsDropdown />
+                <SkillsDropdown labelText='Select your skills' setFormSkills={handleSetSignupFormSkills}/>
                 <Button>Submit</Button>
             </Container>
         </div>

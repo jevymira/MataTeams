@@ -1,4 +1,4 @@
-import { CreateProject, DefaultProjectRoleCreate, DefaultRole, ProjectFormAction, ProjectRole } from '../types'
+import { CreateProject, DefaultProjectRoleCreate, DefaultRole, ProjectFormAction, ProjectRoleCreate } from '../types'
 
 export const createProjectFormReducer = (state: CreateProject, action: ProjectFormAction) => {
     switch (action.type) {
@@ -12,6 +12,18 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
             return {
                 ...state,
                 roles: [...state.roles, DefaultProjectRoleCreate]
+            }
+        }
+        case 'SET_ROLE_ID': {
+            console.log("SETTING ROLE ID IN STATE")
+            console.log(action.payload.roleId)
+            return {
+                ...state,
+                roles: state.roles.map((r, i) => {
+                    if (i == action.payload.index) {
+                        return {...r, roleId: action.payload.roleId}
+                    }
+                })
             }
         }
         case 'REMOVE_ROLE': {
@@ -40,8 +52,8 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
                 ...state,
                 roles: state.roles.map((r, i) => {
                     if (i == action.payload.index) {
-                        var newRole: ProjectRole = r
-                        newRole.positionCount = action.payload.posititionCount
+                        var newRole: ProjectRoleCreate = r
+                        newRole.positionCount = parseInt(action.payload.posititionCount)
                         return newRole
                     } else {
                         return r

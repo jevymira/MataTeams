@@ -21,6 +21,7 @@ export function useCreateProject(createProjectData: CreateProject, token: string
             }
 
         }
+        console.log(convertProjectToJSON(createProjectData))
         try {
             fetch('https://localhost:7260/api/projects', options).then(res => {
                 if (res.status !== 201) {
