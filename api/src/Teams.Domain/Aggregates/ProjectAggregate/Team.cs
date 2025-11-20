@@ -33,6 +33,8 @@ public class Team : Entity
         _membershipRequests = [];
     }
 
+    // Invoked alongside RespondToMembershipRequest upon team creation,
+    // to automatically assign the team leader their project role of choice.
     public TeamMembershipRequest AddMembershipRequest(Guid userId, Guid projectRoleId)
     {
         // TODO: validate that the user is not already a team member
