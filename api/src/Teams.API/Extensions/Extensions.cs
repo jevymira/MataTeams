@@ -152,6 +152,7 @@ internal static class Extensions
                     project.AddProjectRole(backendRole.Id, 2);
                     project.Roles.Last().AddProjectSkill(java);
                     context.Set<Project>().Add(project);
+                    project.AddTeamToProject("Sample Team", project.OwnerId);
                     context.SaveChanges();
                 }
             });
