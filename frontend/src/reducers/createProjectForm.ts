@@ -1,4 +1,4 @@
-import { CreateProject, DefaultProjectRoleCreate, DefaultRole, ProjectFormAction, ProjectRole } from '../types'
+import { CreateProject, DefaultProjectRoleCreate, ProjectFormAction, ProjectRoleCreate } from '../types'
 
 export const createProjectFormReducer = (state: CreateProject, action: ProjectFormAction) => {
     switch (action.type) {
@@ -8,10 +8,25 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
         case 'SET_PROJECT_DESCRIPTION': {
             return {...state, description: action.payload}
         }
+        case 'SET_PROJECT_TYPE': {
+            return {...state, projectType: action.payload}
+        }
         case 'ADD_ROLE': {
             return {
                 ...state,
                 roles: [...state.roles, DefaultProjectRoleCreate]
+            }
+        }
+        case 'SET_ROLE_ID': {
+            return {
+                ...state,
+                roles: state.roles.map((r, i) => {
+                    if (i == action.payload.index) {
+                        return {...r, roleId: action.payload.roleId}
+                    } else {
+                        return r
+                    }
+                })
             }
         }
         case 'REMOVE_ROLE': {
@@ -40,8 +55,8 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
                 ...state,
                 roles: state.roles.map((r, i) => {
                     if (i == action.payload.index) {
-                        var newRole: ProjectRole = r
-                        newRole.positionCount = action.payload.posititionCount
+                        var newRole: ProjectRoleCreate = r
+                        newRole.positionCount = parseInt(action.payload.posititionCount)
                         return newRole
                     } else {
                         return r
@@ -55,7 +70,7 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
 export const defaultCreateProject: CreateProject = {
     name: '',
     description: '',
-    type: 'ARCS',
+    projectType: '',
     status: 'Planning',
     roles: []
 }

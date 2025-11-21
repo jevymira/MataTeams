@@ -1,14 +1,17 @@
 // libraries
-import { useParams } from 'react-router'
+import { useContext, useEffect } from 'react'
+
+// context
+import { ProjectsContext } from '../../context/projects'
+import { AuthContext } from '../../context/auth'
 
 // types
-import {Project} from '../../types'
+import { AuthContextType, Project, ProjectsContextType} from '../../types'
 
 // components
 import { Sidebar } from '../../components/sidebar/Sidebar'
 
 // hooks
-import { useEffect } from 'react'
 import { useGetProjectByID } from '../../hooks/projects'
 
 // style 
@@ -16,8 +19,9 @@ import './ProjectView.css'
 
 
 function ProjectView() {
-    const { id } = useParams()
-    const [project, getProject] = useGetProjectByID(id as string)
+    const { viewProjectId } = useContext(ProjectsContext) as ProjectsContextType
+    const { token } = useContext(AuthContext) as AuthContextType
+    const [project, getProject] = useGetProjectByID(viewProjectId, token)
 
     useEffect(() => {
         getProject()
@@ -29,7 +33,8 @@ function ProjectView() {
         <div className=''>
             <h1>{project.name} </h1>
             <p>{project.description}</p>
-            <p></p>
+            <p>{project.type}</p>
+            <p>{project.status}</p>
         </div>
     ) : <div>Loading...</div>}
     </div>)

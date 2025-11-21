@@ -7,11 +7,12 @@ import { useGetRoles } from '../../hooks/projects'
 
 type RolesDropdownProps = {
     labelText: string
+    setRoleId: (roleId: string) => void
 }
 
-const RolesDropdown = ({labelText}: RolesDropdownProps) => {
+const RolesDropdown = ({labelText, setRoleId}: RolesDropdownProps) => {
     const [roles, getRoles] = useGetRoles()
-    const [selectedRoles, setSelectedRoles] = useState<string[]>([])
+    const [selectedRole, setSelectedRole] = useState<string[]>([])
 
     useEffect(() => {
         getRoles()
@@ -23,9 +24,13 @@ const RolesDropdown = ({labelText}: RolesDropdownProps) => {
         itemToValue: (role) => role.id,
     })
 
-
     return (
-    <Select.Root collection={rolesCollection}>
+    <Select.Root collection={rolesCollection} 
+      value={selectedRole} 
+      onValueChange={(e) => {
+        setSelectedRole(e.value)
+        setRoleId(e.value[0])
+      }}>
       <Select.HiddenSelect />
       <Select.Label>{labelText}</Select.Label>
       <Select.Control>
