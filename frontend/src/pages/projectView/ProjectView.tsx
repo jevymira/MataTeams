@@ -24,7 +24,6 @@ function ProjectView() {
     const [project, getProject] = useGetProjectByID(viewProjectId, token)
 
     useEffect(() => {
-        console.log("getting project data")
         getProject()
     }, [])
 

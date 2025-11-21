@@ -1,19 +1,52 @@
-import { Container } from "@chakra-ui/react"
+//libraries
+import { useState } from "react"
+import { Container, createListCollection, Select } from "@chakra-ui/react"
 
-const ProjectTypeDropdown = () => {
+type RolesDropdownProps = {
+    setFormProjectType: (projectType: string) => void
+}
 
-    const projectTypes = [
-        'ARCS',
-        'Faculty',
-        'Club',
-        'Class',
-        'Personal',
-        'Film'
-    ]
+const ProjectTypeDropdown = ({setFormProjectType}: RolesDropdownProps) => {
+    const [type, setType] = useState<string[]>([])
+
+    const projectTypes = createListCollection({
+        items: [
+            { label: "ARCS", value: "ARCS" },
+            { label: "Faculty", value: "Faculty" },
+            { label: "Club", value: "Club" },
+            { label: "Class", value: "Class" },
+            { label: "Personal", value: "Personal" },
+            { label: "Film", value: "Film" },
+        ],
+    })
 
     return (
         <Container>
-            
+            <Select.Root
+                collection={projectTypes}
+                value={type}
+                onValueChange={(e) => {
+                    setType(e.value)
+                    setFormProjectType(e.value[0])
+                }}>
+                <Select.Control>
+                    <Select.Trigger>
+                    <Select.ValueText placeholder="Select framework" />
+                    </Select.Trigger>
+                    <Select.IndicatorGroup>
+                    <Select.Indicator />
+                    </Select.IndicatorGroup>
+                </Select.Control>
+                <Select.Positioner>
+                    <Select.Content>
+                        {projectTypes.items.map((projectType) => (
+                            <Select.Item item={projectType} key={projectType.value}>
+                                {projectType.label}
+                            </Select.Item>
+                        ))}
+                    </Select.Content>
+                </Select.Positioner>
+            </Select.Root>
         </Container>
     )
 }

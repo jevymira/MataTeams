@@ -1,4 +1,4 @@
-import { CreateProject, DefaultProjectRoleCreate, DefaultRole, ProjectFormAction, ProjectRoleCreate } from '../types'
+import { CreateProject, DefaultProjectRoleCreate, ProjectFormAction, ProjectRoleCreate } from '../types'
 
 export const createProjectFormReducer = (state: CreateProject, action: ProjectFormAction) => {
     switch (action.type) {
@@ -7,6 +7,9 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
         }
         case 'SET_PROJECT_DESCRIPTION': {
             return {...state, description: action.payload}
+        }
+        case 'SET_PROJECT_TYPE': {
+            return {...state, projectType: action.payload}
         }
         case 'ADD_ROLE': {
             return {
@@ -20,6 +23,8 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
                 roles: state.roles.map((r, i) => {
                     if (i == action.payload.index) {
                         return {...r, roleId: action.payload.roleId}
+                    } else {
+                        return r
                     }
                 })
             }
@@ -65,7 +70,7 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
 export const defaultCreateProject: CreateProject = {
     name: '',
     description: '',
-    type: 'ARCS',
+    projectType: '',
     status: 'Planning',
     roles: []
 }

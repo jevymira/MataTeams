@@ -3,6 +3,7 @@ import { Role, ProjectRoleFormSkills, ProjectRoleFormPositionCount, ProjectRoleF
 export type ProjectFormAction = 
     { type: 'SET_PROJECT_NAME', payload: string } |
     { type: 'SET_PROJECT_DESCRIPTION', payload: string } |
+    { type: 'SET_PROJECT_TYPE', payload: string } |
     { type: 'ADD_ROLE' } |
     { type: 'SET_ROLE_ID', payload: ProjectRoleFormId} |
     { type: 'REMOVE_ROLE', payload: number } |

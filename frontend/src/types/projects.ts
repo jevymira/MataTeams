@@ -10,7 +10,7 @@ export type Project = {
 export type CreateProject = {
     name: string
     description: string
-    type: string
+    projectType: string
     status: string
     roles: ProjectRoleCreate[]
 }
