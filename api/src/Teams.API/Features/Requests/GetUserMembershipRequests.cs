@@ -1,4 +1,3 @@
-using MassTransit.Initializers;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
@@ -48,9 +47,9 @@ internal sealed class GetUserMembershipRequestsQueryHandler(
         GetUserMembershipRequestsQuery query, CancellationToken cancellation)
     {
         var userId = await context.Users
-            .SingleAsync(u => u.IdentityGuid == identityService.GetUserIdentity(),
-                cancellation)
-            .Select(u => u.Id);
+            .Where(u => u.IdentityGuid == identityService.GetUserIdentity())
+            .Select(u => u.Id)
+            .SingleAsync(cancellation);
 
         var result = await context.TeamMembershipRequests
             .Where(r => r.UserId == userId)
