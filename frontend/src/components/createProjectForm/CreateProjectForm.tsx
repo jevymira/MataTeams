@@ -9,6 +9,9 @@ import { useCreateProject } from '../../hooks/projects'
 // context
 import { AuthContext } from '../../context/auth'
 
+// components
+import ProjectTypeDropdown from '../projectTypeDropdown/ProjectTypeDropdown'
+
 // types
 import { AuthContextType } from '../../types'
 import AddRoleForm from '../addRoleForm/AddRoleForm'
@@ -49,6 +52,21 @@ function CreateProjectForm() {
                     <Text>Project name must be longer than one character!</Text>
                 </Field.ErrorText>
             </Field.Root>
+
+            <Field.Root style={{paddingBottom: '25px'}}>
+                <Field.Label>
+                    <Field.RequiredIndicator />
+                    <Text>Project type</Text>
+                </Field.Label>
+                <ProjectTypeDropdown setFormProjectType={(projectType: string) => {
+                    dispatch({type: 'SET_PROJECT_TYPE', payload: projectType})
+                }}/>
+            </Field.Root>
+
+            {formState.projectType !== "" && (
+                <p>status</p>
+            )}
+
             {formState.roles.map((r, i) => {
                 return <AddRoleForm index={i} dispatch={dispatch} key={i} role={r} />
             })}
