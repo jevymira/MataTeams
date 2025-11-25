@@ -5,6 +5,8 @@ namespace Teams.Domain.Aggregates.ProjectAggregate;
 
 public class Team : Entity
 {
+    public string Name { get; private set; }
+    
     public Guid ProjectId { get; private set; }
     
     public Guid LeaderId { get; private set; }
@@ -22,14 +24,17 @@ public class Team : Entity
     
     public IReadOnlyCollection<TeamMembershipRequest> MembershipRequests => _membershipRequests.AsReadOnly();
 
-    public Team(Guid projectId, Guid leaderId)
+    public Team(string name, Guid projectId, Guid leaderId)
     {
+        Name = name;
         ProjectId = projectId;
         LeaderId = leaderId;
         _members = [];
         _membershipRequests = [];
     }
 
+    // Invoked alongside RespondToMembershipRequest upon team creation,
+    // to automatically assign the team leader their project role of choice.
     public TeamMembershipRequest AddMembershipRequest(Guid userId, Guid projectRoleId)
     {
         // TODO: validate that the user is not already a team member

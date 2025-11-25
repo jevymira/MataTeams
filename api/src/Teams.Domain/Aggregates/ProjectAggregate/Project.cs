@@ -56,11 +56,11 @@ public class Project : Entity
       return projectRole;
    }
 
-   public Team? AddTeamToProject(Guid leaderId)
+   public Team? AddTeamToProject(string teamName, Guid leaderId)
    {
       // TODO: check flag for open creation of teams by users other than project owner
       
-      var team = new Team(Id, leaderId);
+      var team = new Team(teamName, Id, leaderId);
       _teams.Add(team);
       return team;
    }
