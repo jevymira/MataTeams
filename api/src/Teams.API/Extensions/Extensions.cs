@@ -188,6 +188,7 @@ internal static class Extensions
         AddTeamToProjectEndpoint.Map(projectsGroup);
         RequestToJoinTeam.MapEndpoint(teamsGroup);
         GetAllTeamMembershipRequests.MapEndpoint(teamsGroup);
+        GetTeamByIdEndpoint.Map(teamsGroup);
         RespondToMembershipRequest.MapEndpoint(requestsGroup);
         
         GetSkillsEndpoint.Map(skillsGroup);
