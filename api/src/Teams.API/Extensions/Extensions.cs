@@ -200,6 +200,7 @@ internal static class Extensions
         CreateProfile.MapEndpoint(usersGroup);
         GetAuthenticatedUserProfileEndpoint.Map(usersGroup);
         EditAuthenticatedUserProfileEndpoint.Map(usersGroup);
+        GetProfileByIdEndpoint.Map(usersGroup);
         GetUserTeamsAndRolesEndpoint.Map(usersGroup);
         GetUserMembershipRequestsEndpoint.Map(usersGroup);
     }
