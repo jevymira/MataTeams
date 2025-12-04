@@ -1,11 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Teams.Domain.Aggregates.ProjectAggregate;
 using Teams.Infrastructure;
 
 namespace Teams.API.Features.Projects.GetAllProjects;
 
-public sealed record GetAllProjectsQuery : IRequest<GetAllProjectsResponse>;
+public sealed record GetAllProjectsQuery(string? SearchQuery) : IRequest<GetAllProjectsResponse>;
     
 public sealed record GetAllProjectsResponse(
     List<ProjectViewModel> Projects
@@ -46,11 +48,12 @@ public sealed record GetAllProjectsTeamViewModel(
 public static class GetAllProjectsEndpoint
 {
     public static void Map(RouteGroupBuilder builder) => builder
-        .MapGet("", GetAllProjectsAsync);
+        .MapGet("", GetAllProjectsAsync)
+        .WithSummary("Get all projects. Optionally, query for a single skill (at this point) by name.");
 
-    private static async Task<Ok<GetAllProjectsResponse>> GetAllProjectsAsync(IMediator mediator)
+    private static async Task<Ok<GetAllProjectsResponse>> GetAllProjectsAsync(string? query, IMediator mediator)
     {
-        var response = await mediator.Send(new GetAllProjectsQuery());
+        var response = await mediator.Send(new GetAllProjectsQuery(query));
         return TypedResults.Ok(response);
     }
 }
@@ -63,7 +66,20 @@ internal sealed class GetAllProjectsQueryHandler(
         GetAllProjectsQuery request,
         CancellationToken cancellation)
     {
-        var projects = await context.Projects
+        IQueryable<Project> projects = context.Projects;
+
+        if (!string.IsNullOrEmpty(request.SearchQuery))
+        {
+            projects = projects
+                // .Include(p => p.Roles)
+                //     .ThenInclude(r => r.Skills)
+                .Where(p =>
+                    p.Roles.Any(r =>
+                        r.Skills.Any(s =>
+                            s.Name.Equals(request.SearchQuery))));
+        }
+        
+        var response = await projects
             .Select(p => new ProjectViewModel(
                 p.Id.ToString(),
                 p.Name,
@@ -83,9 +99,8 @@ internal sealed class GetAllProjectsQueryHandler(
                     t.Id.ToString(),
                     t.Name
                 ))
-            ))
-            .ToListAsync<ProjectViewModel>(cancellation);
+            )).ToListAsync(cancellation);
 
-        return new GetAllProjectsResponse(projects);
+        return new GetAllProjectsResponse(response);
     }
 }
