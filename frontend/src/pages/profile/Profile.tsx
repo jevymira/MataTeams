@@ -10,7 +10,7 @@ import { AuthContextType } from '../../types'
 import CreateProjectForm from '../../components/createProjectForm/CreateProjectForm'
 
 function Profile() {
-    const { username } = useContext(AuthContext) as AuthContextType
+    const { username, skills } = useContext(AuthContext) as AuthContextType
     const [showCreateProjectForm, setCreateProjectForm] = useState(false)
     
     const toggleCreateProjectForm = () => {
@@ -20,6 +20,7 @@ function Profile() {
     return (
         <Container style={{paddingTop: '20px'}}>
             <Text>Welcome back, {username}!</Text>
+            <Text>{skills[0].name}</Text>
         </Container>
 
     )

@@ -13,7 +13,7 @@ export const convertProjectToJSON = (project: CreateProject): string => {
     var newJsonObject = {
         name: project.name,
         description: project.description,
-        type: project.type,
+        type: project.projectType,
         status: project.status,
         roles: project.roles.map(r => {
             var createRole: ProjectRoleForm = {
