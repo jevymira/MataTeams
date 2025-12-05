@@ -46,7 +46,7 @@ function Projects() {
         </Button>
         {/* <Link to="/new">Create new Project </Link> */}
       </div>
-      {projects === null || projects.length < 1? <div>Loading...</div> : (
+      {!projects || projects.length < 1? <div>Loading...</div> : (
         <Container paddingLeft={'120px'}>
           {projects.map((p) => {
             return (
