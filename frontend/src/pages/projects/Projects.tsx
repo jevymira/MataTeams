@@ -36,7 +36,7 @@ function Projects() {
   }
 
   return (
-  <Flex direction={'row'}>
+  <Flex direction={'row'} justifyContent={'flex-start'}>
     <Sidebar />
     <Flex direction={'column'}>
       <div className='projectsPageHeader'>

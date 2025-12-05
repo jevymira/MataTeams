@@ -1,13 +1,15 @@
 // libraries 
 import { Link } from 'react-router'
+import { Container, Box } from '@chakra-ui/react'
 
 // style
 import './Sidebar.css'
 
 export const Sidebar = () => {
   return(
-  <div className='sidebar'>
-    <div className='sideBarItem'>Featured</div>
-    <Link to='/' className='sideBarItem'>Projects</Link>
-  </div>
+  <Container>
+    <Box>
+      Filter
+    </Box>
+  </Container>
 )}
