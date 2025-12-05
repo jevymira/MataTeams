@@ -2,14 +2,14 @@
 import { useContext, useEffect } from 'react'
 
 // context
-import { ProjectsContext } from '../../context/projects'
+import { ProjectsContext } from '../../context/project'
 import { AuthContext } from '../../context/auth'
 
 // types
 import { AuthContextType, Project, ProjectsContextType} from '../../types'
 
 // components
-import { Sidebar } from '../../components/sidebar/Sidebar'
+import { Sidebar } from '../../components/filterSidebar/FilterSidebar'
 
 // hooks
 import { useGetProjectByID } from '../../hooks/projects'

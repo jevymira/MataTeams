@@ -14,7 +14,7 @@ import { AuthContextType } from '../../types'
 // components
 import ProjectCard from '../../components/project/ProjectCard'
 import Searchbar from '../../components/searchbar/Searchbar'
-import { Sidebar } from '../../components/sidebar/Sidebar'
+import { Sidebar } from '../../components/filterSidebar/FilterSidebar'
 
 // hooks
 import { useGetAllProjects } from '../../hooks/projects'
@@ -36,7 +36,7 @@ function Projects() {
   }
 
   return (
-  <Flex direction={'row'} justifyContent={'flex-start'}>
+  <Flex direction={'row'} justifyContent={'flex-start'} alignItems={'flex-start'}>
     <Sidebar />
     <Flex direction={'column'}>
       <div className='projectsPageHeader'>

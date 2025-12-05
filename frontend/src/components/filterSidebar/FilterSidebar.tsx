@@ -7,9 +7,9 @@ import './Sidebar.css'
 
 export const Sidebar = () => {
   return(
-  <Container>
+  <div className='sidebar'>
     <Box>
       Filter
     </Box>
-  </Container>
+  </div>
 )}

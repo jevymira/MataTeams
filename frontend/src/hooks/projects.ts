@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 
 // context
-import { ProjectsContext } from '../context/projects'
+import { ProjectsContext } from '../context/project'
 
 // types
 import { ProjectsContextType, Project, Skill, Role, CreateProject } from '../types'
