@@ -145,14 +145,16 @@ internal static class Extensions
                         ProjectStatus.Draft,
                         user.Id);
                     // Add `Frontend` Role with `JavaScript` and `React` Skills.
-                    project.AddProjectRole(frontendRole.Id, 2);
+                    var projectRole = project.AddProjectRole(frontendRole.Id, 2);
                     project.Roles.First().AddProjectSkill(js);
                     project.Roles.First().AddProjectSkill(react);
                     // Add `Backend` Role with `Java` Skill.
                     project.AddProjectRole(backendRole.Id, 2);
                     project.Roles.Last().AddProjectSkill(java);
                     context.Set<Project>().Add(project);
-                    project.AddTeamToProject("Sample Team", project.OwnerId);
+                    var team = project.AddTeamToProject("Sample Team", project.OwnerId);
+                    var request = project.AddTeamMembershipRequest(team.Id, project.OwnerId, projectRole.Id);
+                    project.RespondToMembershipRequest(project.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
                     context.SaveChanges();
                 }
             });
@@ -188,6 +190,7 @@ internal static class Extensions
         AddTeamToProjectEndpoint.Map(projectsGroup);
         RequestToJoinTeam.MapEndpoint(teamsGroup);
         GetAllTeamMembershipRequests.MapEndpoint(teamsGroup);
+        GetTeamByIdEndpoint.Map(teamsGroup);
         RespondToMembershipRequest.MapEndpoint(requestsGroup);
         
         GetSkillsEndpoint.Map(skillsGroup);
@@ -197,5 +200,8 @@ internal static class Extensions
         CreateProfile.MapEndpoint(usersGroup);
         GetAuthenticatedUserProfileEndpoint.Map(usersGroup);
         EditAuthenticatedUserProfileEndpoint.Map(usersGroup);
+        GetProfileByIdEndpoint.Map(usersGroup);
+        GetUserTeamsAndRolesEndpoint.Map(usersGroup);
+        GetUserMembershipRequestsEndpoint.Map(usersGroup);
     }
 }
