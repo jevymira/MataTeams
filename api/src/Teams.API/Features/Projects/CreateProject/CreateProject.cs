@@ -79,6 +79,9 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
             ProjectType.FromName(request.Type),
             status, 
             owner!.Id);
+
+        //skills for publishing to stupid ahh bus
+        var allSkillIds = new List<String>();
         
         foreach (var role in request.Roles)
         {
@@ -90,6 +93,7 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
             foreach (var skill in skills)
             {
                 projectRole.AddProjectSkill(skill);
+                allSkillIds.Add(skill.Id.ToString());
             }
         }
         
@@ -103,7 +107,8 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
             project.Description,
             project.Type.Name,
             project.Status.ToString(),
-            owner.Id
+            owner.Id,
+            allSkillIds
         ), cancellationToken);
 
         return project.Id.ToString();

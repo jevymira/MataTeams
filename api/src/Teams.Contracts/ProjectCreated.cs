@@ -6,5 +6,6 @@ public record ProjectCreated(
     string Description,
     string Type,
     string Status,
-    Guid OwnerId
+    Guid OwnerId,
+    List<string> Skills
 );

@@ -5,6 +5,8 @@ using Teams.API.Services;
 using Teams.Domain.Aggregates.UserAggregate;
 using Teams.Domain.SharedKernel;
 using Teams.Infrastructure;
+using MassTransit;
+using Teams.Contracts;
 
 namespace Teams.API.Features.Users;
 
@@ -59,9 +61,53 @@ public static class CreateProfile
     }
 }
 
+// internal sealed class CreateProfileCommandHandler(
+//     TeamDbContext context,
+//     IIdentityService identityService)
+//     : IRequestHandler<CreateProfileCommand, CreateProfileResponse>
+// {
+//     public async Task<CreateProfileResponse> Handle(CreateProfileCommand command, CancellationToken cancellation)
+//     {
+//         var user = context.Users
+//             .FirstOrDefault(u => u.IdentityGuid == identityService.GetUserIdentity());
+
+//         if (user is not null)
+//         {
+//             throw new InvalidOperationException("Profile already exists for the authenticated user.");
+//         }
+        
+//         user = new User(Guid.CreateVersion7(), command.FirstName,command.LastName, command.IsFacultyOrStaff, identityService.GetUserIdentity());
+        
+//         var skills = await context.Skills
+//             .Where(s => command.SkillIds.Contains(s.Id.ToString()))
+//             .ToListAsync(cancellation);
+        
+//         foreach (var skill in skills)
+//         {
+//             user.AddSkill(skill);
+//         }
+        
+//         context.Users.Add(user);
+        
+//         await context.SaveChangesAsync(cancellation);
+        
+//         return new CreateProfileResponse
+//         {
+//             FirstName = user.FirstName,
+//             LastName = user.LastName,
+//             IsFacultyOrStaff = user.IsFacultyOrStaff,
+//             Programs = user.Programs,
+//             Skills = skills.Select(s => new CreateProfileSkillModel
+//             {
+//                 Name = s.Name
+//             })
+//         };
+//     }
+// }
 internal sealed class CreateProfileCommandHandler(
     TeamDbContext context,
-    IIdentityService identityService)
+    IIdentityService identityService,
+    IPublishEndpoint publishEndpoint)  // Add MassTransit
     : IRequestHandler<CreateProfileCommand, CreateProfileResponse>
 {
     public async Task<CreateProfileResponse> Handle(CreateProfileCommand command, CancellationToken cancellation)
@@ -74,7 +120,7 @@ internal sealed class CreateProfileCommandHandler(
             throw new InvalidOperationException("Profile already exists for the authenticated user.");
         }
         
-        user = new User(Guid.CreateVersion7(), command.FirstName,command.LastName, command.IsFacultyOrStaff, identityService.GetUserIdentity());
+        user = new User(Guid.CreateVersion7(), command.FirstName, command.LastName, command.IsFacultyOrStaff, identityService.GetUserIdentity());
         
         var skills = await context.Skills
             .Where(s => command.SkillIds.Contains(s.Id.ToString()))
@@ -86,9 +132,20 @@ internal sealed class CreateProfileCommandHandler(
         }
         
         context.Users.Add(user);
-        
         await context.SaveChangesAsync(cancellation);
         
+        // Publish UserCreated event
+        await publishEndpoint.Publish(new UserCreated(
+            user.Id,
+            user.IdentityGuid,
+            user.FirstName,
+            user.LastName,
+            user.IsFacultyOrStaff,
+            command.Programs.ToList(),
+            command.SkillIds.ToList(),
+            DateTime.UtcNow
+        ), cancellation);
+
         return new CreateProfileResponse
         {
             FirstName = user.FirstName,
