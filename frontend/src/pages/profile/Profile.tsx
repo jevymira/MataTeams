@@ -20,9 +20,15 @@ function Profile() {
     return (
         <Container style={{paddingTop: '20px'}}>
             <Text>Welcome back, {username}!</Text>
-            <Text>{skills[0].name}</Text>
+            {skills?.length > 0 ? (
+                skills.map((skill, index) => (
+                <Text key={index} mt={2}>{skill.name}</Text>))
+                ) : (
+                <Text mt={2} color="gray">
+                No skills added yet
+                </Text>
+            )}
         </Container>
-
     )
   }
   

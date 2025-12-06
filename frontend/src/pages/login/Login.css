@@ -1,0 +1,12 @@
+.bg {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    margin-top: 10%;
+    border: 2px solid;
+    border-radius: 25px;
+    border-color: var(--outline);
+    padding: 15px;
+    transform: translateY(-100px);
+}

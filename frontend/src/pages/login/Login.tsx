@@ -21,14 +21,16 @@ export const Login = () => {
   }
   
   return (
-  <Container maxW='md'>
-    <Input placeholder='Username' size='md' onChange={e => {
-      setUsername(e.target.value)
-    }} />
-    <PasswordInput placeholder='Password' size='md' onChange={e => {
-      setPassword(e.target.value)
-    }}/>
-    <Button onClick={e => handleSubmit(e)}>Log In</Button>
-    <br /><Link to='/signup'>Sign up</Link>
-  </Container>
+  <div className='bg'>
+    <Container maxW='md'>
+      <Input placeholder='Username' size='md' onChange={e => {
+        setUsername(e.target.value)
+      }} />
+      <PasswordInput placeholder='Password' size='md' onChange={e => {
+        setPassword(e.target.value)
+      }}/>
+      <Button onClick={e => handleSubmit(e)}>Log In</Button>
+      <br /><p>No account yet? <Link to='/signup'>Sign up here!</Link></p>
+    </Container>
+  </div>
 )}
