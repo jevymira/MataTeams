@@ -1,6 +1,8 @@
 html {
   --highlight: #d22030;
   --secondary: #cccccc;
+  --background: #f1f1f1;
+  --outline: #b5b5b5;
   --text: #000000;
 }
 

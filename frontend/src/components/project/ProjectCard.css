@@ -1,6 +1,17 @@
 .projectContainer {
     padding-bottom: 20px;
     font-size: 26px;
+    background-color: #e3e0de; 
+    padding: 15px;
+    margin: 20px; 
+    border-style: solid;
+    border-width: 2px;
+    border-color: var(--outline);
+    border-radius:5px; 
+}
+
+.projectContainer:hover{
+    background-color: '#d1d1d1';
 }
 
 .projectLink {

@@ -21,12 +21,7 @@ type ProjectProps = {
 function ProjectCard({project} : ProjectProps) {
     const { setViewProjectId } = useContext(ProjectsContext) as ProjectsContextType
     return (
-        <Box 
-            bg={'#e3e0de'} 
-            padding={'15px'}
-            m={'20px'} 
-            borderRadius={'5px'} 
-            _hover={{bg: '#d1d1d1'}}>
+        <Box className='projectContainer'>
             <Link to={`/project/view`} className='projectLink' onClick={() => {
                 setViewProjectId(project.id)
             }}>{project.name} </Link>
