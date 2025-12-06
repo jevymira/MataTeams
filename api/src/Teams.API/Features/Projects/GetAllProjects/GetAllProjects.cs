@@ -7,7 +7,7 @@ using Teams.Infrastructure;
 
 namespace Teams.API.Features.Projects.GetAllProjects;
 
-public sealed record GetAllProjectsQuery(string? SearchQuery) : IRequest<GetAllProjectsResponse>;
+public sealed record GetAllProjectsQuery() : IRequest<GetAllProjectsResponse>;
     
 public sealed record GetAllProjectsResponse(
     List<ProjectViewModel> Projects
@@ -42,8 +42,18 @@ public sealed record ProjectRoleSkillViewModel(
 
 public sealed record GetAllProjectsTeamViewModel(
     string Id,
-    string Name
-);
+    string Name,
+    IEnumerable<GetAllProjectsTeamRoleViewModel> Roles);
+
+public sealed record GetAllProjectsTeamRoleViewModel(
+    string Id,
+    string RoleName,
+    int VacantPositionCount,
+    IEnumerable<GetAllProjectsTeamMemberViewModel> Members);
+
+public sealed record GetAllProjectsTeamMemberViewModel(
+    string UserId,
+    string Name);
     
 public static class GetAllProjectsEndpoint
 {
@@ -51,12 +61,13 @@ public static class GetAllProjectsEndpoint
         .MapGet("", GetAllProjectsAsync)
         .WithSummary("Get all projects. Optionally, query for a single skill (at this point) by name.");
 
-    private static async Task<Ok<GetAllProjectsResponse>> GetAllProjectsAsync(string? query, IMediator mediator)
+    private static async Task<Ok<GetAllProjectsResponse>> GetAllProjectsAsync(IMediator mediator)
     {
-        var response = await mediator.Send(new GetAllProjectsQuery(query));
+        var response = await mediator.Send(new GetAllProjectsQuery());
         return TypedResults.Ok(response);
     }
 }
+
 
 internal sealed class GetAllProjectsQueryHandler(
     TeamDbContext context)
@@ -68,17 +79,17 @@ internal sealed class GetAllProjectsQueryHandler(
     {
         IQueryable<Project> projects = context.Projects;
 
+        /*
         if (!string.IsNullOrEmpty(request.SearchQuery))
         {
             projects = projects
-                // .Include(p => p.Roles)
-                //     .ThenInclude(r => r.Skills)
                 .Where(p =>
                     p.Roles.Any(r =>
                         r.Skills.Any(s =>
                             s.Name.Equals(request.SearchQuery))));
         }
-        
+        */
+
         var response = await projects
             .Select(p => new ProjectViewModel(
                 p.Id.ToString(),
@@ -97,7 +108,24 @@ internal sealed class GetAllProjectsQueryHandler(
                     )))),
                 p.Teams.Select(t => new GetAllProjectsTeamViewModel(
                     t.Id.ToString(),
-                    t.Name
+                    t.Name,
+                    p.Roles.Select(r => new GetAllProjectsTeamRoleViewModel(
+                        r.Id.ToString(),
+                        r.Role.Name,
+                        r.PositionCount - t.Members.Count(m => m.ProjectRoleId == r.Id),
+                        t.Members
+                            .Join(
+                                context.Users,
+                                m => m.UserId,
+                                u => u.Id,
+                                (m , u) => new
+                                {
+                                    TeamMemberUserId = m.UserId,
+                                    UserName = u.FirstName + " " +  u.LastName
+                                })
+                            .Select(m => new GetAllProjectsTeamMemberViewModel(
+                                m.TeamMemberUserId.ToString(),
+                                m.UserName))))
                 ))
             )).ToListAsync(cancellation);
 
