@@ -80,7 +80,7 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
             status, 
             owner!.Id);
 
-        //skills for publishing to stupid ahh bus
+        //skills for publishing to bus
         var allSkillIds = new List<String>();
         
         foreach (var role in request.Roles)

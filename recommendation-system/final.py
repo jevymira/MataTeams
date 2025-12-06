@@ -1,6 +1,10 @@
 import asyncio
 import aio_pika
 import json
+from os import getenv
+from dotenv import load_dotenv
+from mssql_python import connect
+import uuid
 from typing import Dict, List, Set
 from dataclasses import dataclass
 from datetime import datetime
@@ -79,7 +83,7 @@ class RecommendationEngine:
         self.show_recommendations_for_project(project_id)
 
     #rec for users
-    def show_recommendations_for_user(self, user_id: str, top_n: int = 3):
+    def show_recommendations_for_user(self, user_id: str, top_n: int = 10):
         if user_id not in self.users:
             return
         
@@ -108,10 +112,37 @@ class RecommendationEngine:
 
         matches.sort(key=lambda x: x[1], reverse=True)
 
+        # define SQL Server connection
+        load_dotenv()
+        conn = connect(getenv("SQL_CONNECTION_STRING"))
+
         print(f"\n Recommended Projects for {user.first_name} {user.last_name}:")
         for idx, (project, score, common) in enumerate(matches[:top_n], 1):
             print(f"   {idx}. {project.name}  ({score:.0%} match)")
             print(f"      Matching Skills → {list(common)}")
+            
+            # update the recommendation (project/user pairing) if exists,
+            # add it otherwise
+            SQL_QUERY = """
+            MERGE INTO Recommendations AS target
+            USING (VALUES (?, ?, ?, ?, ?)) AS source (Id, UserId, ProjectId, MatchPercentage, ModifiedDate)
+              ON target.UserId = source.UserId AND target.ProjectId = source.ProjectId
+            WHEN MATCHED THEN
+                UPDATE SET 
+                    target.MatchPercentage = source.MatchPercentage,
+                    target.ModifiedDate = source.ModifiedDate
+            WHEN NOT MATCHED THEN
+                INSERT (Id, UserId, ProjectId, MatchPercentage, ModifiedDate)
+                VALUES (source.Id, source.UserId, source.ProjectId, source.MatchPercentage, source.ModifiedDate);
+            """
+
+            cursor = conn.cursor()
+            cursor.execute(SQL_QUERY, (uuid.uuid4(), user_id, project.project_id, score, datetime.now()))
+            conn.commit()
+
+        # close SQL Server connection
+        cursor.close()
+        conn.close()
 
     #rec for proj
     def show_recommendations_for_project(self, project_id: str, top_n: int = 3):
