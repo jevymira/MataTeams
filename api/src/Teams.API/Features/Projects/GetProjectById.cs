@@ -41,7 +41,20 @@ public static class GetProjectById
         public required string SkillName { get; set; }
     }
 
-    public sealed record GetProjectByIdTeamViewModel(string Id, string Name);
+    public sealed record GetProjectByIdTeamViewModel(
+        string Id,
+        string Name,
+        IEnumerable<GetProjectByIdTeamRoleViewModel> ProjectRoles);
+
+    public sealed record GetProjectByIdTeamRoleViewModel(
+        string Id,
+        string RoleName,
+        int VacantPositionCount,
+        IEnumerable<GetProjectByIdTeamMemberViewModel> Members);
+
+    public sealed record GetProjectByIdTeamMemberViewModel(
+        string UserId,
+        string Name);
 
     public static void MapEndpoint(RouteGroupBuilder group) => group
         .MapGet("/{id}", GetProjectAsync)
@@ -71,6 +84,7 @@ public static class GetProjectById
                 .Include(p => p.Roles)
                     .ThenInclude(r => r.Skills)
                 .Include(p => p.Teams)
+                .ThenInclude(t => t.Members)
                 .FirstOrDefaultAsync(p => p.Id == Guid.Parse(request.Id));
 
             if (project is null) throw new KeyNotFoundException();
@@ -100,7 +114,28 @@ public static class GetProjectById
                     })
                     .ToList(),
                 Teams = project.Teams
-                    .Select(t => new GetProjectByIdTeamViewModel(t.Id.ToString(), t.Name))
+                    .Select(t => new GetProjectByIdTeamViewModel(
+                        t.Id.ToString(),
+                        t.Name,
+                        project.Roles.Select(r => new GetProjectByIdTeamRoleViewModel(
+                            r.Id.ToString(),
+                            r.Role.Name,
+                            r.PositionCount - t.Members.Count(m => m.ProjectRoleId == r.Id),
+                            t.Members
+                                .Where(m => m.ProjectRoleId == r.Id)
+                                .Join(
+                                    context.Users,
+                                    m => m.UserId,
+                                    u => u.Id,
+                                    (m , u) => new
+                                    {
+                                        TeamMemberUserId = m.UserId,
+                                        UserName = u.FirstName + " " +  u.LastName
+                                    })
+                                .Select(m => new GetProjectByIdTeamMemberViewModel(
+                                    m.TeamMemberUserId.ToString(),
+                                    m.UserName))))
+                    ))
                     .ToList()
             };
         } 
