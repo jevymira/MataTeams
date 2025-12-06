@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 // style
 import './Sidebar.css'
 import { Box, Checkbox, ScrollArea, Stack } from '@chakra-ui/react'
+import FilterSection from './FilterSection'
 
 
 const projectStatusItems = [
@@ -29,6 +30,41 @@ const projectStatusItems = [
     },
   ]
 
+  const domainItems = [
+    {
+      value: "Computer Science",
+      label: "Computer Science"
+    },
+    {
+      value: "Engineering",
+      label: "Engineering"
+    },
+    {
+      value: "Machine learning",
+      label: "Machine learning"
+    },
+    {
+      value: "Research",
+      label: "Research"
+    },
+    {
+      value: "Film",
+      label: "Film"
+    },
+    {
+      value: "Business",
+      label: "Business"
+    },
+    {
+      value: "Robotics",
+      label: "Robotics"
+    },
+    {
+      value: "Humanities",
+      label: "Humanities"
+    },
+  ]
+
 const skillItems = [
   {
     value: "8762D340-5139-4B1F-6B6A-08DE347F2135",
@@ -49,33 +85,12 @@ const skillItems = [
 ]
 export const Sidebar = () => {
   return(
-  <ScrollArea.Root  height="50vh" maxW="md">
+  <ScrollArea.Root height="80vh" maxW="md" paddingLeft={'5vw'}>
     <ScrollArea.Viewport>
       <ScrollArea.Content>
-        <Stack>
-          Filter By Project Status
-          {projectStatusItems.map((status) => (
-            <Checkbox.Root key={status.value} value={status.value}>
-              <Checkbox.HiddenInput />
-              <Checkbox.Control>
-                <Checkbox.Indicator />
-              </Checkbox.Control>
-              <Checkbox.Label>{status.label}</Checkbox.Label>
-            </Checkbox.Root>
-          ))}
-        </Stack>
-        <Stack>
-          Filter By Skills
-          {skillItems.map((skill) => (
-            <Checkbox.Root key={skill.value} value={skill.value}>
-              <Checkbox.HiddenInput />
-              <Checkbox.Control>
-                <Checkbox.Indicator />
-              </Checkbox.Control>
-              <Checkbox.Label>{skill.label}</Checkbox.Label>
-            </Checkbox.Root>
-          ))}
-        </Stack>
+        <FilterSection items={projectStatusItems} sectionLabel='Filter By Project Status'/>
+        <FilterSection items={skillItems} sectionLabel='Filter By Skills'/>
+        <FilterSection items={domainItems} sectionLabel='Filter By Domain'/>
       </ScrollArea.Content>
     </ScrollArea.Viewport>
     <ScrollArea.Scrollbar>

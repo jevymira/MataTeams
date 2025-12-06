@@ -2,7 +2,7 @@
 import { useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router'
-import { Button, Flex, Container, ScrollArea, Stack, Pagination, ButtonGroup, IconButton} from '@chakra-ui/react'
+import { Flex, ScrollArea, Stack } from '@chakra-ui/react'
 
 // context
 import { AuthContext } from '../../context/auth'
@@ -21,6 +21,7 @@ import { useGetAllProjects } from '../../hooks/projects'
 // style
 import './Projects.css'
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
+import { Paginate } from '../../components/pagination/Paginate'
 
 function Projects() {
   const { token } = useContext(AuthContext) as AuthContextType
@@ -60,29 +61,7 @@ function Projects() {
           <ScrollArea.Corner />
         </ScrollArea.Root>
       )}
-    <Pagination.Root count={20} pageSize={2} defaultPage={1}>
-      <ButtonGroup variant="ghost" size="sm">
-        <Pagination.PrevTrigger asChild>
-          <IconButton>
-            <LuChevronLeft />
-          </IconButton>
-        </Pagination.PrevTrigger>
-
-        <Pagination.Items
-          render={(page) => (
-            <IconButton variant={{ base: "ghost", _selected: "outline" }}>
-              {page.value}
-            </IconButton>
-          )}
-        />
-
-        <Pagination.NextTrigger asChild>
-          <IconButton>
-            <LuChevronRight />
-          </IconButton>
-        </Pagination.NextTrigger>
-      </ButtonGroup>
-    </Pagination.Root>
+      <Paginate />
       </Flex>
     </Flex>
     )
