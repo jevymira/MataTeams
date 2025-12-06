@@ -11,7 +11,7 @@ import { truncateText } from '../../utilities/truncateText'
 
 // style
 import './ProjectCard.css'
-import { ProjectsContext } from '../../context/projects'
+import { ProjectsContext } from '../../context/project'
 import { useContext } from 'react'
 
 type ProjectProps = {

@@ -11,8 +11,7 @@ import { useLogin } from '../../hooks/login'
 //context 
 
 //types
-import {User} from '../../types'
-import { Skill } from '../../types'
+import { User, Skill} from '../../types'
 
 // style
 import './signup.css'
@@ -27,11 +26,10 @@ export const Signup = () => {
     const [isFaculty, setFaculty] = useState(false) 
 
     const handleSetSignupFormSkills = (formSkills: Skill[]) => {
-        //console.log(skills)
         setSkills(formSkills)
     }
 
-    const [signup] = useSignup(email, password, firstName, lastName, username, skills)
+    const [signup] = useSignup(email, password, firstName, lastName, username, isFaculty, skills)
 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -69,17 +67,16 @@ export const Signup = () => {
 
                 <p>Are you a Student or Faculty member?</p>
                     <CheckboxCard.Root variant='outline' colorPalette='green'
-                                       checked={isFaculty ===true} onCheckedChange={() => setFaculty(true)}>
+                            checked={isFaculty ===true} onCheckedChange={() => setFaculty(true)}>
                         <CheckboxCard.HiddenInput />
                         <CheckboxCard.Control>
                             <CheckboxCard.Label>Faculty</CheckboxCard.Label>
-                            <CheckboxCard.Description>ARCS</CheckboxCard.Description>
                             <CheckboxCard.Indicator />
                         </CheckboxCard.Control>
                     </CheckboxCard.Root>
 
                     <CheckboxCard.Root variant='outline' colorPalette='green'
-                                       checked={isFaculty ===false} onCheckedChange={() => setFaculty(false)}>
+                            checked={isFaculty ===false} onCheckedChange={() => setFaculty(false)}>
                         <CheckboxCard.HiddenInput />
                         <CheckboxCard.Control>
                             <CheckboxCard.Label>Student</CheckboxCard.Label>
