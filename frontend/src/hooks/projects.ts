@@ -21,6 +21,7 @@ export function useCreateProject(createProjectData: CreateProject, token: string
             }
 
         }
+
         try {
             fetch('https://localhost:7260/api/projects', options).then(res => {
                 if (res.status !== 201) {
@@ -90,7 +91,6 @@ export function useGetAllProjects(token: string) {
 
                 return res.json()
             }).then(jsonRes => {
-                console.log(jsonRes)
                 setProjects(jsonRes['projects'])
             })
         } catch (e) {
