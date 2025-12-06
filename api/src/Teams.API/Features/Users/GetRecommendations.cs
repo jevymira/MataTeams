@@ -32,8 +32,8 @@ public sealed record GetRecommendationsSkillViewModel(
     string Name);
 
 public sealed record GetRecommendationsTeamViewModel(
-    string Id
-    // string Name
+    string Id,
+    string Name
 );
 
 public static class GetRecommendationsEndpoint
@@ -84,7 +84,9 @@ internal sealed class GetRecommendationsEndpointHandler(
                                 s.Id.ToString(),
                                 s.Name )))),
                 r.Project.Teams
-                    .Select(t => new GetRecommendationsTeamViewModel(t.Id.ToString()))))
+                    .Select(t => new GetRecommendationsTeamViewModel(
+                        t.Id.ToString(),
+                        t.Name))))
             .ToListAsync(cancellationToken);
 
         return new GetRecommendationsResponse(recommendations);
