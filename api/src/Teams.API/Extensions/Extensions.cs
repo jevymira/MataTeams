@@ -69,6 +69,42 @@ internal static class Extensions
                     context.SaveChanges();
                 }
                 
+                var tsSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "TypeScript");
+                if (tsSkill == null)
+                {
+                    tsSkill = new Skill("TypeScript");
+                    context.Set<Skill>().Add(tsSkill);
+                    context.SaveChanges();
+                }
+                
+                var pySkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Python");
+                if (pySkill == null)
+                {
+                    pySkill = new Skill("Python");
+                    context.Set<Skill>().Add(pySkill);
+                    context.SaveChanges();
+                }
+                
+                var cplusplusSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "C++");
+                if (cplusplusSkill == null)
+                {
+                    cplusplusSkill = new Skill("C++");
+                    context.Set<Skill>().Add(cplusplusSkill);
+                    context.SaveChanges();
+                }
+                
+                var sqlSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "SQL");
+                if (sqlSkill == null)
+                {
+                    sqlSkill = new Skill("SQL");
+                    context.Set<Skill>().Add(sqlSkill);
+                    context.SaveChanges();
+                }
+                
                 var react = context.Set<Skill>()
                     .FirstOrDefault(s => s.Name == "React");
                 if (react == null)
@@ -78,12 +114,183 @@ internal static class Extensions
                     context.SaveChanges();
                 }
                 
+                var angularSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Angular");
+                if (angularSkill == null)
+                {
+                    angularSkill = new Skill("Angular");
+                    context.Set<Skill>().Add(angularSkill);
+                    context.SaveChanges();
+                }
+                
                 var expressSkill = context.Set<Skill>()
                     .FirstOrDefault(s => s.Name == "Express");
                 if (expressSkill == null)
                 {
                     expressSkill = new Skill("Express");
                     context.Set<Skill>().Add(expressSkill);
+                    context.SaveChanges();
+                }
+                
+                var springSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Spring");
+                if (springSkill == null)
+                {
+                    springSkill = new Skill("Spring");
+                    context.Set<Skill>().Add(springSkill);
+                    context.SaveChanges();
+                }
+                
+                var flaskSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Flask");
+                if (flaskSkill == null)
+                {
+                    flaskSkill = new Skill("Flask");
+                    context.Set<Skill>().Add(flaskSkill);
+                    context.SaveChanges();
+                }
+                
+                var dockerSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Docker");
+                if (dockerSkill == null)
+                {
+                    dockerSkill = new Skill("Docker");
+                    context.Set<Skill>().Add(dockerSkill);
+                    context.SaveChanges();
+                }
+                
+                var kubernetesSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Kubernetes");
+                if (kubernetesSkill == null)
+                {
+                    kubernetesSkill = new Skill("Kubernetes");
+                    context.Set<Skill>().Add(kubernetesSkill);
+                    context.SaveChanges();
+                }
+                
+                var rabbitmqSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "RabbitMQ");
+                if (rabbitmqSkill == null)
+                {
+                    rabbitmqSkill = new Skill("RabbitMQ");
+                    context.Set<Skill>().Add(rabbitmqSkill);
+                    context.SaveChanges();
+                }
+                
+                var kafkaSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Kafka");
+                if (kafkaSkill == null)
+                {
+                    kafkaSkill = new Skill("Kafka");
+                    context.Set<Skill>().Add(kafkaSkill);
+                    context.SaveChanges();
+                }
+                
+                var pulsarSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Apache Pulsar");
+                if (pulsarSkill == null)
+                {
+                    pulsarSkill = new Skill("Apache Pulsar");
+                    context.Set<Skill>().Add(pulsarSkill);
+                    context.SaveChanges();
+                }
+                
+                var elasticsearchSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Elasticsearch");
+                if (elasticsearchSkill == null)
+                {
+                    elasticsearchSkill = new Skill("Elasticsearch");
+                    context.Set<Skill>().Add(elasticsearchSkill);
+                    context.SaveChanges();
+                }
+                
+                var mysqlSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "MySQL");
+                if (mysqlSkill == null)
+                {
+                    mysqlSkill = new Skill("MySQL");
+                    context.Set<Skill>().Add(mysqlSkill);
+                    context.SaveChanges();
+                }
+                
+                var sqlServerSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Microsoft SQL Server");
+                if (sqlServerSkill == null)
+                {
+                    sqlServerSkill = new Skill("Microsoft SQL Server");
+                    context.Set<Skill>().Add(sqlServerSkill);
+                    context.SaveChanges();
+                }
+                
+                var dynamoDbSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "DynamoDB");
+                if (dynamoDbSkill == null)
+                {
+                    dynamoDbSkill = new Skill("DynamoDB");
+                    context.Set<Skill>().Add(dynamoDbSkill);
+                    context.SaveChanges();
+                }
+                
+                var awsSkill =  context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "AWS");
+                if (awsSkill == null)
+                {
+                    awsSkill = new Skill("AWS");
+                    context.Set<Skill>().Add(awsSkill);
+                    context.SaveChanges();
+                }
+                
+                var azureSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Azure");
+                if (azureSkill == null)
+                {
+                    azureSkill = new Skill("Azure");
+                    context.Set<Skill>().Add(azureSkill);
+                    context.SaveChanges();
+                }
+                
+                var azureDevOpsSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Azure DevOps");
+                if (azureDevOpsSkill == null)
+                {
+                    azureDevOpsSkill = new Skill("Azure DevOps");
+                    context.Set<Skill>().Add(azureDevOpsSkill);
+                    context.SaveChanges();
+                }
+                
+                var pyTorchSkill  = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "PyTorch");
+                if (pyTorchSkill == null)
+                {
+                    pyTorchSkill = new Skill("PyTorch");
+                    context.Set<Skill>().Add(pyTorchSkill);
+                    context.SaveChanges();
+                }
+                
+                var openCvSkill =  context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "OpenCV");
+                if (openCvSkill == null)
+                {
+                    openCvSkill = new Skill("OpenCV");
+                    context.Set<Skill>().Add(openCvSkill);
+                    context.SaveChanges();
+                }
+                
+                var solderingSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Soldering");
+                if (solderingSkill == null)
+                {
+                    solderingSkill = new Skill("Soldering");
+                    context.Set<Skill>().Add(solderingSkill);
+                    context.SaveChanges();
+                }
+                
+                var plcSkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "PLC");
+                if (plcSkill == null)
+                {
+                    plcSkill = new Skill("PLC");
+                    context.Set<Skill>().Add(plcSkill);
                     context.SaveChanges();
                 }
                 
@@ -111,6 +318,24 @@ internal static class Extensions
                 {
                     backendRole = new Role("Backend");
                     context.Set<Role>().Add(backendRole);
+                    context.SaveChanges();
+                }
+
+                var embeddedRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Embedded");
+                if (embeddedRole == null)
+                {
+                    embeddedRole = new Role("Embedded");
+                    context.Set<Role>().Add(embeddedRole);
+                    context.SaveChanges();
+                }
+                
+                var machineLearningRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Machine Learning");
+                if (machineLearningRole == null)
+                {
+                    machineLearningRole = new Role("Machine Learning");
+                    context.Set<Role>().Add(machineLearningRole);
                     context.SaveChanges();
                 }
                 
