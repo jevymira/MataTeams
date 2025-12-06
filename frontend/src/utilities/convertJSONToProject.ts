@@ -1,4 +1,4 @@
-import { CreateProject, Project, ProjectRoleForm } from "../types"
+import { CreateProject, Project, ProjectRoleCreate, ProjectRoleForm } from "../types"
 
 export const convertJSONToProject = (json: any): Project => {
     const { id, name, description, status, type, roles } = json
@@ -13,15 +13,15 @@ export const convertProjectToJSON = (project: CreateProject): string => {
     var newJsonObject = {
         name: project.name,
         description: project.description,
-        type: project.type,
+        type: project.projectType,
         status: project.status,
         roles: project.roles.map(r => {
-            var roleForm: ProjectRoleForm = {
+            var createRole: ProjectRoleForm = {
                 roleId: r.roleId,
-                positionCount: parseInt(r.positionCount),
+                positionCount: r.positionCount,
                 skillIds: r.skillIds
             }
-            return roleForm
+            return createRole
         })
     }
     return JSON.stringify(newJsonObject)
