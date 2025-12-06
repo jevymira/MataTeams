@@ -33,8 +33,18 @@ public sealed record GetRecommendationsSkillViewModel(
 
 public sealed record GetRecommendationsTeamViewModel(
     string Id,
-    string Name
-);
+    string Name,
+    IEnumerable<GetRecommendationsTeamRoleViewModel> ProjectRoles);
+
+public sealed record GetRecommendationsTeamRoleViewModel(
+    string Id,
+    string RoleName,
+    int VacantPositionCount,
+    IEnumerable<GetRecommendationsTeamMemberViewModel> Members);
+
+public sealed record GetRecommendationsTeamMemberViewModel(
+    string UserId,
+    string Name);
 
 public static class GetRecommendationsEndpoint
 {
@@ -86,7 +96,25 @@ internal sealed class GetRecommendationsEndpointHandler(
                 r.Project.Teams
                     .Select(t => new GetRecommendationsTeamViewModel(
                         t.Id.ToString(),
-                        t.Name))))
+                        t.Name,
+                        r.Project.Roles.Select(r => new GetRecommendationsTeamRoleViewModel(
+                            r.Id.ToString(),
+                            r.Role.Name,
+                            r.PositionCount - t.Members.Count(m => m.ProjectRoleId == r.Id),
+                            t.Members
+                                .Where(m => m.ProjectRoleId == r.Id)
+                                .Join(
+                                    context.Users,
+                                    m => m.UserId,
+                                    u => u.Id,
+                                    (m , u) => new
+                                    {
+                                        TeamMemberUserId = m.UserId,
+                                        UserName = u.FirstName + " " +  u.LastName
+                                    })
+                                .Select(m => new GetRecommendationsTeamMemberViewModel(
+                                    m.TeamMemberUserId.ToString(),
+                                    m.UserName))))))))
             .ToListAsync(cancellationToken);
 
         return new GetRecommendationsResponse(recommendations);
