@@ -1,5 +1,6 @@
 // libraries 
 import { useState } from 'react'
+import { Link } from 'react-router'
 import { Input, Container, Button, Stack, Checkbox, CheckboxCard, CheckboxGroup, Fieldset } from '@chakra-ui/react'
 import { PasswordInput } from '../../components/ui/password-input'
 import SkillsDropdown from '../../components/skillsDropdown/SkillsDropdown'
@@ -89,7 +90,7 @@ export const Signup = () => {
 
                 <SkillsDropdown labelText='Select your skills' setFormSkills={handleSetSignupFormSkills}/>
                 <Button onClick={e => handleSubmit(e)}>Submit</Button>
-
+                <br /><p>Already have an account? <Link to='/login'>Login here!</Link></p>
             </Container>
         </div>
     )

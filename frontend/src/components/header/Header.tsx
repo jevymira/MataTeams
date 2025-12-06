@@ -8,9 +8,12 @@ export const Header = () => {
   
   const logout = () => {
     localStorage.removeItem("token")
+    localStorage.removeItem("username")
+    localStorage.removeItem("firstName")
+    localStorage.removeItem("lastName")
     navigate('/login')
   }
-  
+
   const routeToNewProject = () => {
     navigate('/new')
   }

@@ -23,13 +23,6 @@ export function useSignup(
         body: JSON.stringify({email, password})
     }
 
-    const profileReqOptions = {
-        method: 'POST',
-        body: JSON.stringify({
-            firstName, lastName, isFacultyOrStaff, programs: ["Computer Science"]
-        })
-    }
-
     const signup = async () => {
         try {
             fetch('https://localhost:7190/api/auth/register', signUpReqOptions).then((res) => {
@@ -42,11 +35,25 @@ export function useSignup(
                 const token = resJSON['token']
                 setToken(token)
                 
-                return fetch('https://localhost:7190/api/users', profileReqOptions)
+                const profileReqOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        firstName,
+                        lastName,
+                        isFacultyOrStaff,
+                        programs: ["Computer Science"],
+                        skillIds: skills.map(skill => skill.id)
+                    })
+                }
+                return fetch('https://localhost:7260/api/users', profileReqOptions)
             }).then((profileRes) => {
                 setFirst(firstName)
                 setLast(lastName)
-                setUsername(username)
+                setUsername(username)        
                 setSkills(skills)
                 navigate("/")     
             }).catch((err) => {
