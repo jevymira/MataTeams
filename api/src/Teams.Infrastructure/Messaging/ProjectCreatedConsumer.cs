@@ -10,7 +10,6 @@ public class ProjectCreatedConsumer : IConsumer<ProjectCreated>
         var message = context.Message;
         Console.WriteLine($"[Recommendation] New project detected: {message.Name} ({message.ProjectId})");
 
-        // Recommendation logic goes here
         return Task.CompletedTask;
     }
 }

@@ -18,12 +18,13 @@ public class TeamDbContext : DbContext
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<TeamMembershipRequest> TeamMembershipRequests { get; set; }
-    
+    public DbSet<Recommendation> Recommendations { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new ProjectEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectRoleEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new RecommendationEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new RoleEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SkillEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TeamEntityTypeConfiguration());
