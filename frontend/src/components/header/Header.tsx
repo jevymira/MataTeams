@@ -1,4 +1,5 @@
-import { Avatar, AvatarGroup } from '@chakra-ui/react'
+import { Avatar, AvatarGroup, Button } from '@chakra-ui/react'
+import { LuPlus } from "react-icons/lu"
 import { Link, useNavigate } from 'react-router'
 import './Header.css'
 
@@ -9,7 +10,11 @@ export const Header = () => {
     localStorage.removeItem("token")
     navigate('/login')
   }
-  console.log(localStorage.getItem("token"))
+  
+  const routeToNewProject = () => {
+    navigate('/new')
+  }
+  
   return(
     <div className='headerContainer'>
       <div className='headerFlex'>
@@ -18,6 +23,9 @@ export const Header = () => {
           </Link>
             {(localStorage.getItem("token") && localStorage.getItem("token")!.length > 0) && (
               <div>
+                <Button aria-label="Create new Project" onClick={routeToNewProject}>
+                  <LuPlus /> New Project
+                </Button>
                 <AvatarGroup>
                   <Link to='/profile' className='profileLink'>
                   <Avatar.Root>
