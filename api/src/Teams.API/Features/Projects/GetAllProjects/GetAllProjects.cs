@@ -43,7 +43,7 @@ public sealed record ProjectRoleSkillViewModel(
 public sealed record GetAllProjectsTeamViewModel(
     string Id,
     string Name,
-    IEnumerable<GetAllProjectsTeamRoleViewModel> Roles);
+    IEnumerable<GetAllProjectsTeamRoleViewModel> ProjectRoles);
 
 public sealed record GetAllProjectsTeamRoleViewModel(
     string Id,
@@ -59,7 +59,7 @@ public static class GetAllProjectsEndpoint
 {
     public static void Map(RouteGroupBuilder builder) => builder
         .MapGet("", GetAllProjectsAsync)
-        .WithSummary("Get all projects. Optionally, query for a single skill (at this point) by name.");
+        .WithSummary("Get all projects, with vacant roles and members per team.");
 
     private static async Task<Ok<GetAllProjectsResponse>> GetAllProjectsAsync(IMediator mediator)
     {
@@ -114,6 +114,7 @@ internal sealed class GetAllProjectsQueryHandler(
                         r.Role.Name,
                         r.PositionCount - t.Members.Count(m => m.ProjectRoleId == r.Id),
                         t.Members
+                            .Where(m => m.ProjectRoleId == r.Id)
                             .Join(
                                 context.Users,
                                 m => m.UserId,
