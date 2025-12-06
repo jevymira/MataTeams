@@ -2,7 +2,7 @@
 import { useContext, useEffect } from 'react'
 
 // context
-import { ProjectsContext } from '../../context/projects'
+import { ProjectsContext } from '../../context/project'
 import { AuthContext } from '../../context/auth'
 
 // types

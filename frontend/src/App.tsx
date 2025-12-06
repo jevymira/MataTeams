@@ -13,7 +13,7 @@ import PrivateRoute from './components/privateRoute/PrivateRoute'
 import ProjectView from './pages/projectView/ProjectView'
 
 // context
-import ProjectsContextProvider from './context/projects'
+import ProjectsContextProvider from './context/project'
 import AuthContextProvider from './context/auth'
 
 // style

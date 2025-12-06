@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 
 // context
-import { ProjectsContext } from '../context/projects'
+import { ProjectsContext } from '../context/project'
 
 // types
 import { ProjectsContextType, Project, Skill, Role, CreateProject } from '../types'
@@ -67,6 +67,32 @@ export function useGetProjectByID(id: string, token: string) {
 
     }
     return [project, getProjectByID] as const
+}
+
+export function useGetRecommendedProjects(token: string) {
+    const { projects, setProjects } = useContext(ProjectsContext) as ProjectsContextType
+
+    const getProjects = async () => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        }
+
+        try {
+           // var projectsFromServer: Array<Project> = []
+            fetch('https://localhost:7260/api/users/me/recommendations', options).then(res => {
+
+            }
+
+            )
+        } catch(err) {
+            console.error(err)
+        }
+    }
+    return [projects, getProjects] as const
 }
 
 export function useGetAllProjects(token: string) {

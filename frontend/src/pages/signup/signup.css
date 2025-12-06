@@ -1,8 +1,8 @@
 .background {
     background-color: var(--background);
-    height: 100vh;
+    height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -13,5 +13,5 @@
     border-radius: 25px;
     border-color: var(--outline);
     padding: 15px;
-    transform: translateY(-100px);
+    margin-top: 50px;
 }

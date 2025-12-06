@@ -1,19 +1,31 @@
 .projectContainer {
-    padding-bottom: 20px;
-    font-size: 26px;
-    background-color: #e3e0de; 
-    padding: 15px;
+    font-size: 22px;
+    padding: 15px 25px 15px 25px;
     margin: 20px; 
+    border-radius: 15px;
     border-style: solid;
-    border-width: 2px;
-    border-color: var(--outline);
-    border-radius:5px; 
+    border-width: 1px;
+    background-color: white;
+    font-family: "Outfit", sans-serif;
 }
 
 .projectContainer:hover{
-    background-color: '#d1d1d1';
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 .projectLink {
     font-size: 40px;
+}
+
+@media (max-width: 850px) {
+    .projectContainer {
+        font-size: 18px;
+        padding: 5px !important;
+        margin-left: 5px;
+        margin-right: 5px;
+        max-width: 450px;
+    }
+    .projectLink {
+        font-size: 30px;
+    }
 }

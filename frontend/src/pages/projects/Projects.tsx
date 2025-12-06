@@ -2,8 +2,7 @@
 import { useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router'
-import { Button, Flex, Container} from '@chakra-ui/react'
-import { LuPlus } from "react-icons/lu"
+import { Flex, ScrollArea, Stack } from '@chakra-ui/react'
 
 // context
 import { AuthContext } from '../../context/auth'
@@ -21,6 +20,8 @@ import { useGetAllProjects } from '../../hooks/projects'
 
 // style
 import './Projects.css'
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
+import { Paginate } from '../../components/pagination/Paginate'
 
 function Projects() {
   const { token } = useContext(AuthContext) as AuthContextType
@@ -31,32 +32,39 @@ function Projects() {
       getProjects()
   }, [])
 
-  const routeToNewProject = () => {
-    navigate('/new')
-  }
-
   return (
-  <Flex direction={'row'}>
+  <Flex 
+    direction={'row'} 
+    justifyContent={'flex-start'} 
+    alignItems={'flex-start'}>
     <Sidebar />
-    <Flex direction={'column'}>
+    <Flex direction={'column'} alignItems={'center'}>
       <div className='projectsPageHeader'>
         <Searchbar />
-        <Button aria-label="Create new Project" onClick={routeToNewProject}>
-          <LuPlus /> New Project
-        </Button>
-        {/* <Link to="/new">Create new Project </Link> */}
       </div>
       {!projects || projects.length < 1? <div>Loading...</div> : (
-        <Container paddingLeft={'120px'}>
-          {projects.map((p) => {
-            return (
-              <ProjectCard project={p}/>
-            )
-          })}
-        </Container>
+        <ScrollArea.Root height="73vh" width={'600px'} marginTop={'10px'}>
+          <ScrollArea.Viewport>
+            <ScrollArea.Content>
+              <Stack>
+                {projects.map((p, i) => {
+                  return (
+                    <ProjectCard project={p} isGoodMatch={(i < 2)}/>
+                  )
+                })}
+              </Stack>
+            </ScrollArea.Content>
+          </ScrollArea.Viewport>
+          <ScrollArea.Scrollbar>
+            <ScrollArea.Thumb />
+          </ScrollArea.Scrollbar>
+          <ScrollArea.Corner />
+        </ScrollArea.Root>
       )}
+      <Paginate />
+      </Flex>
     </Flex>
-    </Flex>)
+  )
 }
   
   export default Projects;

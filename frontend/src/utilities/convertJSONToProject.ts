@@ -15,7 +15,7 @@ export const convertProjectToJSON = (project: CreateProject): string => {
         description: project.description,
         type: project.projectType,
         status: project.status,
-        roles: project.roles.map(r => {
+        roles: project.roles.map((r: ProjectRoleCreate) => {
             var createRole: ProjectRoleForm = {
                 roleId: r.roleId,
                 positionCount: r.positionCount,

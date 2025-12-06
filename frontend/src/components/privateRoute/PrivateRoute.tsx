@@ -10,7 +10,7 @@ type ProtectedRouteProps = {
 function PrivateRoute({ outlet }: ProtectedRouteProps) {
     const { token } = useContext(AuthContext) as AuthContextType
 
-    if (!token || token === '') {
+    if (!token || token === '' || token.length < 1) {
         return <Navigate to="/login" />
     }
     return outlet
