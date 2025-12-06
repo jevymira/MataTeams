@@ -38,18 +38,18 @@ function Projects() {
     justifyContent={'flex-start'} 
     alignItems={'flex-start'}>
     <Sidebar />
-    <Flex direction={'column'}>
+    <Flex direction={'column'} alignItems={'center'}>
       <div className='projectsPageHeader'>
         <Searchbar />
       </div>
       {!projects || projects.length < 1? <div>Loading...</div> : (
-        <ScrollArea.Root paddingLeft={'120px'} height="80vh">
+        <ScrollArea.Root height="73vh" width={'600px'} marginTop={'10px'}>
           <ScrollArea.Viewport>
             <ScrollArea.Content>
               <Stack>
-                {projects.map((p) => {
+                {projects.map((p, i) => {
                   return (
-                    <ProjectCard project={p}/>
+                    <ProjectCard project={p} isGoodMatch={(i < 2)}/>
                   )
                 })}
               </Stack>
@@ -64,7 +64,7 @@ function Projects() {
       <Paginate />
       </Flex>
     </Flex>
-    )
+  )
 }
   
   export default Projects;

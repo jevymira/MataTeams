@@ -85,7 +85,7 @@ const skillItems = [
 ]
 export const Sidebar = () => {
   return(
-  <ScrollArea.Root height="80vh" maxW="md" paddingLeft={'5vw'}>
+  <ScrollArea.Root height="80vh" maxWidth={'250px'} paddingLeft={'2vw'}>
     <ScrollArea.Viewport>
       <ScrollArea.Content>
         <FilterSection items={projectStatusItems} sectionLabel='Filter By Project Status'/>
