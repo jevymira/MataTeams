@@ -42,7 +42,6 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                 }
                 return res.json()
             }).then(projID => {
-                console.log(projID)
                 setViewProjectId(projID)
                 fetch(`https://localhost:7260/api/projects/${projID}`, getProjectOptions).then(res => {
                     return res.json().then(projectJSON => {
@@ -73,7 +72,7 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                                 'Content-Type': 'application/json',
                             }
                         }
-                        console.log(projID)
+
                         fetch(`https://localhost:7260/api/projects/${projID}/teams`, createTeamOptions).then(res => {
                             navigate('/project/view')
                         })
@@ -148,6 +147,7 @@ export function useGetRecommendedProjects(token: string) {
                 }).then(jsonRes => {
                     setProjects(jsonRes['items']?.map((p: Project, i: number) => {
                         p.matchPercentage = i
+                        console.log(p)
                         return p
                     }))
                 })

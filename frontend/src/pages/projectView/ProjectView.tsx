@@ -27,14 +27,15 @@ function ProjectView() {
 
     return (<Flex width='100%' justifyContent={'center'} flexDirection={'row'}>
     {project ? (
-        <Box>
-            <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontSize={'26px'} padding={'20px'} textAlign={'left'}>
+        <Box textAlign={'left'}>
+            <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontWeight={750} fontSize={'26px'} paddingTop={'20px'} >
                 {project.name}
             </Text>
-            <Text>About this project</Text>
-            <Text>{project.description}</Text>
+            <Text  fontWeight={650} fontSize={'18px'}>About this project</Text>
+            <Text width={"800px"}>{project.description}</Text>
             <p>{project.type}</p>
             <p>{project.status}</p>
+            <Text></Text>
             <p>{project.teams.length > 0 ? project.teams[0].name : ''}</p>
         </Box>
     ) : <div>Loading...</div>}

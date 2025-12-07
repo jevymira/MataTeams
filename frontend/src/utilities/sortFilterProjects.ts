@@ -33,7 +33,7 @@ export const sortProjects = (projects: Project[], sortBy: string): Project[] => 
                 }
                 return 0
             })
-        case 'name_d':
+        case 'name_a':
             return projects.sort((a, b) => {
                 if (a.name < b.name) {
                     return -1
@@ -43,7 +43,7 @@ export const sortProjects = (projects: Project[], sortBy: string): Project[] => 
                 }
                 return 0
             })
-        case 'name_a':
+        case 'name_d':
             return projects.sort((a, b) => {
                 if (a.name < b.name) {
                     return 1

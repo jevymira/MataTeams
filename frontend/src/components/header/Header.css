@@ -66,6 +66,10 @@
   display: block;
 }
 
+.logoutLink {
+  cursor: pointer;
+}
+
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {background-color: #ddd;}
 

@@ -43,29 +43,33 @@ function ProjectCard({project, isGoodMatch} : ProjectProps) {
     const { setViewProjectId } = useContext(ProjectsContext) as ProjectsContextType
     return (
         <Box className='projectContainer' justifyContent={'flex-start'}>
-            <Flex>
-                {project.type =='Film' ? (
-                    <Image src={cam} width='100px' height='100px' marginRight={'70px'}></Image>) :
-                    (<Image src={comp} width='100px' height='100px' marginRight={'70px'}></Image>)
-                    }
-            </Flex>
-            <Flex flexDirection={'column'} width='100%' alignItems={'flex-start'}>
-                <Link to={`/project/view`} className='projectLink' onClick={() => {
-                    setViewProjectId(project.id)
-                }}>{project.name} </Link>
-                <Text fontSize={'18px'} fontWeight={190}>{truncateText(project.description)}</Text>
-                <Wrap gap="1">
-                    {getUniqueSkillsForProject(project).map(skill => {
-                        return <Badge>{skill.name}</Badge>
-                    })}
-                </Wrap >
-                {isGoodMatch && (
-                    <Flex paddingTop={'10px'}  flexDirection={'row'} alignItems={'center'} alignSelf={'flex-end'}>
-                        <GoStarFill color='gold' />
-                        {project && <Text fontSize={'16px'} fontWeight={160}paddingLeft={'5px'}>
-                            {`Recommended for you: matches your skill ${findMatchingSkill(project, skills)}`}
-                            </Text> }
+            <Flex flexDirection={'column'} alignItems={'flex-start'} justifyContent={'flex-start'}>
+                <Flex>
+                    <Flex>
+                        {project.type =='Film' ? (
+                            <Image src={cam} width='100px' height='100px' marginRight={'70px'}></Image>) :
+                            (<Image src={comp} width='100px' height='100px' marginRight={'70px'}></Image>)
+                        }
                     </Flex>
+                    <Flex flexDirection={'column'} width='100%' alignItems={'flex-start'}>
+                        <Link to={`/project/view`} className='projectLink' onClick={() => {
+                            setViewProjectId(project.id)
+                        }}>{project.name} </Link>
+                        <Text fontSize={'18px'} fontWeight={190}>{truncateText(project.description)}</Text>
+                        <Wrap gap="1">
+                            {getUniqueSkillsForProject(project).map(skill => {
+                                return <Badge>{skill.name}</Badge>
+                            })}
+                        </Wrap >
+                    </Flex>
+                </Flex>
+                    {isGoodMatch && (
+                        <Flex paddingTop={'10px'}  flexDirection={'row'} alignItems={'center'} alignSelf={'flex-start'}>
+                            <GoStarFill color='gold' />
+                            {project && <Text fontSize={'16px'} fontWeight={160}paddingLeft={'5px'}>
+                                {`Recommended for you: matches your skill ${findMatchingSkill(project, skills)}`}
+                                </Text> }
+                        </Flex>
                     )}
             </Flex>
         </Box>
