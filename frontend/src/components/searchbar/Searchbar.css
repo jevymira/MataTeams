@@ -16,5 +16,14 @@
 @media (max-width: 850px) {
     .showSmall {
         display: block;
+        margin-bottom: 3px;
     }
+    .search {
+        max-width: 500px;
+    }
+}
+
+.search {
+    width: 600px;
+    margin-bottom: 10px;
 }

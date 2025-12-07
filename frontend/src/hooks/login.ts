@@ -40,6 +40,7 @@ export function useLogin(username: string, password: string) {
             }).then(meJSON => {
                 setFirst(meJSON['firstName'])
                 setLast(meJSON['lastName'])
+                setSkills(meJSON['skills'])
                 navigate("/")     
             }).catch((err) => {
                 console.error(err)

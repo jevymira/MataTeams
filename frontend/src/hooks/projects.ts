@@ -90,7 +90,11 @@ export function useGetRecommendedProjects(token: string) {
                 }
                 return res.json()
             }).then(jsonRes => {
-                setProjects(jsonRes['projects'])
+                console.log(jsonRes)
+                // setProjects(jsonRes['items'])
+                setProjects(jsonRes['items'].map((p: Project, i: number) => {
+                    p.matchPercentage=i
+                }))
             })
         } catch(err) {
             console.error(err)

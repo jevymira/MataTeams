@@ -27,15 +27,16 @@ function Searchbar({sortBy, setSortBy, skillItems, domainItems}: SearchbarProps)
 
     return (
         <Flex flexDirection={'column'} alignItems={'flex-end'}>
-            <div style={{width: '600px', marginBottom:'10px'}}>
+            <div className="search">
                 <InputGroup backgroundColor={'white'} startElement={<LuSearch />}>
                 <Input placeholder="What kind of project do you want to work on?" />
                 </InputGroup>
             </div>
-            <Flex>
+            <Flex className="showSmall">
                 <Select.Root collection={createListCollection({items: skillItems})} 
                     size="sm"
                     width="180px"
+                    className="showSmall"
                     backgroundColor={'white'}
                     >
                     <Select.Control>
@@ -59,44 +60,15 @@ function Searchbar({sortBy, setSortBy, skillItems, domainItems}: SearchbarProps)
                         </Select.Positioner>
                     </Portal>
                 </Select.Root>
-                    <Select.Root collection={createListCollection({items: domainItems})} 
-                        size="sm"
-                        width="180px"
-                        className="showSmall"
-                        backgroundColor={'white'}
-                        >
-                        <Select.Control>
-                            <Select.Trigger>
-                            <Select.ValueText placeholder="Filter by domain" />
-                            </Select.Trigger>
-                            <Select.IndicatorGroup>
-                            <Select.Indicator />
-                            </Select.IndicatorGroup>
-                        </Select.Control>
-                        <Portal>
-                            <Select.Positioner>
-                            <Select.Content backgroundColor={'white'}>
-                                {skillItems.map((skill) => (
-                                    <Select.Item item={skill} key={skill.value} >
-                                    {skill.label}
-                                    <Select.ItemIndicator />
-                                </Select.Item>
-                                ))}
-                            </Select.Content>
-                            </Select.Positioner>
-                        </Portal>
-                    </Select.Root>
-                </Flex>
-                <Select.Root collection={sortOptions} 
+                <Select.Root collection={createListCollection({items: domainItems})} 
                     size="sm"
-                    width="220px"
+                    width="180px"
+                    className="showSmall"
                     backgroundColor={'white'}
-                    value={sortBy}
-                    onValueChange={(e) => setSortBy(e.value)}
                     >
                     <Select.Control>
                         <Select.Trigger>
-                        <Select.ValueText placeholder="Sort by recommended" />
+                        <Select.ValueText placeholder="Filter by domain" />
                         </Select.Trigger>
                         <Select.IndicatorGroup>
                         <Select.Indicator />
@@ -105,16 +77,45 @@ function Searchbar({sortBy, setSortBy, skillItems, domainItems}: SearchbarProps)
                     <Portal>
                         <Select.Positioner>
                         <Select.Content backgroundColor={'white'}>
-                            {sortOptions.items.map((sortBy) => (
-                                <Select.Item item={sortBy} key={sortBy.value} >
-                                {sortBy.label}
+                            {domainItems.map((domain) => (
+                                <Select.Item item={domain} key={domain.value} >
+                                {domain.label}
                                 <Select.ItemIndicator />
                             </Select.Item>
                             ))}
                         </Select.Content>
-                        </Select.Positioner>
-                    </Portal>
-                </Select.Root>
+                            </Select.Positioner>
+                        </Portal>
+                    </Select.Root>
+            </Flex>
+            <Select.Root collection={sortOptions} 
+                size="sm"
+                width="220px"
+                backgroundColor={'white'}
+                value={sortBy}
+                onValueChange={(e) => setSortBy(e.value)}
+                >
+                <Select.Control>
+                    <Select.Trigger>
+                    <Select.ValueText placeholder="Sort by recommended" />
+                    </Select.Trigger>
+                    <Select.IndicatorGroup>
+                    <Select.Indicator />
+                    </Select.IndicatorGroup>
+                </Select.Control>
+                <Portal>
+                    <Select.Positioner>
+                    <Select.Content backgroundColor={'white'}>
+                        {sortOptions.items.map((sortBy) => (
+                            <Select.Item item={sortBy} key={sortBy.value} >
+                            {sortBy.label}
+                            <Select.ItemIndicator />
+                        </Select.Item>
+                        ))}
+                    </Select.Content>
+                    </Select.Positioner>
+                </Portal>
+            </Select.Root>
         </Flex>
     )
 }
