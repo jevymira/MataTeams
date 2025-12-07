@@ -22,7 +22,7 @@ import { useGetAllProjects, useGetRecommendedProjects } from '../../hooks/projec
 import './Projects.css'
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 import { Paginate } from '../../components/pagination/Paginate'
-import { sortProjects } from '../../utilities/sortFilterProjects'
+import { applyFilters, sortProjects } from '../../utilities/sortFilterProjects'
 
 function Projects() {
   const { token } = useContext(UserContext) as UserContextType
@@ -65,7 +65,7 @@ function Projects() {
           <ScrollArea.Viewport>
             <ScrollArea.Content>
               <Stack>
-                {sortProjects(projects, sortBy[0]).map((p, i) => {
+                {sortProjects(applyFilters(projects, filterByVacancies), sortBy[0]).map((p, i) => {
                   return (
                     <ProjectCard project={p} isGoodMatch={((i < 2) && sortBy[0]=='rec')}/>
                   )

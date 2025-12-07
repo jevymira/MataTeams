@@ -28,16 +28,22 @@ export const findMatchingSkill = (project: Project, userSkills: Skill[]): string
     return match
 }
 
-export const filterProjectsByVacancies = (projects: Project[]) => {
-    return projects.filter(project => {
-        let hasVacancy = false
-        project.roles.forEach(role => {
-            if (role.vacantPositionCount && role.vacantPositionCount > 0) {
-                hasVacancy = true
-            }
+export const applyFilters = (projects: Project[], filterByVacancy: boolean) => {
+    if(filterByVacancy) {
+        return projects.filter(project => {
+            let hasVacancy = false
+            project.teams.forEach(team => {
+                team.projectRoles.forEach(teamRole => {
+                    console.log(teamRole)
+                    if (teamRole.vacantPositionCount && teamRole.vacantPositionCount > 0) {
+                        hasVacancy = true
+                    }
+                })
+            })
+            return hasVacancy
         })
-        return hasVacancy
-    })
+    }
+    return projects
 }
 
 export const sortProjects = (projects: Project[], sortBy: string): Project[] => {

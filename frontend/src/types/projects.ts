@@ -15,6 +15,7 @@ export type TeamMember = {
 }
 
 export type Team = {
+    id: string
     name: string
     leader: TeamMember
     projectRoles: ProjectRole[]

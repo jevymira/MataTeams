@@ -4,6 +4,8 @@ html {
   --background: #fbfbfb;
   --outline: #b5b5b5;
   --text: #000000;
+  --toastify-toast-offset: 100px !important;
+  --toastify-color-progress-dark: #D22030 !important;
 }
 
 body {

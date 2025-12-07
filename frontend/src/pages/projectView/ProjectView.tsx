@@ -41,7 +41,7 @@ function ProjectView() {
                     <Grid templateColumns="repeat(2, 1fr)" gap="6">
 
                         {project.roles.map(r => {
-                            return (<GridItem> <RoleCard role={r} /> </GridItem>)
+                            return (<GridItem> <RoleCard role={r} teamID={project.teams[0].id}/> </GridItem>)
                         })}
                     </Grid>
                 </Box>
