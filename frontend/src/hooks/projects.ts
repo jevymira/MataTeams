@@ -147,7 +147,6 @@ export function useGetRecommendedProjects(token: string) {
                 }).then(jsonRes => {
                     setProjects(jsonRes['items']?.map((p: Project, i: number) => {
                         p.matchPercentage = i
-                        console.log(p)
                         return p
                     }))
                 })

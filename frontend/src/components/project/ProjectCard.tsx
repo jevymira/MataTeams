@@ -67,7 +67,7 @@ function ProjectCard({project, isGoodMatch} : ProjectProps) {
                         <Flex paddingTop={'10px'}  flexDirection={'row'} alignItems={'center'} alignSelf={'flex-start'}>
                             <GoStarFill color='gold' />
                             {project && <Text fontSize={'16px'} fontWeight={160}paddingLeft={'5px'}>
-                                {`Recommended for you: matches your skill ${findMatchingSkill(project, skills)}`}
+                                {`Recommended for you`}
                                 </Text> }
                         </Flex>
                     )}

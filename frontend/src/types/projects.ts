@@ -43,6 +43,7 @@ export type ProjectRole = {
     roleId: string,
     roleName: string,
     positionCount: number,
+    vacantPositionCount?: number,
     skills: Skill[] // TODO also has projectRoleSkillId here
 }
 

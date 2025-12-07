@@ -6,14 +6,23 @@ import './Sidebar.css'
 import { Box, Checkbox, CheckboxGroup, Field, ScrollArea, Separator, Stack } from '@chakra-ui/react'
 import FilterSection from './FilterSection'
 import { InputItem } from '../../types'
+import { Dispatch, SetStateAction, useState } from 'react'
 
   type SidebarProps = {
     skillItems: InputItem[]
     domainItems: InputItem[]
     projectStatusItems: InputItem[]
+    filterByVacancies: boolean
+    setFilterByVacancies: Dispatch<SetStateAction<boolean>>
   }
 
-export const Sidebar = ({skillItems, projectStatusItems, domainItems}: SidebarProps) => {
+export const Sidebar = ({
+  skillItems, 
+  projectStatusItems, 
+  domainItems,
+  filterByVacancies,
+  setFilterByVacancies
+}: SidebarProps) => {
   return(
     <ScrollArea.Root className='sidebarContainer' height="80vh" maxWidth={'250px'} paddingLeft={'2vw'}>
       <ScrollArea.Viewport>
@@ -23,7 +32,9 @@ export const Sidebar = ({skillItems, projectStatusItems, domainItems}: SidebarPr
                   <Field.Label fontFamily={'"Outfit"; sans-serif;'} textAlign={'left'}>
                       {"Show only projects with:"}
                   </Field.Label>
-                      <Checkbox.Root key={"showOpen"} value={"showOpen"} colorPalette={'gray'} variant='subtle'>
+                      <Checkbox.Root 
+                        checked={filterByVacancies} 
+                        onCheckedChange={e => {setFilterByVacancies(!!e.checked)}} colorPalette={'gray'} variant='subtle'>
                       <Checkbox.HiddenInput />
                       <Checkbox.Control >
                       <Checkbox.Indicator />
