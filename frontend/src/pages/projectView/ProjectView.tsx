@@ -2,7 +2,7 @@
 import { useContext, useEffect } from 'react'
 
 // context
-import { ProjectsContext } from '../../context/projects'
+import { ProjectsContext } from '../../context/project'
 import { AuthContext } from '../../context/auth'
 
 // types
@@ -28,7 +28,6 @@ function ProjectView() {
     }, [])
 
     return (<div className='projectViewWrapper'>
-    <Sidebar />
     {project ? (
         <div className=''>
             <h1>{project.name} </h1>

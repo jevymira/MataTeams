@@ -1,0 +1,29 @@
+.chakra-select__control {    
+    border-radius: 20px !important;
+}
+
+.chakra-select__root {
+    border-radius: 20px !important;
+}
+
+.chakra-select__trigger {
+    border-radius: 20px !important;
+}
+
+.showSmall {
+    display:none;
+}
+@media (max-width: 850px) {
+    .showSmall {
+        display: block;
+        margin-bottom: 3px;
+    }
+    .search {
+        max-width: 500px;
+    }
+}
+
+.search {
+    width: 600px;
+    margin-bottom: 10px;
+}

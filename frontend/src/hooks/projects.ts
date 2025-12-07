@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 
 // context
-import { ProjectsContext } from '../context/projects'
+import { ProjectsContext } from '../context/project'
 
 // types
 import { ProjectsContextType, Project, Skill, Role, CreateProject } from '../types'
@@ -69,6 +69,40 @@ export function useGetProjectByID(id: string, token: string) {
     return [project, getProjectByID] as const
 }
 
+export function useGetRecommendedProjects(token: string) {
+    const { projects, setProjects } = useContext(ProjectsContext) as ProjectsContextType
+
+    const getProjects = async () => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        }
+
+        try {
+           // var projectsFromServer: Array<Project> = []
+            fetch('https://localhost:7260/api/users/me/recommendations', options).then(res => {
+                if (res.status !== 200) {
+                    console.error('error!')
+                    return -1
+                }
+                return res.json()
+            }).then(jsonRes => {
+                console.log(jsonRes)
+                // setProjects(jsonRes['items'])
+                setProjects(jsonRes['items'].map((p: Project, i: number) => {
+                    p.matchPercentage=i
+                }))
+            })
+        } catch(err) {
+            console.error(err)
+        }
+    }
+    return [projects, getProjects] as const
+}
+
 export function useGetAllProjects(token: string) {
     const { projects, setProjects } = useContext(ProjectsContext) as ProjectsContextType
 
@@ -91,7 +125,9 @@ export function useGetAllProjects(token: string) {
 
                 return res.json()
             }).then(jsonRes => {
-                setProjects(jsonRes['projects'])
+                setProjects(jsonRes['projects'].map((p: Project, i: number) => {
+                    p.matchPercentage=i
+                }))
             })
         } catch (e) {
             console.error(e)

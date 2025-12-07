@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react"
-import { Project, ProjectsContextType } from "../types"
+import { Project, ProjectsContextType } from "../types/index"
 
 export const ProjectsContext = createContext<ProjectsContextType | null>(null)
 

@@ -2,9 +2,19 @@ html {
     background-color: var(--background);
 }
 
-.projectsWrapper {
-    display: flex;
-    flex-direction: row;
+@media (max-width: 1150px) {
+    .projectsWrapper {
+        max-width: 95% !important;
+    }
+}
+
+@media (max-width: 850px) {
+    .projectsWrapper {
+        flex-direction: column !important;
+        width: 100% !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
 }
 
 .projectsPageHeader {
@@ -14,6 +24,5 @@ html {
     justify-content: center;
     width: 100%;
     max-width: 800px;
-    padding-left: 100px;
     padding-top: 20px;
 }
