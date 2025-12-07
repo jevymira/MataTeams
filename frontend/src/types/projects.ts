@@ -1,11 +1,25 @@
 export type Project = {
     id: string
+    description: string
     matchPercentage?: number
     name: string
-    description: string
     type: string
     status: string
     roles: ProjectRole[]
+    teams: Team[]
+}
+
+export type TeamMember = {
+    id: string
+    name: string
+}
+
+export type Team = {
+    teamName: string
+    leader: TeamMember
+    projectRoles: ProjectRole[]
+    vacantPositionCount: number
+    members: TeamMember[]
 }
 
 export type CreateProject = {

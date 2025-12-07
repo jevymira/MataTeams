@@ -21,33 +21,32 @@ const ProjectTypeDropdown = ({setFormProjectType}: RolesDropdownProps) => {
     })
 
     return (
-        <Container>
-            <Select.Root
-                collection={projectTypes}
-                value={type}
-                onValueChange={(e) => {
-                    setType(e.value)
-                    setFormProjectType(e.value[0])
-                }}>
-                <Select.Control>
-                    <Select.Trigger>
-                    <Select.ValueText placeholder="Select framework" />
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                    <Select.Indicator />
-                    </Select.IndicatorGroup>
-                </Select.Control>
-                <Select.Positioner>
-                    <Select.Content>
-                        {projectTypes.items.map((projectType) => (
-                            <Select.Item item={projectType} key={projectType.value}>
-                                {projectType.label}
-                            </Select.Item>
-                        ))}
-                    </Select.Content>
-                </Select.Positioner>
-            </Select.Root>
-        </Container>
+        <Select.Root
+            collection={projectTypes}
+            value={type}
+            backgroundColor={'white'}
+            onValueChange={(e) => {
+                setType(e.value)
+                setFormProjectType(e.value[0])
+            }}>
+            <Select.Control>
+                <Select.Trigger>
+                <Select.ValueText placeholder="What kind of project will this be?" />
+                </Select.Trigger>
+                <Select.IndicatorGroup>
+                <Select.Indicator />
+                </Select.IndicatorGroup>
+            </Select.Control>
+            <Select.Positioner>
+                <Select.Content>
+                    {projectTypes.items.map((projectType) => (
+                        <Select.Item item={projectType} key={projectType.value}>
+                            {projectType.label}
+                        </Select.Item>
+                    ))}
+                </Select.Content>
+            </Select.Positioner>
+        </Select.Root>
     )
 }
 

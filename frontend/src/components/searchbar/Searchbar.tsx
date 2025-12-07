@@ -19,8 +19,8 @@ function Searchbar({sortBy, setSortBy, skillItems, domainItems}: SearchbarProps)
     const sortOptions = createListCollection({
         items: [
             { label: "Sort by recommended", value: "rec" },
-            { label: "Sort by name (asc.)", value: "name_a" },
-            { label: "Sort by name (desc.)", value: "name_d" },
+            { label: "Sort by name (A to Z)", value: "name_a" },
+            { label: "Sort by name (Z to A)", value: "name_d" },
             { label: "Sort by most recent", value: "recent" },
         ],
     })

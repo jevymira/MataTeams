@@ -1,5 +1,7 @@
 .projectContainer {
     font-size: 22px;
+    display: flex;
+    flex-direction: row;
     padding: 15px 25px 15px 25px;
     margin: 20px; 
     border-radius: 15px;
@@ -14,7 +16,9 @@
 }
 
 .projectLink {
-    font-size: 40px;
+    font-size: 26px;
+    width: 100%;
+    text-align: center;
 }
 
 @media (max-width: 850px) {

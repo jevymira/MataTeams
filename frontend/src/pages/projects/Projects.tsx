@@ -131,7 +131,7 @@ const projectStatusItems = [
           sortBy={sortBy} 
           setSortBy={setSortBy}/>
       </div>
-      {!projects || projects.length < 1? <div>Loading...</div> : (
+      {!projects || projects.length < 1 ? <div>Loading...</div> : (
         <ScrollArea.Root height="73vh" width={'600px'} marginTop={'10px'}>
           <ScrollArea.Viewport>
             <ScrollArea.Content>

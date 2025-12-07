@@ -28,7 +28,12 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                     console.error(res)
                     // TODO: set error state
                 }
+                console.log(res)
                 return res
+            }).then(r => {
+                console.log(r)
+                console.log(r.headers.get('Location'))
+                console.log(r.headers.get('location'))
             })
         } catch (e) {
             console.error(e)
@@ -83,19 +88,20 @@ export function useGetRecommendedProjects(token: string) {
 
         try {
            // var projectsFromServer: Array<Project> = []
-            fetch('https://localhost:7260/api/users/me/recommendations', options).then(res => {
-                if (res.status !== 200) {
-                    console.error('error!')
-                    return -1
-                }
-                return res.json()
-            }).then(jsonRes => {
-                console.log(jsonRes)
-                // setProjects(jsonRes['items'])
-                setProjects(jsonRes['items'].map((p: Project, i: number) => {
-                    p.matchPercentage=i
-                }))
-            })
+           fetch('https://localhost:7260/api/users/me', options).then((res) => {
+               fetch('https://localhost:7260/api/users/me/recommendations', options).then(res => {
+                   if (res.status !== 200) {
+                       console.error('error!')
+                       return -1
+                   }
+                   return res.json()
+               }).then(jsonRes => {
+                   setProjects(jsonRes['items']?.map((p: Project, i: number) => {
+                       p.matchPercentage = i
+                       return p
+                   }))
+               })
+           })
         } catch(err) {
             console.error(err)
         }
