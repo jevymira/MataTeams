@@ -29,11 +29,9 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                     // TODO: set error state
                 }
                 console.log(res)
-                return res
+                return res.json()
             }).then(r => {
                 console.log(r)
-                console.log(r.headers.get('Location'))
-                console.log(r.headers.get('location'))
             })
         } catch (e) {
             console.error(e)

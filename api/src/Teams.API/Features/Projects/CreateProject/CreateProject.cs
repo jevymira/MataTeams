@@ -45,7 +45,7 @@ public class CreateProjectEndpoint
         .RequireAuthorization()
         .WithSummary("Create a new project. Define roles and associated skills for each.");
 
-    private static async Task<Created> CreateProjectAsync(
+    private static async Task<Created<string>> CreateProjectAsync(
         CreateProjectRequest request, ISender sender, IHttpContextAccessor accessor)
     {
         var projectId = await sender.Send(new CreateProjectCommand
@@ -58,7 +58,7 @@ public class CreateProjectEndpoint
             OwnerIdentityGuid = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
         });
 
-        return TypedResults.Created($"api/projects/{projectId}");
+        return TypedResults.Created<string>($"api/projects/{projectId}", projectId);
     }
 }
 
