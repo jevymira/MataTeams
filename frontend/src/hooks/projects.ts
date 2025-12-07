@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router'
 
 // context
 import { ProjectsContext } from '../context/project'
@@ -11,6 +12,9 @@ import { convertJSONToProject, convertProjectToJSON } from '../utilities/convert
 
 
 export function useCreateProject(createProjectData: CreateProject, token: string) {
+    const navigate = useNavigate()
+    const { setViewProjectId } = useContext(ProjectsContext) as ProjectsContextType
+
     const createProject = async () => {
         const options = {
             method: 'POST',
@@ -28,10 +32,10 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                     console.error(res)
                     // TODO: set error state
                 }
-                console.log(res)
                 return res.json()
             }).then(r => {
-                console.log(r)
+                setViewProjectId(r)
+                navigate('/project/view')
             })
         } catch (e) {
             console.error(e)
