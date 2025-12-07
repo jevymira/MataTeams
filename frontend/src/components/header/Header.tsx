@@ -31,6 +31,7 @@ export const Header = () => {
             color={"#FBFBFB"}
             fontSize={'26px'}
             fontWeight={'bold'}
+            paddingBottom={'15px'}
             fontFamily={'"Merriweather Sans", sans-serif;'}>
               MataTeams
             </Text>
@@ -40,19 +41,21 @@ export const Header = () => {
                 <Button aria-label="Create new Project" onClick={routeToNewProject} marginRight={'15px'}>
                   <LuPlus /> New Project
                 </Button>
-                <Box display={'flex'} width='200px' padding={'10px'} alignItems={'center'} 
-                _hover={{backgroundColor:'rgba(76, 0, 0, 0.3)'}}>
-                  <AvatarGroup>
-                    <Link to='/profile' className='profileLink'>
-                    <Avatar.Root>
-                      <Avatar.Fallback />
-                      <Avatar.Image />
-                    </Avatar.Root>
-                    </Link>
-                  </AvatarGroup>
-                  <Text>{firstName}</Text>
-                  <button onClick={logout} className='dropdownContent'>Log Out</button>
-                </Box>
+                <div className='dropdown'>
+                    <AvatarGroup display={'flex'} flexDirection={'row'}>
+                      <Link to='/profile' className='dropbtn'>
+                      <Avatar.Root>
+                        <Avatar.Fallback />
+                        <Avatar.Image />
+                      </Avatar.Root>
+                      </Link>
+                      <Link to='/profile' className='dropbtn'><Text color={"white"}>{firstName}</Text></Link>
+                    </AvatarGroup>
+                  <div className='dropdown-content'>
+                    <Link to='/profile'>My Profile</Link>
+                    <a onClick={logout} className='logoutLink'>Log Out</a>
+                  </div>
+                </div>
               </Flex>
             )}
             
