@@ -32,6 +32,7 @@ function ProjectView() {
             <p>{project.description}</p>
             <p>{project.type}</p>
             <p>{project.status}</p>
+            <p>{project.teams.length > 0 ? project.teams[0].teamName : ''}</p>
         </Box>
     ) : <div>Loading...</div>}
     </Flex>)

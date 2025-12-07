@@ -3,7 +3,7 @@ import { Dispatch, useState } from "react"
 import { LuTrash2 } from "react-icons/lu"
 
 // components
-import { Box, Flex, IconButton, NumberInput } from "@chakra-ui/react"
+import { Box, Checkbox, Flex, IconButton, NumberInput } from "@chakra-ui/react"
 import SkillsDropdown from "../skillsDropdown/SkillsDropdown"
 import RolesDropdown from "../roleDropdown/RoleDropdown"
 
@@ -28,7 +28,11 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
     }
 
     const setRoleNumber = (posititionCount: string) => {
-        dispatch({type: 'UPDATE_ROLE_POSITION_COUNT', payload: {posititionCount, index}})
+        dispatch({type: 'UPDATE_ROLE_POSITION_COUNT', payload: {posititionCount: parseInt(posititionCount), index}})
+    }
+
+    const setLeaderRole = () => {
+        dispatch({type: 'SET_LEADER_ROLE', payload: index})
     }
 
     return (
@@ -56,6 +60,17 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
             <div className="dropdownWrapper">
                 <SkillsDropdown setFormSkills={setFormSkills} labelText="Select skills for this role in the project"/>
             </div>
+            <Checkbox.Root
+                checked={role.isLeaderRole}
+                onCheckedChange={(e) => {
+                    setLeaderRole()
+                }}
+                colorPalette={'gray'} variant='solid'>
+                <Checkbox.HiddenInput />
+                <Checkbox.Control>
+                </Checkbox.Control>
+                <Checkbox.Label>{"Assign myself to role"}</Checkbox.Label>
+            </Checkbox.Root>
         </Flex>
         
     )

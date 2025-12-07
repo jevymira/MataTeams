@@ -50,6 +50,7 @@ export type ProjectRoleCreate = {
     roleId: string
     roleName: string
     positionCount: number
+    isLeaderRole: boolean
     skillIds: string[]
 }
 
@@ -65,7 +66,7 @@ export type ProjectRoleFormSkills = {
 }
 
 export type ProjectRoleFormPositionCount = {
-    posititionCount: string
+    posititionCount: number
     index: number
 }
 
@@ -78,6 +79,7 @@ export const DefaultProjectRoleCreate : ProjectRoleCreate = {
     roleId: '0199eef1-d1bd-75e9-8c25-39531d023e73',
     roleName: '',
     positionCount: 0,
+    isLeaderRole: false,
     skillIds: []
 }
 

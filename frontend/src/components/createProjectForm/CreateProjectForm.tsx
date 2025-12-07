@@ -84,7 +84,7 @@ function CreateProjectForm() {
                             <IconButton onClick={(e) => {
                                 dispatch({type: 'ADD_ROLE'})
                             }}>
-                                    <LuUserPlus aria-label="Add new role"/>
+                                <LuUserPlus aria-label="Add new role"/>
                             </IconButton>
                         </Flex>
                         {formState.roles.map((r, i) => {

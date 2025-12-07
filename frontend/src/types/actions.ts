@@ -8,4 +8,5 @@ export type ProjectFormAction =
     { type: 'SET_ROLE_ID', payload: ProjectRoleFormId} |
     { type: 'REMOVE_ROLE', payload: number } |
     { type: 'UPDATE_ROLE_SKILLS', payload: ProjectRoleFormSkills } |
-    { type: 'UPDATE_ROLE_POSITION_COUNT', payload: ProjectRoleFormPositionCount }
+    { type: 'UPDATE_ROLE_POSITION_COUNT', payload: ProjectRoleFormPositionCount } |
+    { type: 'SET_LEADER_ROLE', payload: number }

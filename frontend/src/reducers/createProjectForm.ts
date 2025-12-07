@@ -42,7 +42,6 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
                 ...state,
                 roles: state.roles.map((r, i) => {
                     if (i == action.payload.index) {
-                        // var newRole: ProjectRole = r
                         return {...r, skillIds: action.payload.skills.map(skill => skill.id)}
                     } else {
                         return r
@@ -55,11 +54,25 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
                 ...state,
                 roles: state.roles.map((r, i) => {
                     if (i == action.payload.index) {
-                        var newRole: ProjectRoleCreate = r
-                        newRole.positionCount = parseInt(action.payload.posititionCount)
-                        return newRole
+                        return {...r, positionCount: action.payload.posititionCount}
                     } else {
                         return r
+                    }
+                })
+            }
+        }
+        case 'SET_LEADER_ROLE': {
+            return {
+                ...state,
+                roles: state.roles.map((r, i) => {
+                    if (i == action.payload) {
+                        var newRole: ProjectRoleCreate = r
+                        newRole.isLeaderRole = true
+                        return newRole
+                    } else {
+                        var newRole: ProjectRoleCreate = r
+                        newRole.isLeaderRole = false
+                        return newRole
                     }
                 })
             }

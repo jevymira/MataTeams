@@ -24,7 +24,6 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
-
         }
 
         try {
@@ -34,9 +33,30 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                     // TODO: set error state
                 }
                 return res.json()
-            }).then(r => {
-                setViewProjectId(r)
-                navigate('/project/view')
+            }).then(projID => {
+                setViewProjectId(projID)
+                // create team
+                let leaderRoleID = ''
+                createProjectData.roles.forEach(role => {
+                    if (role.isLeaderRole) {
+                        leaderRoleID = role.roleId
+                    }
+                }) 
+                const createTeamOptions = {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        teamName:'My Team',
+                        projectRoleId: leaderRoleID
+                    }),
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                }
+                console.log(projID)
+                fetch(`https://localhost:7260/api/projects/${projID}/teams`, createTeamOptions).then(res => {
+                    navigate('/project/view')
+                })
             })
         } catch (e) {
             console.error(e)
