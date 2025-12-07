@@ -1,12 +1,10 @@
 import { Checkbox, CheckboxGroup, Field, Fieldset, Stack, Text } from "@chakra-ui/react"
+import { InputItem } from "../../types"
 
-type FilterItem = {
-    label: string
-    value: string
-}
+
 
 type FilterSectionProps = {
-    items: Array<FilterItem>
+    items: Array<InputItem>
     sectionLabel: string
 }
 

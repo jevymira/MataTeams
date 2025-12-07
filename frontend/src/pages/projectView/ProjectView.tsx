@@ -28,7 +28,6 @@ function ProjectView() {
     }, [])
 
     return (<div className='projectViewWrapper'>
-    <Sidebar />
     {project ? (
         <div className=''>
             <h1>{project.name} </h1>

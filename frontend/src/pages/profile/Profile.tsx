@@ -12,10 +12,6 @@ import CreateProjectForm from '../../components/createProjectForm/CreateProjectF
 function Profile() {
     const { firstName, skills } = useContext(AuthContext) as AuthContextType
     const [showCreateProjectForm, setCreateProjectForm] = useState(false)
-    
-    const toggleCreateProjectForm = () => {
-        setCreateProjectForm(!showCreateProjectForm)
-    }
 
     return (
         <Container style={{paddingTop: '20px'}}>

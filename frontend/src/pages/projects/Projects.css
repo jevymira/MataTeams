@@ -2,9 +2,17 @@ html {
     background-color: var(--background);
 }
 
-.projectsWrapper {
-    display: flex;
-    flex-direction: row;
+@media (max-width: 1150px) {
+    .projectsWrapper {
+        max-width: 95% !important;
+    }
+}
+
+@media (max-width: 850px) {
+    .projectsWrapper {
+        flex-direction: column !important;
+        padding-left: 50px;
+    }
 }
 
 .projectsPageHeader {

@@ -1,3 +1,20 @@
-.css-qah0cw {
-    border-radius: '20px !important';
+.chakra-select__control {    
+    border-radius: 20px !important;
+}
+
+.chakra-select__root {
+    border-radius: 20px !important;
+}
+
+.chakra-select__trigger {
+    border-radius: 20px !important;
+}
+
+.showSmall {
+    display:none;
+}
+@media (max-width: 850px) {
+    .showSmall {
+        display: block;
+    }
 }

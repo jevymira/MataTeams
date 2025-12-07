@@ -84,10 +84,14 @@ export function useGetRecommendedProjects(token: string) {
         try {
            // var projectsFromServer: Array<Project> = []
             fetch('https://localhost:7260/api/users/me/recommendations', options).then(res => {
-
-            }
-
-            )
+                if (res.status !== 200) {
+                    console.error('error!')
+                    return -1
+                }
+                return res.json()
+            }).then(jsonRes => {
+                setProjects(jsonRes['projects'])
+            })
         } catch(err) {
             console.error(err)
         }
@@ -117,7 +121,9 @@ export function useGetAllProjects(token: string) {
 
                 return res.json()
             }).then(jsonRes => {
-                setProjects(jsonRes['projects'])
+                setProjects(jsonRes['projects'].map((p: Project, i: number) => {
+                    p.matchPercentage=i
+                }))
             })
         } catch (e) {
             console.error(e)
