@@ -15,7 +15,7 @@ export type TeamMember = {
 }
 
 export type Team = {
-    teamName: string
+    name: string
     leader: TeamMember
     projectRoles: ProjectRole[]
     vacantPositionCount: number
@@ -39,11 +39,11 @@ export type ProjectsContextType = {
 
 //**** PROJECT ROLES ****/
 export type ProjectRole = {
-    id: string,
+    projectRoleId: string,
     roleId: string,
     roleName: string,
     positionCount: number,
-    skills: Skill[]
+    skills: Skill[] // TODO also has projectRoleSkillId here
 }
 
 export type ProjectRoleCreate = {

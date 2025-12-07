@@ -1,6 +1,6 @@
 // libraries
 import { useContext, useEffect } from 'react'
-import { Flex, Box, Text } from '@chakra-ui/react'
+import { Flex, Box, Text, Button } from '@chakra-ui/react'
 
 // context
 import { ProjectsContext } from '../../context/project'
@@ -25,16 +25,22 @@ function ProjectView() {
         getProject()
     }, [])
 
-    return (<Flex width='100%' justifyContent={'center'}>
+    return (<Flex width='100%' justifyContent={'center'} flexDirection={'row'}>
     {project ? (
         <Box>
-            <Text>{project.name} </Text>
-            <p>{project.description}</p>
+            <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontSize={'26px'} padding={'20px'} textAlign={'left'}>
+                {project.name}
+            </Text>
+            <Text>About this project</Text>
+            <Text>{project.description}</Text>
             <p>{project.type}</p>
             <p>{project.status}</p>
-            <p>{project.teams.length > 0 ? project.teams[0].teamName : ''}</p>
+            <p>{project.teams.length > 0 ? project.teams[0].name : ''}</p>
         </Box>
     ) : <div>Loading...</div>}
+    <Box borderRadius={'20px'} borderWidth={'1px'} borderColor={'gray'}>
+        <Button>Request to Join</Button>
+    </Box>
     </Flex>)
   }
   

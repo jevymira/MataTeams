@@ -1,4 +1,19 @@
-import { Project } from "../types";
+import { Project, ProjectRole, Skill } from "../types";
+
+export const findMatchingSkill = (project: Project, userSkills: Skill[]): string => {
+    let match = ''
+    let userSkillNames: string[] = userSkills.map(skill => {
+        return skill.name
+    })
+    project.roles.forEach((r: ProjectRole) => {
+        r.skills.forEach((skill: Skill) => {
+            if (userSkillNames.includes(skill.name)) {
+                match = skill.name
+            }
+        })
+    })
+    return match
+}
 
 export const sortProjects = (projects: Project[], sortBy: string): Project[] => {
     switch (sortBy) {

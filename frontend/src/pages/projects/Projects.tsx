@@ -22,7 +22,7 @@ import { useGetAllProjects, useGetRecommendedProjects } from '../../hooks/projec
 import './Projects.css'
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 import { Paginate } from '../../components/pagination/Paginate'
-import { sortProjects } from '../../utilities/sortProjects'
+import { sortProjects } from '../../utilities/sortFilterProjects'
 
 function Projects() {
   const { token } = useContext(UserContext) as UserContextType

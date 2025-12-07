@@ -26,6 +26,14 @@ export function useCreateProject(createProjectData: CreateProject, token: string
             }
         }
 
+        const getProjectOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        }
+
         try {
             fetch('https://localhost:7260/api/projects', options).then(res => {
                 if (res.status !== 201) {
@@ -34,28 +42,42 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                 }
                 return res.json()
             }).then(projID => {
-                setViewProjectId(projID)
-                // create team
-                let leaderRoleID = ''
-                createProjectData.roles.forEach(role => {
-                    if (role.isLeaderRole) {
-                        leaderRoleID = role.roleId
-                    }
-                }) 
-                const createTeamOptions = {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        teamName:'My Team',
-                        projectRoleId: leaderRoleID
-                    }),
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    }
-                }
                 console.log(projID)
-                fetch(`https://localhost:7260/api/projects/${projID}/teams`, createTeamOptions).then(res => {
-                    navigate('/project/view')
+                setViewProjectId(projID)
+                fetch(`https://localhost:7260/api/projects/${projID}`, getProjectOptions).then(res => {
+                    return res.json().then(projectJSON => {
+                        // create team
+                        let leaderRoleID = ''
+                        let leaderProjectRoleId = ''
+                        createProjectData.roles.forEach(role => {
+                            if (role.isLeaderRole) {
+                                leaderRoleID = role.roleId
+                            }
+                        }) 
+    
+                        let project: Project = convertJSONToProject(projectJSON)
+                        project.roles.forEach(role => {
+                            if (role.roleId == leaderRoleID) {
+                                leaderProjectRoleId = role.projectRoleId
+                            }
+                        })
+    
+                        const createTeamOptions = {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                teamName:'My Team',
+                                projectRoleId: leaderProjectRoleId
+                            }),
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
+                            }
+                        }
+                        console.log(projID)
+                        fetch(`https://localhost:7260/api/projects/${projID}/teams`, createTeamOptions).then(res => {
+                            navigate('/project/view')
+                        })
+                    })
                 })
             })
         } catch (e) {
