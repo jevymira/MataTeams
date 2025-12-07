@@ -7,13 +7,13 @@ import { LuUserPlus } from "react-icons/lu"
 import { useCreateProject } from '../../hooks/projects'
 
 // context
-import { AuthContext } from '../../context/auth'
+import { UserContext } from '../../context/auth'
 
 // components
 import ProjectTypeDropdown from '../projectTypeDropdown/ProjectTypeDropdown'
 
 // types
-import { AuthContextType } from '../../types'
+import { UserContextType } from '../../types'
 import AddRoleForm from '../addRoleForm/AddRoleForm'
 import { createProjectFormReducer, defaultCreateProject } from '../../reducers/createProjectForm'
 
@@ -23,7 +23,7 @@ import ProjectStatusDropdown from '../projectStatusDropdown/ProjectStatusDropdow
 
 function CreateProjectForm() {
     const [formState, dispatch] = useReducer(createProjectFormReducer, defaultCreateProject)
-    const { token } = useContext(AuthContext) as AuthContextType
+    const { token } = useContext(UserContext) as UserContextType
     const [createProject] = useCreateProject(formState, token)
  
     return (

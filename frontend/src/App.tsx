@@ -14,7 +14,7 @@ import ProjectView from './pages/projectView/ProjectView'
 
 // context
 import ProjectsContextProvider from './context/project'
-import AuthContextProvider from './context/auth'
+import UserContextProvider from './context/auth'
 
 // style
 import './App.css'
@@ -22,7 +22,7 @@ import CreateProjectForm from './components/createProjectForm/CreateProjectForm'
 
 function App() {
   return (
-    <AuthContextProvider>
+    <UserContextProvider>
       <ProjectsContextProvider>
         <ChakraProvider value={defaultSystem}>
           <div className="App">
@@ -39,7 +39,7 @@ function App() {
           </div>
         </ChakraProvider>
       </ProjectsContextProvider>
-    </AuthContextProvider>
+    </UserContextProvider>
   )
 }
 

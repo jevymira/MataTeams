@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { Box, Text, Badge, Flex, Wrap, Image } from '@chakra-ui/react'
 
 // types
-import {Project, ProjectRole, ProjectsContextType, Skill} from '../../types'
+import {UserContextType, Project, ProjectRole, ProjectsContextType, Skill} from '../../types'
 
 // utilities
 import { truncateText } from '../../utilities/truncateText'
@@ -18,10 +18,26 @@ import './ProjectCard.css'
 import { ProjectsContext } from '../../context/project'
 import { useContext } from 'react'
 import { GoStarFill } from "react-icons/go";
+import { UserContext } from '../../context/auth'
 
 type ProjectProps = {
     project: Project
     isGoodMatch: boolean
+}
+
+const findMatchingSkill = (project: Project, userSkills: Skill[]): string => {
+    let match = ''
+    let userSkillNames: string[] = userSkills.map(skill => {
+        return skill.name
+    })
+    project.roles.forEach((r: ProjectRole) => {
+        r.skills.forEach((skill: Skill) => {
+            if (userSkillNames.includes(skill.name)) {
+                match = skill.name
+            }
+        })
+    })
+    return match
 }
 
 const getUniqueSkillsForProject = (project: Project) : Skill[] => {
@@ -37,6 +53,7 @@ const getUniqueSkillsForProject = (project: Project) : Skill[] => {
 }
 
 function ProjectCard({project, isGoodMatch} : ProjectProps) {
+    const {skills} = useContext(UserContext) as UserContextType
     const { setViewProjectId } = useContext(ProjectsContext) as ProjectsContextType
     return (
         <Box className='projectContainer' justifyContent={'flex-start'}>
@@ -59,7 +76,9 @@ function ProjectCard({project, isGoodMatch} : ProjectProps) {
                 {isGoodMatch && (
                     <Flex paddingTop={'10px'}  flexDirection={'row'} alignItems={'center'} alignSelf={'flex-end'}>
                         <GoStarFill color='gold' />
-                        <Text fontSize={'16px'} fontWeight={160}paddingLeft={'5px'}>{"Recommended for you"}</Text>
+                        {project && <Text fontSize={'16px'} fontWeight={160}paddingLeft={'5px'}>
+                            {`Recommended for you: matches your skill ${findMatchingSkill(project, skills)}`}
+                            </Text> }
                     </Flex>
                     )}
             </Flex>

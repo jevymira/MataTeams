@@ -5,10 +5,10 @@ import { Link } from 'react-router'
 import { Flex, ScrollArea, Stack } from '@chakra-ui/react'
 
 // context
-import { AuthContext } from '../../context/auth'
+import { UserContext } from '../../context/auth'
 
 //types
-import { AuthContextType, InputItem } from '../../types'
+import { UserContextType, InputItem } from '../../types'
 
 // components
 import ProjectCard from '../../components/project/ProjectCard'
@@ -25,7 +25,7 @@ import { Paginate } from '../../components/pagination/Paginate'
 import { sortProjects } from '../../utilities/sortProjects'
 
 function Projects() {
-  const { token } = useContext(AuthContext) as AuthContextType
+  const { token } = useContext(UserContext) as UserContextType
   const [projects, getProjects] = useGetRecommendedProjects(token)
   const [sortBy, setSortBy] = useState<string[]>(["rec"])
 

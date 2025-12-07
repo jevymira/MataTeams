@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router'
 import { ProjectsContext } from '../context/project'
 
 // types
-import { ProjectsContextType, Project, Skill, Role, CreateProject } from '../types'
+import { ProjectsContextType, Project, Skill, Role, CreateProject, UserContextType } from '../types'
 
 // utilities
 import { convertJSONToProject, convertProjectToJSON } from '../utilities/convertJSONToProject'
+import { UserContext } from '../context/auth'
 
 
 export function useCreateProject(createProjectData: CreateProject, token: string) {
@@ -78,6 +79,7 @@ export function useGetProjectByID(id: string, token: string) {
 
 export function useGetRecommendedProjects(token: string) {
     const { projects, setProjects } = useContext(ProjectsContext) as ProjectsContextType
+    const { setSkills, setFirst, setLast } = useContext(UserContext) as UserContextType
 
     const getProjects = async () => {
         const options = {
@@ -89,20 +91,25 @@ export function useGetRecommendedProjects(token: string) {
         }
 
         try {
-           // var projectsFromServer: Array<Project> = []
            fetch('https://localhost:7260/api/users/me', options).then((res) => {
-               fetch('https://localhost:7260/api/users/me/recommendations', options).then(res => {
-                   if (res.status !== 200) {
-                       console.error('error!')
-                       return -1
-                   }
-                   return res.json()
-               }).then(jsonRes => {
-                   setProjects(jsonRes['items']?.map((p: Project, i: number) => {
-                       p.matchPercentage = i
-                       return p
-                   }))
-               })
+            return res.json().then(json => {
+                setSkills(json['skills'])
+                setFirst(json['firstName'])
+                setLast(json['lastName'])
+
+                fetch('https://localhost:7260/api/users/me/recommendations', options).then(res => {
+                    if (res.status !== 200) {
+                        console.error('error!')
+                        return -1
+                    }
+                    return res.json()
+                }).then(jsonRes => {
+                    setProjects(jsonRes['items']?.map((p: Project, i: number) => {
+                        p.matchPercentage = i
+                        return p
+                    }))
+                })
+            })
            })
         } catch(err) {
             console.error(err)

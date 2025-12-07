@@ -3,14 +3,14 @@ import { useContext, useState } from 'react'
 import { Container, Text, Button } from '@chakra-ui/react'
 
 // context
-import { AuthContext } from '../../context/auth'
+import { UserContext } from '../../context/auth'
 
 // types
-import { AuthContextType } from '../../types'
+import { UserContextType } from '../../types'
 import CreateProjectForm from '../../components/createProjectForm/CreateProjectForm'
 
 function Profile() {
-    const { firstName, skills } = useContext(AuthContext) as AuthContextType
+    const { firstName, skills } = useContext(UserContext) as UserContextType
 
     return (
         <Container style={{paddingTop: '20px'}}>

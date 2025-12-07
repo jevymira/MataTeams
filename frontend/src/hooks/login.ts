@@ -3,11 +3,11 @@ import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 
 // context
-import { AuthContext } from '../context/auth'
-import { AuthContextType } from '../types'
+import { UserContext } from '../context/auth'
+import { UserContextType } from '../types'
 
 export function useLogin(username: string, password: string) {
-    const { setUsername, setSkills, setFirst, setLast, setToken } = useContext(AuthContext) as AuthContextType
+    const { setUsername, setSkills, setFirst, setLast, setToken } = useContext(UserContext) as UserContextType
     const navigate = useNavigate()
 
     const requestOptions = {

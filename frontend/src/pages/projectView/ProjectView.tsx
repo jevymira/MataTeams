@@ -1,15 +1,13 @@
 // libraries
 import { useContext, useEffect } from 'react'
+import { Flex, Box, Text } from '@chakra-ui/react'
 
 // context
 import { ProjectsContext } from '../../context/project'
-import { AuthContext } from '../../context/auth'
+import { UserContext } from '../../context/auth'
 
 // types
-import { AuthContextType, Project, ProjectsContextType} from '../../types'
-
-// components
-import { Sidebar } from '../../components/sidebar/Sidebar'
+import { UserContextType, Project, ProjectsContextType} from '../../types'
 
 // hooks
 import { useGetProjectByID } from '../../hooks/projects'
@@ -20,23 +18,23 @@ import './ProjectView.css'
 
 function ProjectView() {
     const { viewProjectId } = useContext(ProjectsContext) as ProjectsContextType
-    const { token } = useContext(AuthContext) as AuthContextType
+    const { token } = useContext(UserContext) as UserContextType
     const [project, getProject] = useGetProjectByID(viewProjectId, token)
 
     useEffect(() => {
         getProject()
     }, [])
 
-    return (<div className='projectViewWrapper'>
+    return (<Flex width='100%' justifyContent={'center'}>
     {project ? (
-        <div className=''>
-            <h1>{project.name} </h1>
+        <Box>
+            <Text>{project.name} </Text>
             <p>{project.description}</p>
             <p>{project.type}</p>
             <p>{project.status}</p>
-        </div>
+        </Box>
     ) : <div>Loading...</div>}
-    </div>)
+    </Flex>)
   }
   
   export default ProjectView
