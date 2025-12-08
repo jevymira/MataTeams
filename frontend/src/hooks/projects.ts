@@ -5,12 +5,11 @@ import { useNavigate } from 'react-router'
 import { ProjectsContext } from '../context/project'
 
 // types
-import { ProjectsContextType, Project, Skill, Role, CreateProject, UserContextType } from '../types'
+import { ProjectsContextType, Project, Skill, Role, CreateProject, UserContextType, ProjectRole, ProjectRoleResponse } from '../types'
 
 // utilities
 import { convertJSONToProject, convertProjectToJSON } from '../utilities/convertJSONToProject'
 import { UserContext } from '../context/auth'
-
 
 export function useCreateProject(createProjectData: CreateProject, token: string) {
     const navigate = useNavigate()
@@ -99,7 +98,7 @@ export function useGetProjectByID(id: string, token: string) {
             }
         }
         try {
-            fetch(`https://localhost:7260/api/projects/${id}`).then(res => {
+            fetch(`https://localhost:7260/api/projects/${id}`, options).then(res => {
                 if (res.status !== 200) {
                     console.error(res.statusText)
                     return -1
@@ -245,3 +244,4 @@ export function useGetRoles() {
     }
     return [roles, getRoles] as const
 }
+

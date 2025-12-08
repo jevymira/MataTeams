@@ -2,7 +2,7 @@
 import { useContext, useState } from "react"
 import { Button, Card, Badge, Wrap } from "@chakra-ui/react"
 import { LuClock } from "react-icons/lu"
-import { ToastContainer, toast } from 'react-toastify'
+
 
 // types
 import { ProjectRole, UserContextType } from "../../types"
@@ -12,25 +12,29 @@ import { findMatchingSkillFromRole } from "../../utilities/sortFilterProjects"
 
 // context
 import { UserContext } from "../../context/auth"
+import { useRequestRole } from "../../hooks/teams"
 
 type RoleCardProps = {
     role: ProjectRole
     teamID: string
+    onToast: () => void
 }
 
-function RoleCard({role, teamID}: RoleCardProps) {
-    const {skills} = useContext(UserContext) as UserContextType
-    const [requestedRole, setRequestedRole] = useState(false)
+function RoleCard({role, teamID, onToast}: RoleCardProps) {
+    const {skills, token} = useContext(UserContext) as UserContextType
+    const [roleRequest, requestRole] = useRequestRole(role.projectRoleId, teamID, token)
+    const [didRequestRole, setDidRequestRole] = useState(false)
     const matchingSkill = findMatchingSkillFromRole(role, skills)
 
-    const requestRole = () => {
-        toast("Sent request to join project role!")
-        setRequestedRole(true)
+    const onRequestRole = () => {
+        onToast()
+        setDidRequestRole(true)
+        //requestRole()
     }
 
     return (
         <Card.Root padding={'10px'}>
-            <ToastContainer theme={"dark"} closeOnClick={true}/>
+           
             <Card.Title>{`Open role: ${role.roleName} developer`}</Card.Title>
             <Card.Body>
                 <Card.Description>
@@ -43,9 +47,9 @@ function RoleCard({role, teamID}: RoleCardProps) {
                 </Card.Description>
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
-                <Button disabled={requestedRole} width={'180px'} onClick={requestRole}>
-                    {requestedRole ? "Request pending" : "Request Team Role"}
-                    {requestedRole && <LuClock />}
+                <Button disabled={didRequestRole} width={'180px'} onClick={onRequestRole}>
+                    {didRequestRole ? "Request pending" : "Request Team Role"}
+                    {didRequestRole && <LuClock />}
                     </Button>
             </Card.Footer>
         </Card.Root>

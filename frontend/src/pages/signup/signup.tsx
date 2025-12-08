@@ -62,7 +62,7 @@ export const Signup = () => {
                 setUsername(e.target.value)
                 }}/>
 
-                <Input placeholder='Password' size='md' onChange={e => {
+                <Input placeholder='Password' type='password' size='md' onChange={e => {
                 setPassword(e.target.value)
                 }}/>
 

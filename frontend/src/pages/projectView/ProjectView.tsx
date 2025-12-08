@@ -1,6 +1,7 @@
 // libraries
 import { useContext, useEffect, useState } from 'react'
 import { Flex, Box, Text, Button, Spinner, Card, Grid, GridItem } from '@chakra-ui/react'
+import { ToastContainer, toast } from 'react-toastify'
 
 // context
 import { ProjectsContext } from '../../context/project'
@@ -27,7 +28,12 @@ function ProjectView() {
         getProject()
     }, [])
 
+    const onToast = () => {
+        toast("Sent request to join project role!")
+    }
+
     return (<Flex width='100%' justifyContent={'center'} flexDirection={'row'}>
+     <ToastContainer theme={"dark"} closeOnClick={true}/>
     {project ? (
         <Box textAlign={'left'} backgroundColor={'white'} marginTop={'25px'} padding={'20px'} borderRadius={'20px'}>
             <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontWeight={750} fontSize={'26px'} paddingTop={'20px'} >
@@ -41,7 +47,7 @@ function ProjectView() {
                     <Grid templateColumns="repeat(2, 1fr)" gap="6">
 
                         {project.roles.map(r => {
-                            return (<GridItem> <RoleCard role={r} teamID={project.teams[0].id}/> </GridItem>)
+                            return (<GridItem> <RoleCard role={r} teamID={project.teams[0].id} onToast={onToast}/> </GridItem>)
                         })}
                     </Grid>
                 </Box>

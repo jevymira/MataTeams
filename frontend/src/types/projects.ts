@@ -56,6 +56,25 @@ export type ProjectRoleCreate = {
     skillIds: string[]
 }
 
+export type PendingRequest = {
+    id: string
+    status: string
+    projectRoleId: string
+    projectRoleName: string
+    teamId:string
+    teamName: string
+    projectId: string
+    projectName: string
+}
+
+export type ProjectRoleResponse = {
+    id: string,
+    teamId: string,
+    userId: string,
+    projectRoleId: string,
+    status: string
+}
+
 export type ProjectRoleForm = {
     roleId: string
     positionCount: number
