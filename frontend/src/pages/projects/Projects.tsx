@@ -2,13 +2,13 @@
 import { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router'
-import { Flex, ScrollArea, Stack } from '@chakra-ui/react'
+import { Flex, ScrollArea, Spinner, Stack } from '@chakra-ui/react'
 
 // context
-import { AuthContext } from '../../context/auth'
+import { UserContext } from '../../context/auth'
 
 //types
-import { AuthContextType, InputItem } from '../../types'
+import { UserContextType, InputItem } from '../../types'
 
 // components
 import ProjectCard from '../../components/project/ProjectCard'
@@ -22,18 +22,70 @@ import { useGetAllProjects, useGetRecommendedProjects } from '../../hooks/projec
 import './Projects.css'
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 import { Paginate } from '../../components/pagination/Paginate'
-import { sortProjects } from '../../utilities/sortProjects'
+import { applyFilters, sortProjects } from '../../utilities/sortFilterProjects'
 
 function Projects() {
-  const { token } = useContext(AuthContext) as AuthContextType
+  const { token } = useContext(UserContext) as UserContextType
   const [projects, getProjects] = useGetRecommendedProjects(token)
   const [sortBy, setSortBy] = useState<string[]>(["rec"])
+  const [filterByVacancies, setFilterByVacancies] = useState(false)
 
   useEffect(() => {
       getProjects()
   }, [])
 
-  const skillItems: Array<InputItem> = [
+  
+
+  return (
+  <Flex 
+    className='projectsWrapper'
+    direction={'row'} 
+    justifyContent={'center'} 
+    maxWidth={'70%'}
+    alignItems={'flex-start'}>
+    <Sidebar 
+      skillItems={skillItems} 
+      domainItems={domainItems} 
+      projectStatusItems={projectStatusItems}
+      filterByVacancies={filterByVacancies}
+      setFilterByVacancies={setFilterByVacancies}
+      />
+
+    <Flex direction={'column'} alignItems={'center'}>
+      <div className='projectsPageHeader'>
+        <Searchbar 
+          skillItems={skillItems} 
+          domainItems={domainItems} 
+          projectStatusItems={projectStatusItems}
+          sortBy={sortBy} 
+          setSortBy={setSortBy}/>
+      </div>
+      {!projects || projects.length < 1 ?<Spinner /> : (
+        <ScrollArea.Root height="73vh" width={'600px'} marginTop={'10px'}>
+          <ScrollArea.Viewport>
+            <ScrollArea.Content>
+              <Stack>
+                {sortProjects(applyFilters(projects, filterByVacancies), sortBy[0]).map((p, i) => {
+                  return (
+                    <ProjectCard project={p} isGoodMatch={((i < 2) && sortBy[0]=='rec')}/>
+                  )
+                })}
+              </Stack>
+            </ScrollArea.Content>
+          </ScrollArea.Viewport>
+          <ScrollArea.Scrollbar>
+            <ScrollArea.Thumb />
+          </ScrollArea.Scrollbar>
+          <ScrollArea.Corner />
+        </ScrollArea.Root>
+      )}
+      <Paginate />
+      </Flex>
+    </Flex>
+  )
+}
+
+const skillItems: Array<InputItem> = [
   {
     value: "8762D340-5139-4B1F-6B6A-08DE347F2135",
     label: "Java"
@@ -49,6 +101,38 @@ function Projects() {
   {
     value: "5A67A4EF-5B74-4539-6B6D-08DE347F2135",
     label: "Express"
+  },
+  {
+    value: "B467AB51-444A-442A-9575-08DE3562308B",
+    label: "Python"
+  },
+  {
+    value: "688A12E0-A8AB-4343-9576-08DE3562308B",
+    label: "C++"
+  },
+  {
+    value: "0995765D-CBFE-4C95-9577-08DE3562308B",
+    label: "SQL"
+  },
+  {
+    value: "335193FA-8261-4212-9578-08DE3562308B",
+    label: "Angular"
+  },
+  {
+    value: "DE1BAA73-CA56-4A64-9579-08DE3562308B",
+    label: "Spring"
+  },
+  {
+    value: "44331C30-4B5E-4427-957A-08DE3562308B",
+    label: "Flask"
+  },
+  {
+    value: "3D11F019-7E2E-4EC5-957B-08DE3562308B",
+    label: "Docker"
+  },
+  {
+    value: "9D325071-D5CC-4A22-957C-08DE3562308B",
+    label: "Kubernetes"
   }
 ]
 
@@ -97,6 +181,10 @@ const projectStatusItems = [
       label: "Film"
     },
     {
+      value: "Animation",
+      label: "Animation"
+    },
+    {
       value: "Business",
       label: "Business"
     },
@@ -109,52 +197,6 @@ const projectStatusItems = [
       label: "Humanities"
     },
   ]
-
-  return (
-  <Flex 
-    className='projectsWrapper'
-    direction={'row'} 
-    justifyContent={'center'} 
-    maxWidth={'70%'}
-    alignItems={'flex-start'}>
-    <Sidebar 
-      skillItems={skillItems} 
-      domainItems={domainItems} 
-      projectStatusItems={projectStatusItems}/>
-
-    <Flex direction={'column'} alignItems={'center'}>
-      <div className='projectsPageHeader'>
-        <Searchbar 
-          skillItems={skillItems} 
-          domainItems={domainItems} 
-          projectStatusItems={projectStatusItems}
-          sortBy={sortBy} 
-          setSortBy={setSortBy}/>
-      </div>
-      {!projects || projects.length < 1? <div>Loading...</div> : (
-        <ScrollArea.Root height="73vh" width={'600px'} marginTop={'10px'}>
-          <ScrollArea.Viewport>
-            <ScrollArea.Content>
-              <Stack>
-                {sortProjects(projects, sortBy[0]).map((p, i) => {
-                  return (
-                    <ProjectCard project={p} isGoodMatch={((i < 2) && sortBy[0]=='rec')}/>
-                  )
-                })}
-              </Stack>
-            </ScrollArea.Content>
-          </ScrollArea.Viewport>
-          <ScrollArea.Scrollbar>
-            <ScrollArea.Thumb />
-          </ScrollArea.Scrollbar>
-          <ScrollArea.Corner />
-        </ScrollArea.Root>
-      )}
-      <Paginate />
-      </Flex>
-    </Flex>
-  )
-}
   
-  export default Projects;
+export default Projects;
   

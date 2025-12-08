@@ -10,20 +10,20 @@ type FilterSectionProps = {
 
 function FilterSection({items, sectionLabel}: FilterSectionProps) {
     return (
-        <Stack paddingTop={'25px'}>
+        <Stack paddingTop={'15px'} paddingBottom={'15px'}>
             <Fieldset.Root>
                 <CheckboxGroup>
                     <Fieldset.Legend fontFamily={'"Outfit"; sans-serif;'} textAlign={'left'}>
                         {sectionLabel}
                     </Fieldset.Legend>
                     {items.map((item) => (
-                        <Checkbox.Root key={item.value} value={item.value}>
-                        <Checkbox.HiddenInput />
-                        <Checkbox.Control>
-                        <Checkbox.Indicator />
-                        </Checkbox.Control>
-                        <Checkbox.Label>{item.label}</Checkbox.Label>
-                    </Checkbox.Root>
+                        <Checkbox.Root key={item.value} value={item.value} colorPalette={'gray'} variant='subtle'>
+                            <Checkbox.HiddenInput />
+                            <Checkbox.Control>
+                            <Checkbox.Indicator />
+                            </Checkbox.Control>
+                            <Checkbox.Label>{item.label}</Checkbox.Label>
+                        </Checkbox.Root>
                     ))}
                 </CheckboxGroup>
                 </Fieldset.Root>

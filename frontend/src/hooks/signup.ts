@@ -3,8 +3,8 @@ import { useContext } from 'react'
 import { useNavigate } from 'react-router'
 
 // context
-import { AuthContext } from '../context/auth'
-import { AuthContextType, Skill } from '../types'
+import { UserContext } from '../context/auth'
+import { UserContextType, Skill } from '../types'
 
 export function useSignup(
     email: string, 
@@ -14,7 +14,7 @@ export function useSignup(
     username: string, 
     isFacultyOrStaff: boolean,
     skills: Array<Skill>) {
-    const { setUserID, setToken, setFirst, setLast, setUsername, setSkills } = useContext(AuthContext) as AuthContextType
+    const { setUserID, setToken, setFirst, setLast, setUsername, setSkills } = useContext(UserContext) as UserContextType
     const navigate = useNavigate()
 
     const signUpReqOptions = {

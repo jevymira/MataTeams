@@ -1,11 +1,26 @@
 export type Project = {
     id: string
+    description: string
     matchPercentage?: number
     name: string
-    description: string
     type: string
     status: string
     roles: ProjectRole[]
+    teams: Team[]
+}
+
+export type TeamMember = {
+    id: string
+    name: string
+}
+
+export type Team = {
+    id: string
+    name: string
+    leader: TeamMember
+    projectRoles: ProjectRole[]
+    vacantPositionCount: number
+    members: TeamMember[]
 }
 
 export type CreateProject = {
@@ -25,18 +40,39 @@ export type ProjectsContextType = {
 
 //**** PROJECT ROLES ****/
 export type ProjectRole = {
-    id: string,
+    projectRoleId: string,
     roleId: string,
     roleName: string,
     positionCount: number,
-    skills: Skill[]
+    vacantPositionCount?: number,
+    skills: Skill[] // TODO also has projectRoleSkillId here
 }
 
 export type ProjectRoleCreate = {
     roleId: string
     roleName: string
     positionCount: number
+    isLeaderRole: boolean
     skillIds: string[]
+}
+
+export type PendingRequest = {
+    id: string
+    status: string
+    projectRoleId: string
+    projectRoleName: string
+    teamId:string
+    teamName: string
+    projectId: string
+    projectName: string
+}
+
+export type ProjectRoleResponse = {
+    id: string,
+    teamId: string,
+    userId: string,
+    projectRoleId: string,
+    status: string
 }
 
 export type ProjectRoleForm = {
@@ -51,7 +87,7 @@ export type ProjectRoleFormSkills = {
 }
 
 export type ProjectRoleFormPositionCount = {
-    posititionCount: string
+    posititionCount: number
     index: number
 }
 
@@ -64,6 +100,7 @@ export const DefaultProjectRoleCreate : ProjectRoleCreate = {
     roleId: '0199eef1-d1bd-75e9-8c25-39531d023e73',
     roleName: '',
     positionCount: 0,
+    isLeaderRole: false,
     skillIds: []
 }
 

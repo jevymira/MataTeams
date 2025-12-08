@@ -33,14 +33,14 @@ const RolesDropdown = ({labelText, setRoleId}: RolesDropdownProps) => {
       }}>
       <Select.HiddenSelect />
       <Select.Label>{labelText}</Select.Label>
-      <Select.Control>
+      <Select.Control backgroundColor={'white'}>
         <Select.Trigger>
-          <Select.ValueText placeholder="Select role type" />
+          <Select.ValueText placeholder="Role type..." />
         </Select.Trigger>
       </Select.Control>
       <Portal>
         <Select.Positioner>
-          <Select.Content>
+          <Select.Content >
             {rolesCollection.items.map((role) => (
               <Select.Item item={role} key={role.name}>
                 {role.name}

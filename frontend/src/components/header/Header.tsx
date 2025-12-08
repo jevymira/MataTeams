@@ -4,11 +4,11 @@ import { Link, useNavigate } from 'react-router'
 import { Flex, Box } from "@chakra-ui/react"
 import './Header.css'
 import { useContext } from 'react'
-import { AuthContext } from '../../context/auth'
-import { AuthContextType } from '../../types'
+import { UserContext } from '../../context/auth'
+import { UserContextType } from '../../types'
 
 export const Header = () => {
-  const { firstName } = useContext(AuthContext) as AuthContextType
+  const { firstName } = useContext(UserContext) as UserContextType
   const navigate = useNavigate();
   
   const logout = () => {

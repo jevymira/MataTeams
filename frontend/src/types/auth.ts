@@ -1,6 +1,6 @@
 import { Skill } from "./projects"
 
-export type AuthContextType = {
+export type UserContextType = {
     userID: number
     username: string
     firstName: string
@@ -13,7 +13,4 @@ export type AuthContextType = {
     setFirst: (firstName: string) => void
     setLast: (lastName: string) => void
     setSkills:(skills: Array<Skill>) => void
-
-    //most of this is actually for user. Move all but token/setToken later
-    //related changes for auth.tsx/signup.tsx/signup.ts
 }

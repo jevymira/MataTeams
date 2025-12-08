@@ -1,10 +1,10 @@
 import { CreateProject, Project, ProjectRoleCreate, ProjectRoleForm } from "../types"
 
 export const convertJSONToProject = (json: any): Project => {
-    const { id, name, description, status, type, roles } = json
+    const { id, name, description, status, type, roles, teams } = json
     
     const project: Project = {
-        id, name, description, status, type, roles
+        id, name, description, status, type, roles, teams
     }
     return project
 }

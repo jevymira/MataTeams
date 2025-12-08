@@ -13,7 +13,7 @@ export const Paginate = () => {
 
         <Pagination.Items
           render={(page) => (
-            <IconButton variant={{ base: "ghost", _selected: "outline" }}>
+            <IconButton backgroundColor={(page.value == 1) ? 'white' : ""} variant={{ base: "ghost", _selected: "outline" }}>
               {page.value}
             </IconButton>
           )}

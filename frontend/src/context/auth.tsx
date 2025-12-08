@@ -1,10 +1,10 @@
 import React, { createContext, useState } from 'react'
 import { useLocalStorage } from '../hooks/useLocalStorage'
-import { AuthContextType, Skill } from '../types'
+import { UserContextType, Skill } from '../types'
 
-export const AuthContext = createContext<AuthContextType | null>(null)
+export const UserContext = createContext<UserContextType | null>(null)
 
-const AuthContextProvider = ({ children }: React.PropsWithChildren<unknown>) => {
+const UserContextProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const [token, setToken] = useLocalStorage("token", "")
     const [userID, setUserID] = useLocalStorage("userID", "")
     const [username, setUsername] = useLocalStorage("username", "")
@@ -12,7 +12,7 @@ const AuthContextProvider = ({ children }: React.PropsWithChildren<unknown>) => 
     const [lastName, setLast] = useLocalStorage("lastName", "")
     const [skills, setSkills] = useState<Array<Skill>>([])
 
-    return <AuthContext.Provider value={{
+    return <UserContext.Provider value={{
         userID, 
         username,
         firstName,
@@ -27,7 +27,7 @@ const AuthContextProvider = ({ children }: React.PropsWithChildren<unknown>) => 
         setSkills
     }}>
         {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
 }
 
-export default AuthContextProvider
+export default UserContextProvider

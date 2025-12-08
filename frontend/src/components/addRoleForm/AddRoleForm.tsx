@@ -1,8 +1,9 @@
 // libraries 
 import { Dispatch, useState } from "react"
+import { LuTrash2 } from "react-icons/lu"
 
 // components
-import { Box, NumberInput } from "@chakra-ui/react"
+import { Box, Checkbox, Flex, IconButton, NumberInput } from "@chakra-ui/react"
 import SkillsDropdown from "../skillsDropdown/SkillsDropdown"
 import RolesDropdown from "../roleDropdown/RoleDropdown"
 
@@ -27,11 +28,20 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
     }
 
     const setRoleNumber = (posititionCount: string) => {
-        dispatch({type: 'UPDATE_ROLE_POSITION_COUNT', payload: {posititionCount, index}})
+        dispatch({type: 'UPDATE_ROLE_POSITION_COUNT', payload: {posititionCount: parseInt(posititionCount), index}})
+    }
+
+    const setLeaderRole = () => {
+        dispatch({type: 'SET_LEADER_ROLE', payload: index})
     }
 
     return (
-        <Box borderRadius={'5px'} borderWidth={'1px'} borderColor={'var(--secondary)'} marginBottom={'25px'} padding={'10px'}>
+        <Flex flexDirection={'column'} borderRadius={'5px'} borderWidth={'1px'} borderColor={'var(--secondary)'} marginBottom={'25px'} padding={'10px'}>
+            <IconButton alignSelf={'flex-end'} variant='ghost' onClick={(e) => {
+                dispatch({type: 'REMOVE_ROLE', payload: index})
+            }}>
+                    <LuTrash2 aria-label="Remove role"/>
+            </IconButton>
             <div className="dropdownWrapper">
                 <RolesDropdown labelText="Select role type" setRoleId={setRoleId} />
             </div>
@@ -45,12 +55,23 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
                 <NumberInput.DecrementTrigger />
             </NumberInput.Control>
             <NumberInput.Scrubber />
-            <NumberInput.Input />
+            <NumberInput.Input backgroundColor={'white'} />
             </NumberInput.Root>
             <div className="dropdownWrapper">
                 <SkillsDropdown setFormSkills={setFormSkills} labelText="Select skills for this role in the project"/>
             </div>
-        </Box>
+            <Checkbox.Root
+                checked={role.isLeaderRole}
+                onCheckedChange={(e) => {
+                    setLeaderRole()
+                }}
+                colorPalette={'gray'} variant='solid'>
+                <Checkbox.HiddenInput />
+                <Checkbox.Control>
+                </Checkbox.Control>
+                <Checkbox.Label>{"Assign myself to role"}</Checkbox.Label>
+            </Checkbox.Root>
+        </Flex>
         
     )
 }

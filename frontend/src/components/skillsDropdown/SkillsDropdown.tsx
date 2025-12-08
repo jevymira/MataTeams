@@ -52,7 +52,7 @@ const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
                 ))}
             </Wrap>
             <Combobox.Control>
-                <Combobox.Input />
+                <Combobox.Input backgroundColor={'white'} />
                 <Combobox.IndicatorGroup>
                 <Combobox.Trigger />
                 </Combobox.IndicatorGroup>
