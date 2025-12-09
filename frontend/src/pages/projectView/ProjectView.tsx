@@ -16,16 +16,23 @@ import { useGetProjectByID } from '../../hooks/projects'
 // style 
 import './ProjectView.css'
 import RoleCard from './RoleCard'
+import { useNavigate } from 'react-router'
+import { LuClipboardList, LuTelescope, LuUser } from 'react-icons/lu'
 
 
 function ProjectView() {
+    const navigate = useNavigate()
     const { viewProjectId } = useContext(ProjectsContext) as ProjectsContextType
     const { token } = useContext(UserContext) as UserContextType
     const [project, getProject] = useGetProjectByID(viewProjectId, token)
     const [requestedRole, setRequestedRole ] = useState(false)
 
     useEffect(() => {
-        getProject()
+        if (!viewProjectId) {
+            navigate('/')
+        } else {
+            getProject()
+        }
     }, [])
 
     const onToast = () => {
@@ -35,7 +42,7 @@ function ProjectView() {
     return (<Flex width='100%' justifyContent={'center'} flexDirection={'row'}>
      <ToastContainer theme={"dark"} closeOnClick={true}/>
     {project ? (
-        <Box textAlign={'left'} backgroundColor={'white'} marginTop={'25px'} padding={'20px'} borderRadius={'20px'}>
+        <Box textAlign={'left'} backgroundColor={'white'} marginTop={'25px'} padding={'25px'} borderRadius={'20px'}>
             <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontWeight={750} fontSize={'26px'} paddingTop={'20px'} >
                 {project.name}
             </Text>
@@ -51,9 +58,19 @@ function ProjectView() {
                         })}
                     </Grid>
                 </Box>
-                <Box>
-                    <p>{project.type}</p>
-                    <p>{project.status}</p>
+                <Box width={'200px'}>
+                    <Flex flexDirection={'row'} alignItems={'center'}>
+                        <LuClipboardList />
+                        <Text paddingLeft={'10px'}>Type: {project.type}</Text>
+                    </Flex>
+                    <Flex flexDirection={'row'} alignItems={'center'}>
+                        <LuTelescope />
+                        <Text paddingLeft={'10px'}>Status: {project.status}</Text>
+                    </Flex>
+                        <Flex flexDirection={'row'} alignItems={'center'}>
+                        <LuUser />
+                        <Text paddingLeft={'10px'}>{project.roles.length} open roles</Text>
+                    </Flex>
                 </Box>
             </Flex>
         </Box>

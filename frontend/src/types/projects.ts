@@ -48,6 +48,16 @@ export type ProjectRole = {
     skills: Skill[] // TODO also has projectRoleSkillId here
 }
 
+// api/me/roles response
+export type UserRole = {
+    projectId: string
+    projectName: string
+    teamId: string
+    teamName: string
+    projectRoleId: string
+    roleName: string
+}
+
 export type ProjectRoleCreate = {
     roleId: string
     roleName: string

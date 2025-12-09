@@ -9,7 +9,7 @@ import { UserContextType } from '../../types'
 
 export const Header = () => {
   const { firstName } = useContext(UserContext) as UserContextType
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   
   const logout = () => {
     localStorage.removeItem("token")
