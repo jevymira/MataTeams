@@ -1,41 +1,112 @@
 // libraries
-import { useContext, useEffect, useState } from 'react'
-import { Container, Text, Button, Grid, Box } from '@chakra-ui/react'
+import { useContext, useEffect } from 'react'
+import { useNavigate } from 'react-router'
+import { Container, Text, Flex, Badge, Wrap, IconButton, Card } from '@chakra-ui/react'
+import { LuCheck, LuClock, LuPencil, LuPlus } from 'react-icons/lu'
 
 // context
 import { UserContext } from '../../context/auth'
 
+// hooks
+import { useGetPendingRequests, useGetUserRoles } from '../../hooks/teams'
+
 // types
 import { UserContextType } from '../../types'
-import CreateProjectForm from '../../components/createProjectForm/CreateProjectForm'
-import { useGetPendingRequests } from '../../hooks/teams'
 
 function Profile() {
     const { firstName, skills, token } = useContext(UserContext) as UserContextType
+    const navigate = useNavigate()
     const [ pendingRequests, getRequests ] = useGetPendingRequests(token)
+    const [ userRoles, getUserRoles ] = useGetUserRoles(token)
     
     useEffect(() => {
         getRequests()
+        getUserRoles()
     }, [])
 
+    const routeToNewProject = () => {
+        navigate('/new')
+    }
+
     return (
-        <Container style={{paddingTop: '20px'}}>
-            <Text fontSize={'22px'}>Welcome back, {firstName}!</Text>
-            {skills?.length > 0 ? (
-                skills.map((skill, index) => (
-                <Text key={index} mt={2}>{skill.name}</Text>))
-                ) : (
-                <Text mt={2} color="gray">
-                No skills added yet
-                </Text>
-            )}
-            <Text>Pending Requests</Text>
-            <Grid>
-                {pendingRequests.map(request => {
-                    return <Box>{request.projectName}</Box>
-                })}
-            </Grid>
-        </Container>
+        <Flex paddingTop={'20px'} flexDirection="column" alignItems={'center'} justifyContent={'center'}>
+            <Text fontSize={'26px'} marginBottom={'40px'}>Welcome back, {firstName}!</Text>
+            <Flex flexDirection='row' justifyContent={'space-between'} alignItems={'center'} width={'500px'}>
+                <Text fontSize={'20px'} fontWeight={600}>Skills</Text>
+                <IconButton variant={'subtle'}>
+                    <LuPencil />
+                </IconButton>
+            </Flex>
+            <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'}>
+                <Wrap>
+                    {skills?.length > 0 ? (
+                        skills.map((skill, index) => (
+                            <Badge key={index} mt={2}>{skill.name}</Badge>))
+                        ) : (
+                            <Text mt={2} color="gray">
+                        No skills added yet
+                        </Text>)
+                        }
+                </Wrap>
+            </Flex>
+
+            <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'}>
+                <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>Pending Requests</Text>
+                <Wrap>
+                    {pendingRequests.map(request => {
+                        return (
+                        <Card.Root  width="240px" variant='outline'>
+                        <Card.Body>
+                            <Card.Title >
+                                <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>{request.projectName}
+                                <LuClock /> </Flex>
+                            </Card.Title>
+                            <Card.Description>
+                            {/* <Text>{request.teamName}</Text> */}
+                            <Text>{request.projectRoleName}{" developer"}</Text>
+                            </Card.Description>
+                        </Card.Body>
+                        <Card.Footer justifyContent="flex-end">
+                            <IconButton padding={'5px'} variant="surface" colorPalette='gray'>Cancel</IconButton>
+                        </Card.Footer>
+                        </Card.Root>)
+                    })}
+                </Wrap>
+            </Flex>
+            
+            {(userRoles && userRoles.length > 0) ? (<Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'}>
+                <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>My Projects</Text>
+                <Wrap>
+                    {userRoles.map(role => {
+                        return (
+                        <Card.Root  width="250px" variant='outline'>
+                        <Card.Body>
+                            <Card.Title>
+                                {role.projectName}
+                            </Card.Title>
+                            <Card.Description>
+                                <Text>{role.roleName}</Text>
+                                <Text>{"Pending member requests: 0"}</Text>
+                            </Card.Description>
+                        </Card.Body>
+                        <Card.Footer justifyContent="flex-end">
+                            <IconButton colorPalette='gray' variant={'subtle'} padding={'10px'}>
+                                <LuPencil />
+                                Edit Project
+                                </IconButton>
+                        </Card.Footer>
+                        </Card.Root>)
+                    })}
+                </Wrap>
+            </Flex>): (
+                <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'} >
+                    <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>No projects yet!</Text>
+                    <IconButton variant={'subtle'} colorPalette={'green'} padding='20px' onClick={routeToNewProject}>
+                        <LuPlus />
+                        Create a new project
+                    </IconButton>
+                </Flex>)}
+        </Flex>
     )
   }
   

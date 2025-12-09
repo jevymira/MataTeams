@@ -1,5 +1,31 @@
 import { useState } from "react"
-import { PendingRequest, ProjectRoleResponse } from "../types"
+import { PendingRequest, ProjectRoleResponse, UserRole } from "../types"
+
+export function useGetUserRoles(token: string) {
+    const [userRoles, setUserRoles] = useState<UserRole[]>([])
+
+    const getRoles = async () => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }
+
+        try {   
+            fetch('https://localhost:7260/api/users/me/roles', options).then(res => {
+                return res.json()
+            }).then(json => {
+                setUserRoles(json)
+            })
+            } catch(err) {
+                console.error(err)
+            }
+    }
+
+    return [userRoles, getRoles] as const
+}
 
 export function useGetPendingRequests(token: string) {
     const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([])
