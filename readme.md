@@ -2,6 +2,14 @@
 
 A CSUN student-project matchmaker.
 
+## Adding an Endpoint
+
+1. Under `Teams.API` > `Features`, create a new .cs file in the appropriate feature folder.
+   * Being "vertically-sliced", a feature endpoint is represented by one file. Each file contains the endpoint's request/response classses, static registration method, request handler.
+2. Under `Teams.Domain` > `Aggregates`/`SharedKernel` are the domain entities, e.g., `Project`, `Team`, `Skill`. As necessary, add methods to the public interface of these entities to expose needed functionality. Objects are mutated through these methods by request handlers.
+   * (Though not necessary for methods, if instead adding a whole new property or field, then run `dotnet ef migrations add MigrationName` and `dotnet ef database update`.)
+3. Under `Teams.API` > `Extensions`, call the endpoint's registration method within the `MapEndpoints` extension method. Registration can be verified by running `Teams.API` and seeing the corresponding endpoint in the Swagger doc that appears.
+
 ## Local Development
 
 ### Initial Setup (JetBrains Rider OR EF Core tools CLI)
