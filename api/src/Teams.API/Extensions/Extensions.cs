@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.AddTeamToProject;
 using Teams.API.Features.Projects.CreateProject;
+using Teams.API.Features.Projects.EditProject;
 using Teams.API.Features.Projects.GetAllProjects;
 using Teams.API.Features.Projects.GetAllTeamMembershipRequests;
 using Teams.API.Features.Projects.RequestToJoinTeam;
@@ -412,6 +413,7 @@ internal static class Extensions
         GetProjectById.MapEndpoint(projectsGroup);
         GetAllProjectsEndpoint.Map(projectsGroup);
         CreateProjectEndpoint.Map(projectsGroup);
+        EditProject.Map(projectsGroup);
         AddTeamToProjectEndpoint.Map(projectsGroup);
         RequestToJoinTeam.MapEndpoint(teamsGroup);
         GetAllTeamMembershipRequests.MapEndpoint(teamsGroup);
