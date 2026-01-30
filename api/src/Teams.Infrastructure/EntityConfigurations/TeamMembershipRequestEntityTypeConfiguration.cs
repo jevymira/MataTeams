@@ -13,6 +13,11 @@ public class TeamMembershipRequestEntityTypeConfiguration : IEntityTypeConfigura
             .HasConversion<string>()
             .IsRequired();
 
+        builder.HasOne<Team>()
+            .WithMany(t => t.MembershipRequests)
+            .HasForeignKey(t => t.TeamId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(r => r.UserId)
@@ -20,6 +25,7 @@ public class TeamMembershipRequestEntityTypeConfiguration : IEntityTypeConfigura
 
         builder.HasOne<ProjectRole>()
             .WithMany()
-            .HasForeignKey(r => r.ProjectRoleId);
+            .HasForeignKey(r => r.ProjectRoleId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
