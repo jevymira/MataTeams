@@ -49,6 +49,34 @@ public class Project : Entity
       OwnerId = ownerId;
    }
 
+   public void Rename(string newName)
+   {
+      Name = newName;
+   }
+
+   public void ChangeDescription(string newDescription)
+   {
+      Description = newDescription;
+   }
+
+   public void SetType(ProjectType type)
+   {
+      Type = type;
+   }
+
+   public void SetStatus(ProjectStatus status)
+   {
+      Status = status;
+   }
+
+   /// <summary>
+   /// Remove those teams excluded from the list of teams to retain.
+   /// </summary>
+   public void RemoveExcludedTeams(IEnumerable<Guid> teamsToRetainIds)
+   {
+      _teams.RemoveAll(t => !teamsToRetainIds.Contains(t.Id));
+   }
+
    public ProjectRole AddProjectRole(Guid roleId, int positionCount)
    {
       var projectRole = new ProjectRole(Id, roleId, positionCount);
