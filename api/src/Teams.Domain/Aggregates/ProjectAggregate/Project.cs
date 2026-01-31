@@ -20,8 +20,6 @@ public class Project : Entity
    
    public IReadOnlyCollection<ProjectRole> Roles => _roles.AsReadOnly();
    
-   // public ICollection<int> TeamIds { get; private set; }
-   
    private readonly List<Team> _teams;
    
    public IReadOnlyCollection<Team> Teams => _teams.AsReadOnly();
@@ -68,14 +66,37 @@ public class Project : Entity
    {
       Status = status;
    }
-
-   /// <summary>
-   /// Remove those teams excluded from the list of teams to retain.
-   /// </summary>
-   public void RemoveExcludedTeams(IEnumerable<Guid> teamsToRetainIds)
+   
+   /*
+   public void UpdateProjectRoles(IEnumerable<ProjectRole> roles)
    {
-      _teams.RemoveAll(t => !teamsToRetainIds.Contains(t.Id));
+      var updatesById = roles
+         .ToDictionary(r => r.Id);
+
+      for (int i = _roles.Count - 1; i >= 0; i--)
+      {
+         var role = _roles[i];
+         
+         if (!updatesById.TryGetValue(role.Id, out var roleUpdate))
+         {
+            if (_teams.Any(t => t.Members.Any(m => m.ProjectRoleId == role.Id)))
+            {
+               throw new InvalidOperationException("Team member tied to project role marked for removal.");
+            }
+            _roles.RemoveAt(i);
+            continue;
+         }
+
+         role.Update(roleUpdate.RoleId, roleUpdate.PositionCount, roleUpdate.Skills);
+      }
+      
+      // Add the new roles that don't yet exist.
+      var existingRoleIds = _roles.Select(r => r.Id).ToHashSet();
+      var newRoles = roles.Where(r => !existingRoleIds.Contains(r.Id));
+      _roles.AddRange(newRoles);
    }
+   */
+   
 
    public ProjectRole AddProjectRole(Guid roleId, int positionCount)
    {
