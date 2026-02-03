@@ -66,43 +66,41 @@ public class Project : Entity
    {
       Status = status;
    }
-   
-   /*
-   public void UpdateProjectRoles(IEnumerable<ProjectRole> roles)
-   {
-      var updatesById = roles
-         .ToDictionary(r => r.Id);
 
-      for (int i = _roles.Count - 1; i >= 0; i--)
-      {
-         var role = _roles[i];
-         
-         if (!updatesById.TryGetValue(role.Id, out var roleUpdate))
-         {
-            if (_teams.Any(t => t.Members.Any(m => m.ProjectRoleId == role.Id)))
-            {
-               throw new InvalidOperationException("Team member tied to project role marked for removal.");
-            }
-            _roles.RemoveAt(i);
-            continue;
-         }
-
-         role.Update(roleUpdate.RoleId, roleUpdate.PositionCount, roleUpdate.Skills);
-      }
-      
-      // Add the new roles that don't yet exist.
-      var existingRoleIds = _roles.Select(r => r.Id).ToHashSet();
-      var newRoles = roles.Where(r => !existingRoleIds.Contains(r.Id));
-      _roles.AddRange(newRoles);
-   }
-   */
-   
-
-   public ProjectRole AddProjectRole(Guid roleId, int positionCount)
+   public ProjectRole AddProjectRole(Guid roleId, int positionCount, List<Skill> skills)
    {
       var projectRole = new ProjectRole(Id, roleId, positionCount);
       _roles.Add(projectRole);
       return projectRole;
+   }
+
+   public void RemoveRole(Guid projectRoleId)
+   {
+      if (_teams.Any(t => t.Members.Any(m => m.ProjectRoleId == projectRoleId)))
+      {
+         throw new InvalidOperationException("Cannot delete project role with assigned team members.");
+      }
+
+      var role = _roles.SingleOrDefault(t => t.Id == projectRoleId);
+      
+      if (role is not null)
+      {
+         _roles.Remove(role);
+      }
+   }
+
+   public void UpdateRole(Guid projectRoleId, Guid roleId, int positionCount, List<Skill> skills)
+   {
+      var role =  _roles.SingleOrDefault(t => t.Id == projectRoleId);
+      role?.Update(roleId, positionCount, skills);
+   }
+   
+   /// <summary>
+   /// Remove those teams excluded from the list of teams to retain.
+   /// </summary>
+   public void RemoveExcludedTeams(IEnumerable<Guid> teamsToRetainIds)
+   {
+      _teams.RemoveAll(t => !teamsToRetainIds.Contains(t.Id));
    }
 
    public Team? AddTeamToProject(string teamName, Guid leaderId)

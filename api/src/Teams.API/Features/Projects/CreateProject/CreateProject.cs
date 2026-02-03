@@ -85,14 +85,14 @@ internal sealed class CreateProjectCommandHandler(TeamDbContext context, IPublis
         
         foreach (var role in request.Roles)
         {
-            var projectRole = project.AddProjectRole(Guid.Parse(role.RoleId), role.PositionCount);
             var skills = await context.Skills
                 .Where(s => role.SkillIds.Contains(s.Id.ToString()))
                 .ToListAsync(cancellationToken);
             
+            var projectRole = project.AddProjectRole(Guid.Parse(role.RoleId), role.PositionCount, skills);
+            
             foreach (var skill in skills)
             {
-                projectRole.AddProjectSkill(skill);
                 allSkillIds.Add(skill.Id.ToString());
             }
         }
