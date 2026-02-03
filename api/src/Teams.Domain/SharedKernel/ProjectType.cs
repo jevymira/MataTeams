@@ -100,8 +100,31 @@ public sealed class ProjectType : IEquatable<ProjectType>
             ProjectStatus.Released
         }
     );
-    
-    public static IEnumerable<ProjectType> All => [Arcs, Faculty, Club, Class, Personal, Film];
+
+
+    public static readonly ProjectType GameDesign = new ProjectType(
+        "Game Design",
+        new List<ProjectStatus>()
+        {
+            ProjectStatus.PreProduction,
+            ProjectStatus.Alpha,
+            ProjectStatus.Beta,
+            ProjectStatus.Gold,
+            ProjectStatus.Released
+        }
+    );
+
+    public static readonly ProjectType Business = new ProjectType(
+    "Business",
+    new List<ProjectStatus>()
+    {
+            ProjectStatus.Planning,
+            ProjectStatus.Funding,
+            ProjectStatus.Launched,
+    }
+);
+
+    public static IEnumerable<ProjectType> All => [Arcs, Faculty, Club, Class, Personal, Film, GameDesign, Business];
     
     /// <summary>
     /// Creates a ProjectType based on string, e.g., from user input,

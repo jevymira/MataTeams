@@ -13,5 +13,14 @@ public enum ProjectStatus {
     PreProduction,
     Production,
     PostProduction,
-    Released
+    Released,
+
+    // Game design
+    Alpha,
+    Beta,
+    Gold,
+
+    // Business
+    Funding,
+    Launched
 }

@@ -16,10 +16,11 @@ import { ProjectFormAction, ProjectRoleCreate, Skill } from '../../types'
 type AddRoleFormProps = {
     index: number
     role: ProjectRoleCreate
+    projectType: string
     dispatch: Dispatch<ProjectFormAction>
 }
 
-function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
+function AddRoleForm({index, dispatch, role, projectType}: AddRoleFormProps) {
     const setRoleId = (roleId: string) => {
         dispatch({type: 'SET_ROLE_ID', payload: {roleId, index}})
     }
@@ -43,7 +44,7 @@ function AddRoleForm({index, dispatch, role}: AddRoleFormProps) {
                     <LuTrash2 aria-label="Remove role"/>
             </IconButton>
             <div className="dropdownWrapper">
-                <RolesDropdown labelText="Select role type" setRoleId={setRoleId} />
+                <RolesDropdown labelText="Select role type" setRoleId={setRoleId} projectType={projectType} />
             </div>
             <NumberInput.Root
                 value={role.positionCount.toString()}
