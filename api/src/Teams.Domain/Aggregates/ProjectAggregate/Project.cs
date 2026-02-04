@@ -69,7 +69,7 @@ public class Project : Entity
 
    public ProjectRole AddProjectRole(Guid roleId, int positionCount, List<Skill> skills)
    {
-      var projectRole = new ProjectRole(Id, roleId, positionCount);
+      var projectRole = new ProjectRole(Id, roleId, positionCount, skills);
       _roles.Add(projectRole);
       return projectRole;
    }

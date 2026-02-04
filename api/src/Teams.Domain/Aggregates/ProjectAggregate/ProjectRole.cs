@@ -30,12 +30,13 @@ public class ProjectRole : Entity
         _skills = new List<Skill>();
     }
     
-    public ProjectRole(Guid projectId, Guid roleId, int positionCount) : this()
+    public ProjectRole(Guid projectId, Guid roleId, int positionCount, IEnumerable<Skill> skills) : this()
     {
         Id = Guid.CreateVersion7();
         ProjectId = projectId;
         RoleId = roleId;
         PositionCount = positionCount;
+        _skills = new List<Skill>(skills);
     }
 
     public void Update(Guid roleId, int positionCount, IEnumerable<Skill> skills)
