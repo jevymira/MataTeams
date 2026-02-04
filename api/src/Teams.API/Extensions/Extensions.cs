@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.AddTeamToProject;
 using Teams.API.Features.Projects.CreateProject;
+using Teams.API.Features.Projects.EditProject;
 using Teams.API.Features.Projects.GetAllProjects;
 using Teams.API.Features.Projects.GetAllTeamMembershipRequests;
 using Teams.API.Features.Projects.RequestToJoinTeam;
@@ -370,12 +371,9 @@ internal static class Extensions
                         ProjectStatus.Draft,
                         user.Id);
                     // Add `Frontend` Role with `JavaScript` and `React` Skills.
-                    var projectRole = project.AddProjectRole(frontendRole.Id, 2);
-                    project.Roles.First().AddProjectSkill(js);
-                    project.Roles.First().AddProjectSkill(react);
+                    var projectRole = project.AddProjectRole(frontendRole.Id, 2, [js, react]);
                     // Add `Backend` Role with `Java` Skill.
-                    project.AddProjectRole(backendRole.Id, 2);
-                    project.Roles.Last().AddProjectSkill(java);
+                    project.AddProjectRole(backendRole.Id, 2, [java]);
                     context.Set<Project>().Add(project);
                     var team = project.AddTeamToProject("Sample Team", project.OwnerId);
                     var request = project.AddTeamMembershipRequest(team.Id, project.OwnerId, projectRole.Id);
@@ -412,6 +410,7 @@ internal static class Extensions
         GetProjectById.MapEndpoint(projectsGroup);
         GetAllProjectsEndpoint.Map(projectsGroup);
         CreateProjectEndpoint.Map(projectsGroup);
+        EditProject.Map(projectsGroup);
         AddTeamToProjectEndpoint.Map(projectsGroup);
         RequestToJoinTeam.MapEndpoint(teamsGroup);
         GetAllTeamMembershipRequests.MapEndpoint(teamsGroup);

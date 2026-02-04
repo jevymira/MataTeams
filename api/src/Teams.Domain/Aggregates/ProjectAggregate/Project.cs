@@ -20,8 +20,6 @@ public class Project : Entity
    
    public IReadOnlyCollection<ProjectRole> Roles => _roles.AsReadOnly();
    
-   // public ICollection<int> TeamIds { get; private set; }
-   
    private readonly List<Team> _teams;
    
    public IReadOnlyCollection<Team> Teams => _teams.AsReadOnly();
@@ -49,11 +47,60 @@ public class Project : Entity
       OwnerId = ownerId;
    }
 
-   public ProjectRole AddProjectRole(Guid roleId, int positionCount)
+   public void Rename(string newName)
    {
-      var projectRole = new ProjectRole(Id, roleId, positionCount);
+      Name = newName;
+   }
+
+   public void ChangeDescription(string newDescription)
+   {
+      Description = newDescription;
+   }
+
+   public void SetType(ProjectType type)
+   {
+      Type = type;
+   }
+
+   public void SetStatus(ProjectStatus status)
+   {
+      Status = status;
+   }
+
+   public ProjectRole AddProjectRole(Guid roleId, int positionCount, List<Skill> skills)
+   {
+      var projectRole = new ProjectRole(Id, roleId, positionCount, skills);
       _roles.Add(projectRole);
       return projectRole;
+   }
+
+   public void RemoveRole(Guid projectRoleId)
+   {
+      if (_teams.Any(t => t.Members.Any(m => m.ProjectRoleId == projectRoleId)))
+      {
+         throw new InvalidOperationException("Cannot delete project role with assigned team members.");
+      }
+
+      var role = _roles.SingleOrDefault(t => t.Id == projectRoleId);
+      
+      if (role is not null)
+      {
+         _roles.Remove(role);
+      }
+   }
+
+   public void UpdateRole(Guid projectRoleId, Guid roleId, int positionCount, List<Skill> skills)
+   {
+      var role =  _roles.SingleOrDefault(t => t.Id == projectRoleId);
+      role?.Update(roleId, positionCount, skills);
+   }
+   
+   /// <summary>
+   /// Remove those teams excluded from the list of teams to retain.
+   /// </summary>
+   public void RemoveExcludedTeams(IEnumerable<Guid> teamsToRetainIds)
+   {
+      _teams.RemoveAll(t => !teamsToRetainIds.Contains(t.Id));
    }
 
    public Team? AddTeamToProject(string teamName, Guid leaderId)

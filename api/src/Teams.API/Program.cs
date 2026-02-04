@@ -40,6 +40,10 @@ builder.Services.AddSwaggerGen(o =>
     };
     o.AddSecurityDefinition("Bearer", scheme);
     o.AddSecurityRequirement(requirement);
+    
+    // To avoid collisions of nested request/response classes
+    // in the Swagger doc, e.g., Project.Request and User.Request.
+    o.CustomSchemaIds(type => type.FullName!.Replace("+", "."));
 });
 builder.AddApplicationServices();
 builder.Services.AddTransient<ValidationExceptionHandlingMiddleware>();

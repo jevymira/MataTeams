@@ -27,7 +27,7 @@ public static class GetUserMembershipRequestsEndpoint
 {
     public static void Map(RouteGroupBuilder builder) => builder
         .MapGet("me/requests", GetUserMembershipRequestsAsync)
-        .WithSummary("Get all membership requests for the authenticated user.")
+        .WithSummary("Get all outgoing membership requests initiated by the authenticated user.")
         .RequireAuthorization();
 
     private static async Task<Ok<GetUserMembershipRequestsResponse>> GetUserMembershipRequestsAsync(

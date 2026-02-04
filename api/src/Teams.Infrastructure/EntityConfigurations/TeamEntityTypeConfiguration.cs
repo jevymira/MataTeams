@@ -15,15 +15,5 @@ public class TeamEntityTypeConfiguration : IEntityTypeConfiguration<Team>
         builder.HasOne<User>(t => t.Leader)
             .WithMany()
             .HasForeignKey(t => t.LeaderId);
-
-        builder.HasMany(t => t.Members)
-            .WithOne()
-            .HasForeignKey(m => m.TeamId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        builder.HasMany(t => t.MembershipRequests)
-            .WithOne()
-            .HasForeignKey(r => r.TeamId)
-            .OnDelete(DeleteBehavior.NoAction);
     }
 }

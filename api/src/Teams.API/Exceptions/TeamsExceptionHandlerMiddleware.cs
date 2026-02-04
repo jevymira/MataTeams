@@ -12,6 +12,9 @@ public class TeamsExceptionHandlerMiddleware : AbstractExceptionHandlerMiddlewar
         HttpStatusCode code;
         switch (exception)
         {
+            case KeyNotFoundException:
+                code = HttpStatusCode.NotFound;
+                break;
             case UnauthorizedAccessException:
                 code = HttpStatusCode.Forbidden;
                 break;
