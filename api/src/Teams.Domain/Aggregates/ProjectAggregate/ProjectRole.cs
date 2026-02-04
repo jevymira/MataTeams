@@ -32,7 +32,6 @@ public class ProjectRole : Entity
     
     public ProjectRole(Guid projectId, Guid roleId, int positionCount, IEnumerable<Skill> skills) : this()
     {
-        Id = Guid.CreateVersion7();
         ProjectId = projectId;
         RoleId = roleId;
         PositionCount = positionCount;
