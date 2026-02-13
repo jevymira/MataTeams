@@ -26,6 +26,7 @@ public class Team : Entity
 
     public Team(string name, Guid projectId, Guid leaderId)
     {
+        Id = Guid.CreateVersion7();
         Name = name;
         ProjectId = projectId;
         LeaderId = leaderId;
