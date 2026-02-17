@@ -423,7 +423,7 @@ internal static class Extensions
         var usersGroup = app.MapGroup("/api/users").WithTags("Users");
         CreateProfile.MapEndpoint(usersGroup);
         GetAuthenticatedUserProfileEndpoint.Map(usersGroup);
-        EditAuthenticatedUserProfileEndpoint.Map(usersGroup);
+        EditAuthenticatedUserProfile.MapEndpoint(usersGroup);
         GetProfileByIdEndpoint.Map(usersGroup);
         GetUserTeamsAndRolesEndpoint.Map(usersGroup);
         GetUserMembershipRequestsEndpoint.Map(usersGroup);
