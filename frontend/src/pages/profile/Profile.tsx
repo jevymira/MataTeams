@@ -18,8 +18,8 @@ function Profile() {
     const navigate = useNavigate()
     const [ pendingRequests, getRequests ] = useGetPendingRequests(token)
     const [ userRoles, getUserRoles ] = useGetUserRoles(token)
-    const [ editFirstName, setEditFirstName ] = useState('')
-    const [ editLastName, setEditLastName ] = useState('')
+    const [ editFirstName, setEditFirstName ] = useState(firstName)
+    const [ editLastName, setEditLastName ] = useState(lastName)
 
     useEffect(() => {
         getRequests()
@@ -38,14 +38,21 @@ function Profile() {
                 <Text fontSize={'20px'} fontWeight={600}>Profile Details</Text>
             </Flex>
             <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} paddingBottom={'20px'}>
-                <Editable.Root textAlign="start" defaultValue={firstName}>
+                <Editable.Root textAlign="start" value={editFirstName}
+                    onValueChange={(e) => {
+                        setEditFirstName(e.value)
+                        // API call
+                    }}>
                     <Editable.Preview />
                     <Editable.Input />
                 </Editable.Root>
             </Flex>
 
             <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} paddingBottom={'20px'}>
-                <Editable.Root textAlign="start" defaultValue={lastName}>
+                <Editable.Root textAlign="start" value={editLastName}
+                    onValueChange={(e) => {
+                        setEditLastName(e.value)
+                    }}>
                     <Editable.Preview />
                     <Editable.Input />
                 </Editable.Root>
