@@ -1,7 +1,7 @@
 // libraries
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Container, Text, Flex, Badge, Wrap, IconButton, Card } from '@chakra-ui/react'
+import { Container, Editable, Text, Flex, Badge, Wrap, IconButton, Card } from '@chakra-ui/react'
 import { LuCheck, LuClock, LuPencil, LuPlus } from 'react-icons/lu'
 
 // context
@@ -14,11 +14,13 @@ import { useGetPendingRequests, useGetUserRoles } from '../../hooks/teams'
 import { UserContextType } from '../../types'
 
 function Profile() {
-    const { firstName, skills, token } = useContext(UserContext) as UserContextType
+    const { firstName, lastName, skills, token } = useContext(UserContext) as UserContextType
     const navigate = useNavigate()
     const [ pendingRequests, getRequests ] = useGetPendingRequests(token)
     const [ userRoles, getUserRoles ] = useGetUserRoles(token)
-    
+    const [ editFirstName, setEditFirstName ] = useState('')
+    const [ editLastName, setEditLastName ] = useState('')
+
     useEffect(() => {
         getRequests()
         getUserRoles()
@@ -31,6 +33,24 @@ function Profile() {
     return (
         <Flex paddingTop={'20px'} flexDirection="column" alignItems={'center'} justifyContent={'center'}>
             <Text fontSize={'26px'} marginBottom={'40px'}>Welcome back, {firstName}!</Text>
+            
+            <Flex flexDirection='row' justifyContent={'space-between'} alignItems={'center'} width={'500px'}>
+                <Text fontSize={'20px'} fontWeight={600}>Profile Details</Text>
+            </Flex>
+            <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} paddingBottom={'20px'}>
+                <Editable.Root textAlign="start" defaultValue={firstName}>
+                    <Editable.Preview />
+                    <Editable.Input />
+                </Editable.Root>
+            </Flex>
+
+            <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} paddingBottom={'20px'}>
+                <Editable.Root textAlign="start" defaultValue={lastName}>
+                    <Editable.Preview />
+                    <Editable.Input />
+                </Editable.Root>
+            </Flex>
+            
             <Flex flexDirection='row' justifyContent={'space-between'} alignItems={'center'} width={'500px'}>
                 <Text fontSize={'20px'} fontWeight={600}>Skills</Text>
                 <IconButton variant={'subtle'}>
