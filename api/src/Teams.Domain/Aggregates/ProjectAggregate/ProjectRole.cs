@@ -16,8 +16,8 @@ public class ProjectRole : Entity
     public Role Role { get; private set; }
     
     /// <summary>
-    // The maximum number of positions for a role,
-    // each to be "filled" by a team member.
+    /// The maximum number of positions for a role,
+    /// each to be "filled" by a team member.
     /// </summary>
     public int PositionCount { get; private set; }
     
@@ -30,12 +30,20 @@ public class ProjectRole : Entity
         _skills = new List<Skill>();
     }
     
-    public ProjectRole(Guid projectId, Guid roleId, int positionCount) : this()
+    public ProjectRole(Guid projectId, Guid roleId, int positionCount, IEnumerable<Skill> skills) : this()
     {
-        Id = Guid.CreateVersion7();
         ProjectId = projectId;
         RoleId = roleId;
         PositionCount = positionCount;
+        _skills = new List<Skill>(skills);
+    }
+
+    public void Update(Guid roleId, int positionCount, IEnumerable<Skill> skills)
+    {
+        RoleId = roleId;
+        PositionCount = positionCount;
+        _skills.Clear();
+        _skills.AddRange(skills);
     }
 
     public void AddProjectSkill(Skill skill)

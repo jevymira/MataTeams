@@ -46,4 +46,28 @@ public class ProjectAggregateTest
         
         Assert.Equal("Invalid status for project type.", ex.Message);
     }
+
+    [Fact]
+    public void RemoveTeam_Project_Success()
+    {
+        var project = new Project(
+            name,
+            description,
+            ProjectType.Arcs,
+            ProjectStatus.Draft,
+            ownerId);
+
+        project.AddTeamToProject("Team 1", ownerId);
+        project.AddTeamToProject("Team 2", ownerId);
+        project.AddTeamToProject("Team 3", ownerId);
+        
+        var teamsExceptFirst = project.Teams
+            .Except([project.Teams.First()])
+            .Select(t => t.Id)
+            .ToList();
+        
+        project.RemoveExcludedTeams(teamsExceptFirst);
+        
+        Assert.Equal(2, project.Teams.Count);
+    }
 }

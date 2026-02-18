@@ -21,6 +21,7 @@ public class TeamMemberEntityTypeConfiguration : IEntityTypeConfiguration<TeamMe
         
         builder.HasOne<ProjectRole>()
             .WithMany()
-            .HasForeignKey(r => r.ProjectRoleId);
+            .HasForeignKey(r => r.ProjectRoleId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
