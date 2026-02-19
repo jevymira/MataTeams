@@ -1,5 +1,5 @@
 // libraries
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, Dispatch } from 'react'
 import { useNavigate } from 'react-router'
 import { Container, Editable, Text, Flex, Badge, Wrap, IconButton, Card } from '@chakra-ui/react'
 import { LuCheck, LuClock, LuPencil, LuPlus } from 'react-icons/lu'
@@ -9,17 +9,23 @@ import { UserContext } from '../../context/auth'
 
 // hooks
 import { useGetPendingRequests, useGetUserRoles } from '../../hooks/teams'
+import { useUpdateUser } from '../../hooks/profile'
+
+// components
+import SkillsDropdown from '../../components/skillsDropdown/SkillsDropdown'
 
 // types
-import { UserContextType } from '../../types'
+import { UserContextType, Skill } from '../../types'
 
 function Profile() {
-    const { firstName, lastName, skills, token } = useContext(UserContext) as UserContextType
+    const { firstName, lastName, skills, token, setSkills } = useContext(UserContext) as UserContextType
     const navigate = useNavigate()
     const [ pendingRequests, getRequests ] = useGetPendingRequests(token)
     const [ userRoles, getUserRoles ] = useGetUserRoles(token)
     const [ editFirstName, setEditFirstName ] = useState(firstName)
     const [ editLastName, setEditLastName ] = useState(lastName)
+    const [updateUser] = useUpdateUser(editFirstName, editLastName)
+    const [isEditingSkills, setIsEditingSkills]= useState(false)
 
     useEffect(() => {
         getRequests()
@@ -29,6 +35,7 @@ function Profile() {
     const routeToNewProject = () => {
         navigate('/new')
     }
+    
 
     return (
         <Flex paddingTop={'20px'} flexDirection="column" alignItems={'center'} justifyContent={'center'}>
@@ -41,17 +48,21 @@ function Profile() {
                 <Editable.Root textAlign="start" value={editFirstName}
                     onValueChange={(e) => {
                         setEditFirstName(e.value)
-                        // API call
+                        updateUser()
                     }}>
                     <Editable.Preview />
                     <Editable.Input />
                 </Editable.Root>
+                {/* <IconButton onClick={() => {
+                    updateUser()
+                }}>Save</IconButton> */}
             </Flex>
 
             <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} paddingBottom={'20px'}>
                 <Editable.Root textAlign="start" value={editLastName}
                     onValueChange={(e) => {
                         setEditLastName(e.value)
+                        updateUser()
                     }}>
                     <Editable.Preview />
                     <Editable.Input />
@@ -60,12 +71,17 @@ function Profile() {
             
             <Flex flexDirection='row' justifyContent={'space-between'} alignItems={'center'} width={'500px'}>
                 <Text fontSize={'20px'} fontWeight={600}>Skills</Text>
-                <IconButton variant={'subtle'}>
+                <IconButton variant={'subtle'} onClick={() => {
+                    setIsEditingSkills(true)
+                }}>
                     <LuPencil />
                 </IconButton>
             </Flex>
             <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'}>
-                <Wrap>
+            {isEditingSkills ? (
+                <SkillsDropdown setFormSkills={setSkills} labelText="Select skills"/>
+            ) : (
+                    <Wrap>
                     {skills?.length > 0 ? (
                         skills.map((skill, index) => (
                             <Badge key={index} mt={2}>{skill.name}</Badge>))
@@ -75,6 +91,8 @@ function Profile() {
                         </Text>)
                         }
                 </Wrap>
+            )}
+
             </Flex>
 
             <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'}>

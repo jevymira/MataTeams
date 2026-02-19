@@ -1,7 +1,7 @@
 // libraries 
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { Input, Container, Button, Text, SegmentGroup, CheckboxCard, Wrap, Flex, ScrollArea, Badge } from '@chakra-ui/react'
+import { Input, Container, Button, Text, SegmentGroup, CheckboxCard, Wrap, Flex, ScrollArea, Badge, Spinner } from '@chakra-ui/react'
 import { PasswordInput } from '../../components/ui/password-input'
 import SkillsDropdown from '../../components/skillsDropdown/SkillsDropdown'
 import Uppy from '@uppy/core'
@@ -37,12 +37,14 @@ export const Signup = () => {
     const [password, setPassword] = useState('')
     const [isFaculty, setFaculty] = useState(false) 
     const [skillEntry, setSkillEntry] = useState("Upload Resume")
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleSetSignupFormSkills = (formSkills: Skill[]) => {
         setSkills(formSkills)
     }
 
     const setSignupFormSkillsFromPlaceholderResume = () => {
+        setIsLoading(true)
         const placeholderSkills: Skill[] = [
         {
             id: '',
@@ -85,7 +87,11 @@ export const Signup = () => {
             name: 'JavaScript'
         },
     ]
-        setSkills(placeholderSkills)
+        setTimeout(() => {
+            setSkills(placeholderSkills)
+            setIsLoading(false)
+        }, 600)
+        
     }
 
     const [signup] = useSignup(email, password, firstName, lastName, username, isFaculty, skills)
@@ -175,9 +181,9 @@ export const Signup = () => {
                             />
                             <div>
                                 <Text>Skills from resume:</Text>
-                                <Wrap gap="1">{skills && skills.map(s => {
+                                {isLoading ? <Spinner /> : <Wrap gap="1">{skills && skills.map(s => {
                                     return (<Badge>{s.name}</Badge>)
-                                })}</Wrap>
+                                })}</Wrap>}
                             </div></Flex>) : (
                                 <SkillsDropdown labelText='Select your skills' setFormSkills={handleSetSignupFormSkills} />
                             )}
