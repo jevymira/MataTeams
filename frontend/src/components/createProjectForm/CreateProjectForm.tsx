@@ -88,7 +88,7 @@ function CreateProjectForm() {
                             </IconButton>
                         </Flex>
                         {formState.roles.map((r, i) => {
-                            return <AddRoleForm index={i} dispatch={dispatch} key={i} role={r} />
+                            return <AddRoleForm index={i} dispatch={dispatch} key={i} role={r} projectType={formState.projectType} />
                         })}
                         <div className='formButtons'>
                             <Button style={{marginLeft: '5px'}} onClick={createProject}>

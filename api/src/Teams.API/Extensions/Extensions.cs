@@ -339,7 +339,90 @@ internal static class Extensions
                     context.Set<Role>().Add(machineLearningRole);
                     context.SaveChanges();
                 }
-                
+
+                // game design roles
+                var threeDModelingRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "3D Modeler");
+                if (threeDModelingRole == null)
+                {
+                    threeDModelingRole = new Role("3D Modeler");
+                    context.Set<Role>().Add(threeDModelingRole);
+                    context.SaveChanges();
+                }
+
+                var textureArtistRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Texture artist");
+                if (textureArtistRole == null)
+                {
+                    textureArtistRole = new Role("Texture artist");
+                    context.Set<Role>().Add(textureArtistRole);
+                    context.SaveChanges();
+                }
+
+                var programmerRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Programmer");
+                if (programmerRole == null)
+                {
+                    programmerRole = new Role("Programmer");
+                    context.Set<Role>().Add(programmerRole);
+                    context.SaveChanges();
+                }
+
+                var mechanicsDesignerRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Mechanics Designer");
+                if (mechanicsDesignerRole == null)
+                {
+                    mechanicsDesignerRole = new Role("Mechanics Designer");
+                    context.Set<Role>().Add(mechanicsDesignerRole);
+                    context.SaveChanges();
+                }
+
+                var levelDesignerRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Level Designer");
+                if (levelDesignerRole == null)
+                {
+                    levelDesignerRole = new Role("Level Designer");
+                    context.Set<Role>().Add(levelDesignerRole);
+                    context.SaveChanges();
+                }
+
+                // business roles
+                var financeRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Finances");
+                if (financeRole == null)
+                {
+                    financeRole = new Role("Finances");
+                    context.Set<Role>().Add(financeRole);
+                    context.SaveChanges();
+                }
+
+                var baRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Business Analyst");
+                if (baRole == null)
+                {
+                    baRole = new Role("Business Analyst");
+                    context.Set<Role>().Add(baRole);
+                    context.SaveChanges();
+                }
+
+                var accountingRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Accountant");
+                if (accountingRole == null)
+                {
+                    accountingRole = new Role("Accountant");
+                    context.Set<Role>().Add(accountingRole);
+                    context.SaveChanges();
+                }
+
+                var mgmtRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "Manager");
+                if (mgmtRole == null)
+                {
+                    mgmtRole = new Role("Manager");
+                    context.Set<Role>().Add(mgmtRole);
+                    context.SaveChanges();
+                }
+
                 var user = context.Set<User>()
                     .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUsers:0:IdentityGuid"]);
                 if (user == null)

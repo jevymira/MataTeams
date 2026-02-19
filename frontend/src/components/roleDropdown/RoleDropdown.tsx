@@ -7,10 +7,14 @@ import { useGetRoles } from '../../hooks/projects'
 
 type RolesDropdownProps = {
     labelText: string
+    projectType: string
     setRoleId: (roleId: string) => void
 }
 
-const RolesDropdown = ({labelText, setRoleId}: RolesDropdownProps) => {
+const gameDesignRoles = ['3D Modeler', 'Texture artist', 'Programmer', 'Mechanics Designer', 'Level Designer']
+const programmingRoles = ['Backend', 'Frontend', 'Fullstack', 'Machine Learning']
+
+const RolesDropdown = ({labelText, setRoleId, projectType}: RolesDropdownProps) => {
     const [roles, getRoles] = useGetRoles()
     const [selectedRole, setSelectedRole] = useState<string[]>([])
 
@@ -18,8 +22,19 @@ const RolesDropdown = ({labelText, setRoleId}: RolesDropdownProps) => {
         getRoles()
     }, [])
 
+        const filterRolesForProjectType = (rolesToFilter: Role[]): Role[] => {
+      return rolesToFilter.filter(r => {
+        if (projectType == 'Game Design' && gameDesignRoles.includes(r.name)) {
+          return r
+        } 
+        else if (projectType != 'Game Design' && projectType != 'Business' && programmingRoles.includes(r.name)) {
+          return r
+        }
+      })  
+    }
+
     const rolesCollection = createListCollection<Role>({
-        items: roles ?? [],
+        items: roles? filterRolesForProjectType(roles) : [],
         itemToString: (role) => role.name,
         itemToValue: (role) => role.id,
     })

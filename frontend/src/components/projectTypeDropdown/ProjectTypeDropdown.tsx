@@ -16,7 +16,8 @@ const ProjectTypeDropdown = ({setFormProjectType}: RolesDropdownProps) => {
             { label: "Club", value: "Club" },
             { label: "Class", value: "Class" },
             { label: "Personal", value: "Personal" },
-            { label: "Film", value: "Film" },
+            { label: "Game Design", value: "Game Design" },
+            { label: "Business", value: "Business" },
         ],
     })
 
