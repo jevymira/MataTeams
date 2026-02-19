@@ -9,7 +9,10 @@ import { UserContext } from '../context/auth'
 import { UserContextType } from '../types'
 
 export function useUpdateUser(firstName: string, lastName: string) {
-    const { userID, token, setUsername, setSkills, setFirst, setLast, skills } = useContext(UserContext) as UserContextType
+    const { token, setSkills, setFirst, setLast, skills } = useContext(UserContext) as UserContextType
+    const skillIds = skills.map(s => {
+        return s.id
+    })
 
     const putUser = async () => {
         const options = {
@@ -17,7 +20,7 @@ export function useUpdateUser(firstName: string, lastName: string) {
             body: JSON.stringify({
                 firstName,
                 lastName, 
-                skills
+                skillIds
             }),
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -34,6 +37,9 @@ export function useUpdateUser(firstName: string, lastName: string) {
                 return res.json()
             }).then(json => {
                 console.log(json)
+                setFirst(firstName)
+                setLast(lastName)
+                setSkills(json['skillIds'])
             })
         } catch (e) {
             console.error(e)
@@ -41,7 +47,6 @@ export function useUpdateUser(firstName: string, lastName: string) {
         }
 
     }
-    setFirst(firstName)
-    setLast(lastName)
+
     return [putUser] as const
 }

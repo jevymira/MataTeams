@@ -36,6 +36,10 @@ function Profile() {
         navigate('/new')
     }
     
+    const setProfileSkills = (skills: Skill[]) => {
+        setSkills(skills)
+        updateUser()
+    }
 
     return (
         <Flex paddingTop={'20px'} flexDirection="column" alignItems={'center'} justifyContent={'center'}>
@@ -79,7 +83,7 @@ function Profile() {
             </Flex>
             <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'}>
             {isEditingSkills ? (
-                <SkillsDropdown setFormSkills={setSkills} labelText="Select skills"/>
+                <SkillsDropdown setFormSkills={setProfileSkills} labelText="Select skills"/>
             ) : (
                     <Wrap>
                     {skills?.length > 0 ? (
