@@ -46,6 +46,16 @@ public class User : Entity
             : throw new ArgumentNullException(nameof(identityGuid));
     }
 
+    public void ChangeFirstName(string firstName)
+    {
+        FirstName = firstName;
+    }
+
+    public void ChangeLastName(string lastName)
+    {
+        LastName = lastName;
+    }
+
     /// <remarks>
     /// Avoids passing in raw skill IDs, to ensure the `Skill` is valid.
     /// </remarks>
