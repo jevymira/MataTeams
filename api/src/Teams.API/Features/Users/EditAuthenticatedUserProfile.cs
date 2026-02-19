@@ -56,6 +56,9 @@ public static class EditAuthenticatedUserProfile
                 .Include(u => u.Skills)
                 .SingleAsync(u => u.IdentityGuid == identityService.GetUserIdentity(),
                     cancellationToken);
+            
+            profile.ChangeFirstName(command.FirstName);
+            profile.ChangeLastName(command.LastName);
 
             // .ToList() materializes the sequence first; otherwise,
             // .Except() does not create a copy of the collection but instead
