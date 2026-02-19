@@ -2,14 +2,14 @@
 import { useState, useContext } from "react"
 
 // types
-import { User } from "../types"
+import { Skill, User } from "../types"
 
 // context
 import { UserContext } from '../context/auth'
 import { UserContextType } from '../types'
 
-export function useUpdateUser(firstName: string, lastName: string) {
-    const { token, setSkills, setFirst, setLast, skills } = useContext(UserContext) as UserContextType
+export function useUpdateUser(firstName: string, lastName: string, skills: Skill[]) {
+    const { token, setSkills, setFirst, setLast } = useContext(UserContext) as UserContextType
     const skillIds = skills.map(s => {
         return s.id
     })

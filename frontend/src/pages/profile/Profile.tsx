@@ -24,7 +24,8 @@ function Profile() {
     const [ userRoles, getUserRoles ] = useGetUserRoles(token)
     const [ editFirstName, setEditFirstName ] = useState(firstName)
     const [ editLastName, setEditLastName ] = useState(lastName)
-    const [updateUser] = useUpdateUser(editFirstName, editLastName)
+    const [skillsToUpdate, setSkillsToUpdate] = useState<Skill[]>([])
+    const [updateUser] = useUpdateUser(editFirstName, editLastName, skillsToUpdate)
     const [isEditingSkills, setIsEditingSkills]= useState(false)
 
     useEffect(() => {
@@ -37,7 +38,7 @@ function Profile() {
     }
     
     const setProfileSkills = (skills: Skill[]) => {
-        setSkills(skills)
+        setSkillsToUpdate(skills)
         updateUser()
     }
 
