@@ -12,6 +12,7 @@ type RolesDropdownProps = {
 }
 
 const gameDesignRoles = ['3D Modeler', 'Texture artist', 'Programmer', 'Mechanics Designer', 'Level Designer']
+const businessRoles = ['Finances', 'Business Analyst', 'Accountant', 'Manager']
 const programmingRoles = ['Backend', 'Frontend', 'Fullstack', 'Machine Learning']
 
 const RolesDropdown = ({labelText, setRoleId, projectType}: RolesDropdownProps) => {
@@ -27,6 +28,9 @@ const RolesDropdown = ({labelText, setRoleId, projectType}: RolesDropdownProps) 
         if (projectType == 'Game Design' && gameDesignRoles.includes(r.name)) {
           return r
         } 
+        else if (projectType == 'Business' && businessRoles.includes(r.name)) {
+          return r
+        }
         else if (projectType != 'Game Design' && projectType != 'Business' && programmingRoles.includes(r.name)) {
           return r
         }

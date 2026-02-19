@@ -1,7 +1,7 @@
 // libraries 
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { Input, Container, Button, Text, Checkbox, CheckboxCard, CheckboxGroup, Flex, ScrollArea } from '@chakra-ui/react'
+import { Input, Container, Button, Text, SegmentGroup, CheckboxCard, Wrap, Flex, ScrollArea, Badge, Spinner } from '@chakra-ui/react'
 import { PasswordInput } from '../../components/ui/password-input'
 import SkillsDropdown from '../../components/skillsDropdown/SkillsDropdown'
 import Uppy from '@uppy/core'
@@ -36,18 +36,62 @@ export const Signup = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [isFaculty, setFaculty] = useState(false) 
+    const [skillEntry, setSkillEntry] = useState("Upload Resume")
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleSetSignupFormSkills = (formSkills: Skill[]) => {
         setSkills(formSkills)
     }
 
     const setSignupFormSkillsFromPlaceholderResume = () => {
-        console.log("??")
-        const placeholderSkills: Skill[] = [{
+        setIsLoading(true)
+        const placeholderSkills: Skill[] = [
+        {
             id: '',
             name: 'React'
-        }]
-        setSkills(placeholderSkills)
+        },
+        {
+            id: '',
+            name: 'C++'
+        },
+        {
+            id: '',
+            name: 'Unreal Engine 5'
+        },
+        {
+            id: '',
+            name: 'Blazor'
+        },
+        {
+            id: '',
+            name: '.NET ASP'
+        },
+        {
+            id: '',
+            name: 'Agile Methodology'
+        },
+        {
+            id: '',
+            name: 'Linux'
+        },
+        {
+            id: '',
+            name: 'C#'
+        },
+        {
+            id: '',
+            name: 'Unity3D'
+        },
+        {
+            id: '',
+            name: 'JavaScript'
+        },
+    ]
+        setTimeout(() => {
+            setSkills(placeholderSkills)
+            setIsLoading(false)
+        }, 600)
+        
     }
 
     const [signup] = useSignup(email, password, firstName, lastName, username, isFaculty, skills)
@@ -117,12 +161,15 @@ export const Signup = () => {
                             <p>Enter your major:</p>
                             <Input placeholder='Major' size='md'/>
 
-                            <SkillsDropdown labelText='Select your skills' setFormSkills={handleSetSignupFormSkills} />
-                            <Button onClick={e => handleSubmit(e)}>Submit</Button>
-                            <br /><p>Already have an account? <Link to='/login'>Login here!</Link></p>
-
-                            
-                            <input
+                            <SegmentGroup.Root 
+                                value={skillEntry} 
+                                onValueChange={(e) => setSkillEntry(e.value !== null ? e.value : "Upload Resume")}
+                                marginBottom={'10px'} marginTop={'15px'}>
+                                <SegmentGroup.Indicator />
+                                <SegmentGroup.Items items={["Upload Resume", "Manual Entry"]} />
+                            </SegmentGroup.Root>
+                            {skillEntry == 'Upload Resume' ? 
+                            (<Flex flexDirection={'column'} paddingBottom={'15px'}><input
                                 type="file"
                                 name="image"
                                 onChange={(e) => {
@@ -134,10 +181,14 @@ export const Signup = () => {
                             />
                             <div>
                                 <Text>Skills from resume:</Text>
-                                <div>{skills && skills.map(s => {
-                                    return (<div>{s.name}</div>)
-                                })}</div>
-                            </div>
+                                {isLoading ? <Spinner /> : <Wrap gap="1">{skills && skills.map(s => {
+                                    return (<Badge>{s.name}</Badge>)
+                                })}</Wrap>}
+                            </div></Flex>) : (
+                                <SkillsDropdown labelText='Select your skills' setFormSkills={handleSetSignupFormSkills} />
+                            )}
+                            <Button onClick={e => handleSubmit(e)}>Submit</Button>
+                            <br /><p>Already have an account? <Link to='/login'>Login here!</Link></p>
                             
                         </ScrollArea.Content>
                     </ScrollArea.Viewport>

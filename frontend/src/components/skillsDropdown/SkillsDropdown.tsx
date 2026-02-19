@@ -44,6 +44,7 @@ const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
             size="sm" 
             value={selectedSkills}
             onValueChange={handleValueChange}
+            marginBottom={'10px'}
             onInputValueChange={(details) => setSearchValue(details.inputValue)}>
             <Combobox.Label>{labelText}</Combobox.Label>
             <Wrap gap="1">
