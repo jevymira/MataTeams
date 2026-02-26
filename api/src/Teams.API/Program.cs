@@ -1,9 +1,12 @@
 using Microsoft.OpenApi.Models;
+using System.Runtime.CompilerServices;
 using Teams.API.Exceptions;
 using Teams.API.Extensions;
 using Teams.API.Services;
 using Teams.API.Validation;
 using Teams.Infrastructure.Messaging;
+
+[assembly: InternalsVisibleTo("Teams.IntegrationTests")]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,3 +72,7 @@ app.UseAuthorization();
 app.MapEndpoints();
 
 app.Run();
+
+// Included to reference the proper Program class for integration testing w/ WebApplicationFactory;
+// see: https://stackoverflow.com/a/70490057 for discussion.
+internal partial class Program { }
