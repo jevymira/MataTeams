@@ -1,12 +1,9 @@
 using Microsoft.OpenApi.Models;
-using System.Runtime.CompilerServices;
 using Teams.API.Exceptions;
 using Teams.API.Extensions;
 using Teams.API.Services;
 using Teams.API.Validation;
 using Teams.Infrastructure.Messaging;
-
-[assembly: InternalsVisibleTo("Teams.IntegrationTests")]
 
 var builder = WebApplication.CreateBuilder(args);
 
