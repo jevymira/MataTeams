@@ -463,6 +463,20 @@ internal static class Extensions
                     project.RespondToMembershipRequest(project.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
                     context.SaveChanges();
                 }
+
+                var recommendation = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Sample Project");
+                if (recommendation is null)
+                {
+                    recommendation = new Recommendation
+                    {
+                        User = user2,
+                        Project = project,
+                        MatchPercentage = new decimal(0.6)
+                    };
+                    context.Set<Recommendation>().Add(recommendation);
+                    context.SaveChanges();
+                }
             });
         });
         
