@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
+using System.Net.Http.Json;
+using Teams.API.Features.Projects.GetAllProjects;
 using Teams.Infrastructure;
 using Testcontainers.MsSql;
 using Testcontainers.RabbitMq;
@@ -85,8 +87,10 @@ public class IntegrationTests : IAsyncLifetime
             var client = _httpClient;
 
             var response = await client.GetAsync("/api/projects");
+            var content = await response.Content.ReadFromJsonAsync<GetAllProjectsResponse>();
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(1, content.Projects.Count);
         }
     }
 }
