@@ -6,7 +6,7 @@ using Teams.Infrastructure;
 
 namespace Teams.API.Features.Users;
 
-public sealed record GetRecommendationsQuery(int PageSize, string? LastId, decimal? LastMatchPercent) : IRequest<GetRecommendationsResponse>;
+public sealed record GetRecommendationsQuery(int? PageSize, string? LastId, decimal? LastMatchPercent) : IRequest<GetRecommendationsResponse>;
 
 public sealed record GetRecommendationsResponse(
     List<GetRecommendationsProjectViewModel> Items,
@@ -61,7 +61,7 @@ public static class GetRecommendationsEndpoint
         "The only support is for a feed that loads forward.");
 
     private static async Task<Ok<GetRecommendationsResponse>> GetRecommendationsAsync(
-        int pageSize,
+        int? pageSize,
         string? lastRecommendationId,
         decimal? lastRecommendationMatchPercent,
         IMediator mediator)
@@ -99,8 +99,12 @@ internal sealed class GetRecommendationsEndpointHandler(
 
         query = query
             .OrderByDescending(r => r.MatchPercentage)
-            .ThenBy(r => r.Id)
-            .Take(request.PageSize);
+            .ThenBy(r => r.Id);
+        
+        if (request.PageSize is not null)
+        {
+            query = query.Take((int)request.PageSize);
+        }
 
         var items = await query.Select(r => new GetRecommendationsProjectViewModel(
             r.Project.Id.ToString(),
@@ -141,6 +145,8 @@ internal sealed class GetRecommendationsEndpointHandler(
                                 m.TeamMemberUserId.ToString(),
                                 m.UserName))))))))
             .ToListAsync(cancellationToken);
+
+        // Get properties required to forward load "page" through a subsequent request.
 
         var lastId = query.Last().Id;
 
