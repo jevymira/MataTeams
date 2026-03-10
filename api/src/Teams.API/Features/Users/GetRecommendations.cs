@@ -6,7 +6,11 @@ using Teams.Infrastructure;
 
 namespace Teams.API.Features.Users;
 
-public sealed record GetRecommendationsQuery(int? PageSize, string? LastId, decimal? LastMatchPercent) : IRequest<GetRecommendationsResponse>;
+public sealed record GetRecommendationsQuery(
+    int? PageSize,
+    string? LastRecommendationId,
+    decimal? LastRecommendationMatchPercent)
+    : IRequest<GetRecommendationsResponse>;
 
 public sealed record GetRecommendationsResponse(
     List<GetRecommendationsProjectViewModel> Items,
@@ -58,7 +62,10 @@ public static class GetRecommendationsEndpoint
         "These properties are returned in the response.")
         .WithDescription("Being keyset paginated, random access of pages is not supported. " +
         "Neither is backward navigation supported, as is typical. " +
-        "The only support is for a feed that loads forward.");
+        "The only support is for a feed that loads forward. " +
+        "Be warned that the `id` of an item is not the `id` of the recommendation entity, " +
+        "the latter is only exposed for the last item as `LastId`, " +
+        "for use in subsequent responses to request the next page.");
 
     private static async Task<Ok<GetRecommendationsResponse>> GetRecommendationsAsync(
         int? pageSize,
@@ -88,12 +95,12 @@ internal sealed class GetRecommendationsEndpointHandler(
         var query = context.Recommendations.Where(r => r.User.Id == userId);
 
         // Only apply the keyset condition when both values exist.
-        if (request.LastId != null && request.LastMatchPercent != null)
+        if (request.LastRecommendationId != null && request.LastRecommendationMatchPercent != null)
         {
             query = query.Where(r =>
-                r.MatchPercentage < request.LastMatchPercent ||
-                (r.MatchPercentage == request.LastMatchPercent
-                    && r.Id > Guid.Parse(request.LastId))
+                r.MatchPercentage < request.LastRecommendationMatchPercent ||
+                (r.MatchPercentage == request.LastRecommendationMatchPercent
+                    && r.Id > Guid.Parse(request.LastRecommendationId))
             ); // To prevent duplicates when LastIndex recommendation shares a percent with other recommendation(s).
         }
 
