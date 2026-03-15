@@ -428,7 +428,7 @@ internal static class Extensions
                 if (user == null)
                 {
                     user = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:0:IdentityGuid"]!);
-                    user.AddSkill(js);
+                    user.AddSkill(java);
                     context.Set<User>().Add(user);
                     context.SaveChanges();
                 }
@@ -438,7 +438,7 @@ internal static class Extensions
                 if (user2 == null)
                 {
                     user2 = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:1:IdentityGuid"]!);
-                    user2.AddSkill(java);
+                    user2.AddSkill(js);
                     context.Set<User>().Add(user2);
                     context.SaveChanges();
                 }
@@ -461,6 +461,54 @@ internal static class Extensions
                     var team = project.AddTeamToProject("Sample Team", project.OwnerId);
                     var request = project.AddTeamMembershipRequest(team.Id, project.OwnerId, projectRole.Id);
                     project.RespondToMembershipRequest(project.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+                    context.SaveChanges();
+                }
+
+                var project2 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "TEST");
+                if (project2 == null)
+                {
+                    project2 = new Project(
+                        "Chess Club App",
+                        "A collaborative app for the CSUN Chess Club, which will " +
+                        "allow members to draft and solve puzzles for tournaments." +
+                        "We aim to release on the Google Play store in late 2026.",
+                        ProjectType.FromName("Club"),
+                        ProjectStatus.Planning,
+                        user.Id
+                    );
+                    var projectRole1 = project2.AddProjectRole(frontendRole.Id, 1, [react, js]);
+                    var projectRole2 = project2.AddProjectRole(fullstackRole.Id, 1, [java, sqlSkill]);
+
+                    context.Set<Project>().Add(project2);
+                    context.SaveChangesAsync();
+                }
+
+                var recommendation = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Sample Project");
+                if (recommendation is null)
+                {
+                    recommendation = new Recommendation
+                    {
+                        User = user2,
+                        Project = project,
+                        MatchPercentage = new decimal(0.6)
+                    };
+                    context.Set<Recommendation>().Add(recommendation);
+                    context.SaveChanges();
+                }
+
+                var recommendation2 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "TEST");
+                if (recommendation2 is null)
+                {
+                    recommendation2 = new Recommendation
+                    {
+                        User = user2,
+                        Project = project2,
+                        MatchPercentage = new decimal(0.4)
+                    };
+                    context.Set<Recommendation>().Add(recommendation2);
                     context.SaveChanges();
                 }
             });
