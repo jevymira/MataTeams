@@ -492,7 +492,7 @@ internal static class Extensions
         
         GetProjectById.MapEndpoint(projectsGroup);
         GetAllProjectsEndpoint.Map(projectsGroup);
-        CreateProjectEndpoint.Map(projectsGroup);
+        CreateProject.MapEndpoint(projectsGroup);
         EditProject.Map(projectsGroup);
         AddTeamToProjectEndpoint.Map(projectsGroup);
         RequestToJoinTeam.MapEndpoint(teamsGroup);

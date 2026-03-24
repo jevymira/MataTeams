@@ -3,7 +3,7 @@ using Teams.Domain.SharedKernel;
 
 namespace Teams.API.Features.Projects.CreateProject;
 
-public sealed class CreateProjectCommandValidator : AbstractValidator<CreateProjectCommand>
+public sealed class CreateProjectCommandValidator : AbstractValidator<CreateProject.Command>
 {
     public CreateProjectCommandValidator()
     {
