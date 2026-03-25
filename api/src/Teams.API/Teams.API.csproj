@@ -26,4 +26,8 @@
       <ProjectReference Include="..\Teams.Contracts\Teams.Contracts.csproj" />
     </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Teams.IntegrationTests" />
+	</ItemGroup>
+
 </Project>
