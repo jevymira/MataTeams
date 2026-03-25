@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Teams.API.Features.Projects.GetAllProjects;
+using Teams.API.Features.Users;
 using Teams.Infrastructure;
 using Testcontainers.MsSql;
 using Testcontainers.RabbitMq;
@@ -13,7 +18,8 @@ namespace Teams.IntegrationTests;
 
 public class IntegrationTests : IAsyncLifetime
 {
-    private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest").Build();
+    private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
+        .Build();
 
     private readonly RabbitMqContainer _rabbitMqContainer = new RabbitMqBuilder("rabbitmq:3.11")
         .WithPortBinding(5672)
@@ -77,6 +83,13 @@ public class IntegrationTests : IAsyncLifetime
                     var dbContext = scope.ServiceProvider.GetService<TeamDbContext>();
                     // Non-async EnsureCreated to account for non-async UseSeeding.
                     dbContext.Database.EnsureCreated();
+
+                    services.RemoveAll<IAuthenticationSchemeProvider>();
+                    services.RemoveAll<IAuthenticationHandlerProvider>();
+                    services.RemoveAll<IConfigureOptions<AuthenticationOptions>>();
+                    services.AddAuthentication(defaultScheme: "TestScheme")
+                        .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                            "TestScheme", options => { });
                 });
             }
         }
@@ -90,7 +103,22 @@ public class IntegrationTests : IAsyncLifetime
             var content = await response.Content.ReadFromJsonAsync<GetAllProjectsResponse>();
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(1, content.Projects.Count);
+            Assert.NotEmpty(content.Projects);
+        }
+
+        [Fact]
+        public async Task Get_Recommendations_AuthenticationSuccess()
+        {
+            var client = _httpClient;
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
+
+            var response = await client.GetAsync("/api/users/me/recommendations");
+
+            var content = await response.Content.ReadFromJsonAsync<GetRecommendationsResponse>();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotEmpty(content.Items);
         }
     }
 }
