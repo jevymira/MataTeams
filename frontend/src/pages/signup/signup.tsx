@@ -114,7 +114,7 @@ export const Signup = () => {
                     <ScrollArea.Viewport>
                         <ScrollArea.Content padding={'15px'}>
                             <p>Welcome!</p>
-                            <p>Let's get you set up!</p>
+                            <p>Let's get you set up!</p><br/>
 
                             <p>Please enter your first and last name:</p>
                             <Input placeholder='First Name' size='md' onChange={e => {
@@ -135,12 +135,12 @@ export const Signup = () => {
                             setUsername(e.target.value)
                             }}/>
 
-                            <Input placeholder='Password' type='password' size='md' onChange={e => {
+                            <PasswordInput placeholder='Password' type='password' size='md' onChange={e => {
                             setPassword(e.target.value)
                             }}/>
 
                             <p>Are you a Student or Faculty member?</p>
-                                <CheckboxCard.Root variant='outline' colorPalette='green'
+                                <CheckboxCard.Root variant='outline' colorPalette='green' className='checkboxcard'
                                         checked={isFaculty ===true} onCheckedChange={() => setFaculty(true)}>
                                     <CheckboxCard.HiddenInput />
                                     <CheckboxCard.Control>
@@ -149,7 +149,7 @@ export const Signup = () => {
                                     </CheckboxCard.Control>
                                 </CheckboxCard.Root>
 
-                                <CheckboxCard.Root variant='outline' colorPalette='green'
+                                <CheckboxCard.Root variant='outline' colorPalette='green' className='checkboxcard'
                                         checked={isFaculty ===false} onCheckedChange={() => setFaculty(false)}>
                                     <CheckboxCard.HiddenInput />
                                     <CheckboxCard.Control>
@@ -192,7 +192,7 @@ export const Signup = () => {
                             
                         </ScrollArea.Content>
                     </ScrollArea.Viewport>
-                    <ScrollArea.Scrollbar height="70vh">
+                    <ScrollArea.Scrollbar marginTop="15px" height="75vh">
                     <ScrollArea.Thumb />
                     </ScrollArea.Scrollbar>
                     <ScrollArea.Corner />
