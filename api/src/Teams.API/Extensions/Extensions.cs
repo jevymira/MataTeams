@@ -1,9 +1,8 @@
-using System.Security.Claims;
-using System.Text;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.AddTeamToProject;
 using Teams.API.Features.Projects.CreateProject;
@@ -19,7 +18,6 @@ using Teams.API.Logging;
 using Teams.API.Services;
 using Teams.API.Validation;
 using Teams.Domain.Aggregates.ProjectAggregate;
-using Teams.Domain.SharedKernel;
 using Teams.Domain.Aggregates.UserAggregate;
 using Teams.Domain.SharedKernel;
 using Teams.Infrastructure;
@@ -294,7 +292,16 @@ internal static class Extensions
                     context.Set<Skill>().Add(plcSkill);
                     context.SaveChanges();
                 }
-                
+
+                var unitySkill = context.Set<Skill>()
+                    .FirstOrDefault(s => s.Name == "Unity");
+                if (unitySkill == null)
+                {
+                    unitySkill = new Skill("Unity");
+                    context.Set<Skill>().Add(unitySkill);
+                    context.SaveChanges();
+                }
+
                 var fullstackRole = context.Set<Role>()
                     .FirstOrDefault(role => role.Name == "Fullstack");
                 if (fullstackRole == null)
@@ -337,6 +344,16 @@ internal static class Extensions
                 {
                     machineLearningRole = new Role("Machine Learning");
                     context.Set<Role>().Add(machineLearningRole);
+                    context.SaveChanges();
+                }
+
+                // Film roles.
+                var fxArtistRole = context.Set<Role>()
+                    .FirstOrDefault(r => r.Name == "FX Artist");
+                if (fxArtistRole == null)
+                {
+                    fxArtistRole = new Role("FX Artist");
+                    context.Set<Role>().Add(fxArtistRole);
                     context.SaveChanges();
                 }
 
@@ -427,45 +444,84 @@ internal static class Extensions
                     .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUsers:0:IdentityGuid"]);
                 if (user == null)
                 {
-                    user = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:0:IdentityGuid"]!);
+                    user = new User(Guid.CreateVersion7(), "MataTeams", "Admin", false, builder.Configuration["SeedUsers:0:IdentityGuid"]!);
                     user.AddSkill(java);
                     context.Set<User>().Add(user);
                     context.SaveChanges();
                 }
                 
-                var user2 =  context.Set<User>()
+                // Dabbles in frontend development but also really likes embedded work.
+                var demoUser = context.Set<User>()
                     .FirstOrDefault(u => u.IdentityGuid == builder.Configuration["SeedUsers:1:IdentityGuid"]);
-                if (user2 == null)
+                if (demoUser == null)
                 {
-                    user2 = new User(Guid.CreateVersion7(), "First", "Last", false, builder.Configuration["SeedUsers:1:IdentityGuid"]!);
-                    user2.AddSkill(js);
-                    context.Set<User>().Add(user2);
+                    demoUser = new User(Guid.CreateVersion7(), "Matty", "Miller", false, builder.Configuration["SeedUsers:1:IdentityGuid"]!);
+                    demoUser.AddSkill(js);
+                    demoUser.AddSkill(react);
+                    demoUser.AddSkill(pySkill);
+                    demoUser.AddSkill(cplusplusSkill);
+                    demoUser.AddSkill(solderingSkill);
+                    context.Set<User>().Add(demoUser);
                     context.SaveChanges();
                 }
-                
+
+                var user3 = context.Set<User>()
+                    .FirstOrDefault(u => u.IdentityGuid == "00000000000000000000000000000003");
+                if (user3 == null)
+                {
+                    user3 = new User(Guid.CreateVersion7(), "Patty", "Palmer", false, "00000000000000000000000000000003");
+                    user3.AddSkill(js);
+                    user3.AddSkill(react);
+                    user3.AddSkill(expressSkill);
+                    context.Set<User>().Add(user3);
+                    context.SaveChanges();
+                }
+
+                var user4 = context.Set<User>()
+                    .FirstOrDefault(u => u.IdentityGuid == "00000000000000000000000000000004");
+                if (user4 == null)
+                {
+                    user4 = new User(Guid.CreateVersion7(), "Maria", "Martinez", false, "00000000000000000000000000000004");
+                    user4.AddSkill(cplusplusSkill);
+                    user4.AddSkill(solderingSkill);
+                    context.Set<User>().Add(user4);
+                    context.SaveChanges();
+                }
+
+                var user5 = context.Set<User>()
+                    .FirstOrDefault(u => u.IdentityGuid == "00000000000000000000000000000005");
+                if (user5 == null)
+                {
+                    user5 = new User(Guid.CreateVersion7(), "Maria", "Martinez", false, "00000000000000000000000000000005");
+                    context.Set<User>().Add(user5);
+                    context.SaveChanges();
+                }
+
                 var project = context.Set<Project>()
-                    .FirstOrDefault(p => p.Name == "Sample Project");
+                    .FirstOrDefault(p => p.Name == "ARCS: RecyCOOL");
                 if (project == null)
                 {
                     project = new Project(
-                        "Sample Project",
-                        "Sample Text.",
+                        "ARCS: RecyCOOL",
+                        "GOAL: Increase recycling participation and food separation rates" +
+                        "in communities while decreasing contamination in waste bins. " +
+                        "Create applications to in support of this goal, conduct site visits" +
+                        "to locations for research, and collaborate with community leaders.",
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
                         user.Id);
                     // Add `Frontend` Role with `JavaScript` and `React` Skills.
                     var projectRole = project.AddProjectRole(frontendRole.Id, 2, [js, react]);
                     // Add `Backend` Role with `Java` Skill.
-                    project.AddProjectRole(backendRole.Id, 2, [java]);
+                    project.AddProjectRole(backendRole.Id, 2, [pySkill]);
                     context.Set<Project>().Add(project);
-                    var team = project.AddTeamToProject("Sample Team", project.OwnerId);
-                    var request = project.AddTeamMembershipRequest(team.Id, project.OwnerId, projectRole.Id);
-                    project.RespondToMembershipRequest(project.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+                    var team = project.AddTeamToProject("Students", project.OwnerId);
+
                     context.SaveChanges();
                 }
 
                 var project2 = context.Set<Project>()
-                    .FirstOrDefault(p => p.Name == "TEST");
+                    .FirstOrDefault(p => p.Name == "Chess Club App");
                 if (project2 == null)
                 {
                     project2 = new Project(
@@ -475,13 +531,317 @@ internal static class Extensions
                         "We aim to release on the Google Play store in late 2026.",
                         ProjectType.FromName("Club"),
                         ProjectStatus.Planning,
-                        user.Id
+                        user3.Id
                     );
                     var projectRole1 = project2.AddProjectRole(frontendRole.Id, 1, [react, js]);
                     var projectRole2 = project2.AddProjectRole(fullstackRole.Id, 1, [java, sqlSkill]);
 
                     context.Set<Project>().Add(project2);
-                    context.SaveChangesAsync();
+                    context.SaveChanges();
+                }
+
+                var project3 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Retro Game Console");
+                if (project3 == null)
+                {
+                    project3 = new Project(
+                        "Retro Game Console",
+                        "A personal project to recreate classic arcade games. " +
+                        "We'll be soldering components onto a custom board, " +
+                        "including buttons and display output.",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Planning,
+                        user4.Id);
+
+                    var projectRole = project3.AddProjectRole(embeddedRole.Id, 3, [cplusplusSkill, solderingSkill]);
+                    context.Set<Project>().Add(project3);
+                    var team = project3.AddTeamToProject("Team 1", project3.OwnerId);
+                    var request = project3.AddTeamMembershipRequest(team.Id, project3.OwnerId, projectRole.Id);
+                    project.RespondToMembershipRequest(project3.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+                    context.SaveChanges();
+                }
+
+                var project4 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Prosthetic Arm");
+                if (project4 == null)
+                {
+                    project4 = new Project(
+                        "Prosthetic Arm",
+                        "The Robotics Club is working on a proesthetic arm. " +
+                        "We're processing input signals and writing code to " +
+                        "manage motor control. We have microcontrollers, 3D-printed parts, " +
+                        "and wiring. Beginners welcome!",
+                        ProjectType.FromName("Club"),
+                        ProjectStatus.Planning,
+                        user4.Id);
+
+                    context.Set<Project>().Add(project4);
+
+                    var projectRole = project4.AddProjectRole(embeddedRole.Id, 4, [cplusplusSkill, solderingSkill]);
+                    var team = project4.AddTeamToProject("Robotics Club", project4.OwnerId);
+                    var request = project4.AddTeamMembershipRequest(team.Id, project4.OwnerId, projectRole.Id);
+                    project.RespondToMembershipRequest(project4.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+                    context.SaveChanges();
+                }
+
+                var project5 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "New MataSync");
+                if (project5 == null)
+                {
+                    project5 = new Project(
+                        "New MataSync",
+                        "I want to put together a team to enroll into COMP 490, " +
+                        "any Mo/We section works for me. " + 
+                        "I'm want to build a new MataSync to organize clubs. " +
+                        "I've already talked to several organizations on campus " +
+                        "and have the feature set and user flow figured out.",
+                        ProjectType.FromName("Class"),
+                        ProjectStatus.Planning,
+                        user3.Id
+                        );
+
+                    context.Set<Project>().Add(project5);
+
+                    var projectRole = project5.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+                    var team = project5.AddTeamToProject("COMP 490 Group", project5.OwnerId);
+                    var request = project5.AddTeamMembershipRequest(team.Id, project5.OwnerId, projectRole.Id);
+                    project.RespondToMembershipRequest(project5.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+                    context.SaveChanges();
+                }
+
+                var project6 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Vocabulary Game");
+                if (project6 == null)
+                {
+                    project6 = new Project(
+                        "Vocabulary Game",
+                        "I'm building a ReactJS app to teach elementary school kids " +
+                        "new vocabulary, as part of my volunteering for the local school. " +
+                        "Looking for one other person who wants to help build this!",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Planning,
+                        user3.Id
+                        );
+
+                    context.Set<Project>().Add(project6);
+
+                    var projectRole = project6.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+                    var team = project6.AddTeamToProject("Pair Sharing", project6.OwnerId);
+                    var request = project6.AddTeamMembershipRequest(team.Id, project6.OwnerId, projectRole.Id);
+                    project.RespondToMembershipRequest(project6.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+                    context.SaveChanges();
+                }
+
+                var project7 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Professor: Computer Vision Rover");
+                if (project7 == null)
+                {
+                    project7 = new Project(
+                        "Professor: Computer Vision Rover",
+                        "Dr. Schwartz is looking for motivated students " +
+                        "to help build a rover, leveraging computer vision " +
+                        "to identity animals on campus. The camera is planned to " +
+                        "be mounted on a wheeled platform, controlable remotely. " +
+                        "Past experience is helpful but not a hard requirement.",
+                        ProjectType.FromName("Faculty"),
+                        ProjectStatus.Planning,
+                        user.Id);
+
+                    var projectRole1 = project7.AddProjectRole(embeddedRole.Id, 2, [cplusplusSkill]);
+                    var projectRole2 = project7.AddProjectRole(fullstackRole.Id, 2, [pySkill, openCvSkill]);
+                    var team = project7.AddTeamToProject("Research Assistants", project7.OwnerId);
+
+                    context.Set<Project>().Add(project7);
+                    context.SaveChanges();
+                }
+
+                var project8 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "CSUN Parking Tracker Tool");
+                if (project8 == null)
+                {
+                    project8 = new Project(
+                        "CSUN Parking Tracker Tool",
+                        "Tool to analyze trends in parking structure occupancy, " +
+                        "using the publicly-available information in the CSUN App.",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Planning,
+                        user.Id);
+
+                    var projectRole = project8.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+
+                    context.Set<Project>().Add(project8);
+                    context.SaveChanges();
+                }
+
+                var project9 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Physics Simulation Software");
+                if (project9 == null)
+                {
+                    project9 = new Project(
+                        "Physics Simulation Software",
+                        "The Physics department is looking for students in Computer Science " +
+                        "to assist in the creation of physics simulation software. Full details " +
+                        "can be found at https://www.csun.edu/science-mathematics/physics-astronomy",
+                        ProjectType.FromName("Faculty"),
+                        ProjectStatus.Planning,
+                        user.Id);
+
+                    var projectRole = project9.AddProjectRole(fullstackRole.Id, 2, [cplusplusSkill]);
+
+                    context.Set<Project>().Add(project9);
+                    context.SaveChanges();
+                }
+
+                var project10 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Mental Health Platform for Hackathon");
+                if (project10 == null)
+                {
+                    project10 = new Project(
+                        "Mental Health Platform for Hackathon",
+                        "For MataHacks 2026, I want to build an application to collate " +
+                        "local resources for counseling, mediatation, and exercise. " +
+                        "I haven't finalized the feature set yet, but I know that I " +
+                        "want to work in the stack I know best.",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Draft,
+                        user5.Id);
+
+                    var projectRole = project8.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+
+                    context.Set<Project>().Add(project10);
+                    context.SaveChanges();
+                }
+
+                var project11 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Android App");
+                if (project11 == null)
+                {
+                    project11 = new Project(
+                        "Android App",
+                        "...",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Draft,
+                        user5.Id);
+
+                    project11.AddProjectRole(backendRole.Id, 2, [java]);
+
+                    context.Set<Project>().Add(project11);
+                    context.SaveChanges();
+                }
+
+                var project12 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "SEO Audit Tool");
+                if (project12 == null)
+                {
+                    project12 = new Project(
+                        "SEO Audit Tool",
+                        "...",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Draft,
+                        user5.Id);
+                    context.Set<Project>().Add(project12);
+                    context.SaveChanges();
+                }
+
+                var project13 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Database Engine in Java");
+                if (project13 == null)
+                {
+                    project13 = new Project(
+                        "Database Engine in Java",
+                        "...",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Draft,
+                        user5.Id);
+                    context.Set<Project>().Add(project12);
+                    context.SaveChanges();
+                }
+
+                var gameProject1 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Isometric Base Builder");
+                if (gameProject1 == null)
+                {
+                    gameProject1 = new Project(
+                        "Isometric Base Builder",
+                        "...",
+                        ProjectType.FromName("Game Design"),
+                        ProjectStatus.Alpha,
+                        user5.Id);
+
+                    gameProject1.AddProjectRole(threeDModelingRole.Id, 1, []);
+
+                    context.Set<Project>().Add(gameProject1);
+                    context.SaveChanges();
+                }
+
+                var filmProject1 = context.Set<Project>()
+                     .FirstOrDefault(p => p.Name == "Sci-Fi Student Film");
+                if (filmProject1 == null)
+                {
+                    filmProject1 = new Project(
+                        "Sci-Fi Student Film",
+                        "The CSUN Film Club has a student film in the post-production phase. " +
+                        "The current FX artists on the project are graduating this summer. " +
+                        "We're looking for student volunteers to carry the project through!",
+                        ProjectType.FromName("Film"),
+                        ProjectStatus.PostProduction,
+                        user5.Id);
+
+                    filmProject1.AddProjectRole(fxArtistRole.Id, 2, [unitySkill]);
+
+                    context.Set<Project>().Add(filmProject1);
+                    context.SaveChanges();
+                }
+
+                // Excluded from recommendations for demoUser.
+                var projectDemoUserIsLeader = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Energy Saving App");
+                if (projectDemoUserIsLeader == null)
+                {
+                    projectDemoUserIsLeader = new Project(
+                        "Energy Saving App",
+                        "A web application to simulate energy savings from various changes. " +
+                        "Namely, switching to LED lighting or improving insulation. " +
+                        "We visualize savings in real time and track progress against goals.",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Active,
+                        demoUser.Id);
+
+                    var projectRole = projectDemoUserIsLeader.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+                    var team = projectDemoUserIsLeader.AddTeamToProject("Fullstack", projectDemoUserIsLeader.OwnerId);
+                    var request = projectDemoUserIsLeader.AddTeamMembershipRequest(team.Id, projectDemoUserIsLeader.OwnerId, projectRole.Id);
+                    project.RespondToMembershipRequest(projectDemoUserIsLeader.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+                    context.Set<Project>().Add(projectDemoUserIsLeader);
+                    context.SaveChanges();
+                }
+
+                // Excluded from recommendations for demoUser.
+                var projectDemoUserIsMember = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "LADWP Automatic Water Pump Controller");
+                if (projectDemoUserIsMember == null)
+                {
+                    projectDemoUserIsMember = new Project(
+                        "LADWP Automatic Water Pump Controller",
+                        "In association with the LADWP, the CSUN Department of Electrical & Computer Engineering " +
+                        "is building a prototype to explore the next generation of water distribution control. " +
+                        "The work will involve sensors to monitor water levels in tanks and eliminate manual monitoring. " +
+                        "Full details can be found at https://www.csun.edu/engineering-computer-science/electrical-computer-engineering",
+                        ProjectType.FromName("Faculty"),
+                        ProjectStatus.Active,
+                        user.Id);
+
+                    var projectRole = projectDemoUserIsMember.AddProjectRole(embeddedRole.Id, 3, [cplusplusSkill, solderingSkill]);
+                    var team = projectDemoUserIsMember.AddTeamToProject("Fullstack", projectDemoUserIsMember.OwnerId);
+                    var request = projectDemoUserIsMember.AddTeamMembershipRequest(team.Id, demoUser.Id, projectRole.Id);
+                    project.RespondToMembershipRequest(projectDemoUserIsMember.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+                    context.Set<Project>().Add(projectDemoUserIsMember);
+                    context.SaveChanges();
                 }
 
                 var recommendation = context.Set<Recommendation>()
@@ -490,7 +850,7 @@ internal static class Extensions
                 {
                     recommendation = new Recommendation
                     {
-                        User = user2,
+                        User = demoUser,
                         Project = project,
                         MatchPercentage = new decimal(0.6)
                     };
@@ -504,7 +864,7 @@ internal static class Extensions
                 {
                     recommendation2 = new Recommendation
                     {
-                        User = user2,
+                        User = demoUser,
                         Project = project2,
                         MatchPercentage = new decimal(0.4)
                     };
