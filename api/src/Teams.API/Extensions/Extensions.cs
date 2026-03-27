@@ -552,12 +552,12 @@ internal static class Extensions
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Planning,
                         user4.Id);
-
                     var projectRole = project3.AddProjectRole(embeddedRole.Id, 3, [cplusplusSkill, solderingSkill]);
+
                     context.Set<Project>().Add(project3);
                     var team = project3.AddTeamToProject("Team 1", project3.OwnerId);
                     var request = project3.AddTeamMembershipRequest(team.Id, project3.OwnerId, projectRole.Id);
-                    project.RespondToMembershipRequest(project3.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+                    project3.RespondToMembershipRequest(project3.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
 
                     context.SaveChanges();
                 }
@@ -575,13 +575,12 @@ internal static class Extensions
                         ProjectType.FromName("Club"),
                         ProjectStatus.Planning,
                         user4.Id);
-
+                    var projectRole = project4.AddProjectRole(embeddedRole.Id, 4, [cplusplusSkill, solderingSkill]);
                     context.Set<Project>().Add(project4);
 
-                    var projectRole = project4.AddProjectRole(embeddedRole.Id, 4, [cplusplusSkill, solderingSkill]);
                     var team = project4.AddTeamToProject("Robotics Club", project4.OwnerId);
                     var request = project4.AddTeamMembershipRequest(team.Id, project4.OwnerId, projectRole.Id);
-                    project.RespondToMembershipRequest(project4.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+                    project4.RespondToMembershipRequest(project4.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
 
                     context.SaveChanges();
                 }
@@ -601,13 +600,12 @@ internal static class Extensions
                         ProjectStatus.Planning,
                         user3.Id
                         );
-
+                    var projectRole = project5.AddProjectRole(fullstackRole.Id, 2, [js, react]);
                     context.Set<Project>().Add(project5);
 
-                    var projectRole = project5.AddProjectRole(fullstackRole.Id, 2, [js, react]);
                     var team = project5.AddTeamToProject("COMP 490 Group", project5.OwnerId);
                     var request = project5.AddTeamMembershipRequest(team.Id, project5.OwnerId, projectRole.Id);
-                    project.RespondToMembershipRequest(project5.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+                    project5.RespondToMembershipRequest(project5.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
 
                     context.SaveChanges();
                 }
@@ -625,13 +623,12 @@ internal static class Extensions
                         ProjectStatus.Planning,
                         user3.Id
                         );
-
+                    var projectRole = project6.AddProjectRole(fullstackRole.Id, 2, [js, react]);
                     context.Set<Project>().Add(project6);
 
-                    var projectRole = project6.AddProjectRole(fullstackRole.Id, 2, [js, react]);
                     var team = project6.AddTeamToProject("Pair Sharing", project6.OwnerId);
                     var request = project6.AddTeamMembershipRequest(team.Id, project6.OwnerId, projectRole.Id);
-                    project.RespondToMembershipRequest(project6.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+                    project6.RespondToMembershipRequest(project6.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
 
                     context.SaveChanges();
                 }
@@ -757,7 +754,7 @@ internal static class Extensions
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
                         user5.Id);
-                    context.Set<Project>().Add(project12);
+                    context.Set<Project>().Add(project13);
                     context.SaveChanges();
                 }
 
@@ -810,13 +807,13 @@ internal static class Extensions
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Active,
                         demoUser.Id);
-
                     var projectRole = projectDemoUserIsLeader.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+                    context.Set<Project>().Add(projectDemoUserIsLeader);
+
                     var team = projectDemoUserIsLeader.AddTeamToProject("Fullstack", projectDemoUserIsLeader.OwnerId);
                     var request = projectDemoUserIsLeader.AddTeamMembershipRequest(team.Id, projectDemoUserIsLeader.OwnerId, projectRole.Id);
-                    project.RespondToMembershipRequest(projectDemoUserIsLeader.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+                    projectDemoUserIsLeader.RespondToMembershipRequest(projectDemoUserIsLeader.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
 
-                    context.Set<Project>().Add(projectDemoUserIsLeader);
                     context.SaveChanges();
                 }
 
@@ -834,13 +831,13 @@ internal static class Extensions
                         ProjectType.FromName("Faculty"),
                         ProjectStatus.Active,
                         user.Id);
-
                     var projectRole = projectDemoUserIsMember.AddProjectRole(embeddedRole.Id, 3, [cplusplusSkill, solderingSkill]);
+                    context.Set<Project>().Add(projectDemoUserIsMember);
+
                     var team = projectDemoUserIsMember.AddTeamToProject("Fullstack", projectDemoUserIsMember.OwnerId);
                     var request = projectDemoUserIsMember.AddTeamMembershipRequest(team.Id, demoUser.Id, projectRole.Id);
-                    project.RespondToMembershipRequest(projectDemoUserIsMember.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+                    projectDemoUserIsMember.RespondToMembershipRequest(projectDemoUserIsMember.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
 
-                    context.Set<Project>().Add(projectDemoUserIsMember);
                     context.SaveChanges();
                 }
 
