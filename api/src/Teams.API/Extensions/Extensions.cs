@@ -926,30 +926,282 @@ internal static class Extensions
                 }
 
                 var recommendation = context.Set<Recommendation>()
-                    .SingleOrDefault(r => r.Project.Name == "Sample Project");
+                    .SingleOrDefault(r => r.Project.Name == "ARCS: RecyCOOL");
                 if (recommendation is null)
                 {
                     recommendation = new Recommendation
                     {
                         User = demoUser,
                         Project = project,
-                        MatchPercentage = new decimal(0.6)
+                        MatchPercentage = new decimal(0.99)
                     };
                     context.Set<Recommendation>().Add(recommendation);
                     context.SaveChanges();
                 }
 
                 var recommendation2 = context.Set<Recommendation>()
-                    .SingleOrDefault(r => r.Project.Name == "TEST");
+                    .SingleOrDefault(r => r.Project.Name == "Chess Club App");
                 if (recommendation2 is null)
                 {
                     recommendation2 = new Recommendation
                     {
                         User = demoUser,
                         Project = project2,
-                        MatchPercentage = new decimal(0.4)
+                        MatchPercentage = new decimal(0.98)
                     };
                     context.Set<Recommendation>().Add(recommendation2);
+                    context.SaveChanges();
+                }
+
+                var recommendation3 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Retro Game Console");
+                if (recommendation3 is null)
+                {
+                    recommendation3 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project3,
+                        MatchPercentage = new decimal(0.97)
+                    };
+                    context.Set<Recommendation>().Add(recommendation3);
+                    context.SaveChanges();
+                }
+
+                var recommendation4 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Prosthetic Arm");
+                if (recommendation4 is null)
+                {
+                    recommendation4 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project4,
+                        MatchPercentage = new decimal(0.96)
+                    };
+                    context.Set<Recommendation>().Add(recommendation4);
+                    context.SaveChanges();
+                }
+
+                var recommendation5 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "New MataSync");
+                if (recommendation5 is null)
+                {
+                    recommendation5 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project5,
+                        MatchPercentage = new decimal(0.95)
+                    };
+                    context.Set<Recommendation>().Add(recommendation5);
+                    context.SaveChanges();
+                }
+
+                var recommendation6 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Vocabulary Game");
+                if (recommendation6 is null)
+                {
+                    recommendation6 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project6,
+                        MatchPercentage = new decimal(0.94)
+                    };
+                    context.Set<Recommendation>().Add(recommendation6);
+                    context.SaveChanges();
+                }
+
+                var recommendation7 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Professor: Computer Vision Rover");
+                if (recommendation7 is null)
+                {
+                    recommendation7 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project7,
+                        MatchPercentage = new decimal(0.93)
+                    };
+                    context.Set<Recommendation>().Add(recommendation7);
+                    context.SaveChanges();
+                }
+
+                var recommendation8 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Professor: Computer Vision Rover");
+                if (recommendation8 is null)
+                {
+                    recommendation8 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project8,
+                        MatchPercentage = new decimal(0.92)
+                    };
+                    context.Set<Recommendation>().Add(recommendation8);
+                    context.SaveChanges();
+                }
+
+                var recommendation9 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Physics Simulation Software");
+                if (recommendation9 is null)
+                {
+                    recommendation9 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project9,
+                        MatchPercentage = new decimal(0.91)
+                    };
+                    context.Set<Recommendation>().Add(recommendation9);
+                    context.SaveChanges();
+                }
+
+                var recommendation10 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Mental Health Platform for Hackathon");
+                if (recommendation10 is null)
+                {
+                    recommendation10 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project10,
+                        MatchPercentage = new decimal(0.90)
+                    };
+                    context.Set<Recommendation>().Add(recommendation10);
+                    context.SaveChanges();
+                }
+
+                var recommendation11 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Android App");
+                if (recommendation11 is null)
+                {
+                    recommendation11 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project11,
+                        MatchPercentage = new decimal(0.20)
+                    };
+                    context.Set<Recommendation>().Add(recommendation11);
+                    context.SaveChanges();
+                }
+
+                var recommendation12 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "SEO Audit Tool");
+                if (recommendation12 is null)
+                {
+                    recommendation12 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project12,
+                        MatchPercentage = new decimal(0.19)
+                    };
+                    context.Set<Recommendation>().Add(recommendation12);
+                    context.SaveChanges();
+                }
+
+                var recommendation13 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Database Engine in Java");
+                if (recommendation13 is null)
+                {
+                    recommendation13 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project13,
+                        MatchPercentage = new decimal(0.18)
+                    };
+                    context.Set<Recommendation>().Add(recommendation13);
+                    context.SaveChanges();
+                }
+
+                var recommendation14 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Kubernetes Clone");
+                if (recommendation14 is null)
+                {
+                    recommendation14 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project14,
+                        MatchPercentage = new decimal(0.17)
+                    };
+                    context.Set<Recommendation>().Add(recommendation14);
+                    context.SaveChanges();
+                }
+
+                var recommendation15 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "CLI AWS Resource Monitor");
+                if (recommendation15 is null)
+                {
+                    recommendation15 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project15,
+                        MatchPercentage = new decimal(0.16)
+                    };
+                    context.Set<Recommendation>().Add(recommendation15);
+                    context.SaveChanges();
+                }
+
+                var recommendation16 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "8-bit Music Player");
+                if (recommendation16 is null)
+                {
+                    recommendation16 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project16,
+                        MatchPercentage = new decimal(0.15)
+                    };
+                    context.Set<Recommendation>().Add(recommendation16);
+                    context.SaveChanges();
+                }
+
+                var recommendation17 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "AR Furniture Rearranger");
+                if (recommendation17 is null)
+                {
+                    recommendation17 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project17,
+                        MatchPercentage = new decimal(0.14)
+                    };
+                    context.Set<Recommendation>().Add(recommendation17);
+                    context.SaveChanges();
+                }
+
+                var recommendation18 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Augmented Reality Makeup App");
+                if (recommendation18 is null)
+                {
+                    recommendation18 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = project18,
+                        MatchPercentage = new decimal(0.13)
+                    };
+                    context.Set<Recommendation>().Add(recommendation18);
+                    context.SaveChanges();
+                }
+
+                var recommendationGame1 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Isometric Base Builder");
+                if (recommendationGame1 is null)
+                {
+                    recommendationGame1 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = gameProject1,
+                        MatchPercentage = new decimal(0.05)
+                    };
+                    context.Set<Recommendation>().Add(recommendationGame1);
+                    context.SaveChanges();
+                }
+
+                var recommendationFilm1 = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "Sci-Fi Student Film");
+                if (recommendationFilm1 is null)
+                {
+                    recommendationFilm1 = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = filmProject1,
+                        MatchPercentage = new decimal(0.03)
+                    };
+                    context.Set<Recommendation>().Add(recommendationFilm1);
                     context.SaveChanges();
                 }
             });
