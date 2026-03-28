@@ -533,7 +533,7 @@ internal static class Extensions
                         ProjectStatus.Planning,
                         user3.Id
                     );
-                    var projectRole1 = project2.AddProjectRole(frontendRole.Id, 1, [react, js]);
+                    var projectRole1 = project2.AddProjectRole(frontendRole.Id, 1, [react, js, expressSkill]);
                     var projectRole2 = project2.AddProjectRole(fullstackRole.Id, 1, [java, sqlSkill]);
 
                     context.Set<Project>().Add(project2);
@@ -600,7 +600,7 @@ internal static class Extensions
                         ProjectStatus.Planning,
                         user3.Id
                         );
-                    var projectRole = project5.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+                    var projectRole = project5.AddProjectRole(fullstackRole.Id, 2, [js, react, sqlSkill]);
                     context.Set<Project>().Add(project5);
 
                     var team = project5.AddTeamToProject("COMP 490 Group", project5.OwnerId);
@@ -623,7 +623,7 @@ internal static class Extensions
                         ProjectStatus.Planning,
                         user3.Id
                         );
-                    var projectRole = project6.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+                    var projectRole = project6.AddProjectRole(fullstackRole.Id, 2, [js, react, expressSkill]);
                     context.Set<Project>().Add(project6);
 
                     var team = project6.AddTeamToProject("Pair Sharing", project6.OwnerId);
@@ -648,7 +648,7 @@ internal static class Extensions
                         ProjectStatus.Planning,
                         user.Id);
 
-                    var projectRole1 = project7.AddProjectRole(embeddedRole.Id, 2, [cplusplusSkill]);
+                    var projectRole1 = project7.AddProjectRole(embeddedRole.Id, 2, [cplusplusSkill, solderingSkill]);
                     var projectRole2 = project7.AddProjectRole(fullstackRole.Id, 2, [pySkill, openCvSkill]);
                     var team = project7.AddTeamToProject("Research Assistants", project7.OwnerId);
 
@@ -668,7 +668,7 @@ internal static class Extensions
                         ProjectStatus.Planning,
                         user.Id);
 
-                    var projectRole = project8.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+                    var projectRole = project8.AddProjectRole(fullstackRole.Id, 2, [js, react, expressSkill]);
 
                     context.Set<Project>().Add(project8);
                     context.SaveChanges();
@@ -707,7 +707,7 @@ internal static class Extensions
                         ProjectStatus.Draft,
                         user5.Id);
 
-                    var projectRole = project8.AddProjectRole(fullstackRole.Id, 2, [js, react]);
+                    var projectRole = project8.AddProjectRole(fullstackRole.Id, 2, [js, react, expressSkill, sqlSkill]);
 
                     context.Set<Project>().Add(project10);
                     context.SaveChanges();
@@ -740,6 +740,8 @@ internal static class Extensions
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
                         user5.Id);
+                    project12.AddProjectRole(fullstackRole.Id, 2, [java]);
+
                     context.Set<Project>().Add(project12);
                     context.SaveChanges();
                 }
@@ -754,7 +756,89 @@ internal static class Extensions
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
                         user5.Id);
+                    project13.AddProjectRole(backendRole.Id, 2, [java, sqlSkill]);
+
                     context.Set<Project>().Add(project13);
+                    context.SaveChanges();
+                }
+
+                var project14 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Kubernetes Clone");
+                if (project14 == null)
+                {
+                    project14 = new Project(
+                        "Kubernetes Clone",
+                        "...",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Draft,
+                        user5.Id);
+                    project14.AddProjectRole(backendRole.Id, 2, [java]);
+
+                    context.Set<Project>().Add(project14);
+                    context.SaveChanges();
+                }
+
+                var project15 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "CLI AWS Resource Monitor");
+                if (project15 == null)
+                {
+                    project15 = new Project(
+                        "CLI AWS Resource Monitor",
+                        "...",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Draft,
+                        user5.Id);
+                    project15.AddProjectRole(backendRole.Id, 2, [java, sqlSkill]);
+
+                    context.Set<Project>().Add(project15);
+                    context.SaveChanges();
+                }
+
+                var project16 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "8-bit Music Player");
+                if (project16 == null)
+                {
+                    project16 = new Project(
+                        "8-bit Music Player",
+                        "...",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Draft,
+                        user5.Id);
+                    project16.AddProjectRole(backendRole.Id, 2, [java]);
+
+                    context.Set<Project>().Add(project16);
+                    context.SaveChanges();
+                }
+
+                var project17 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "AR Furniture Rearranger");
+                if (project17 == null)
+                {
+                    project17 = new Project(
+                        "AR Furniture Rearranger",
+                        "...",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Draft,
+                        user5.Id);
+                    project17.AddProjectRole(backendRole.Id, 2, [unitySkill]);
+
+                    context.Set<Project>().Add(project17);
+                    context.SaveChanges();
+                }
+
+                var project18 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "Augmented Reality Makeup App");
+                if (project18 == null)
+                {
+                    project18 = new Project(
+                        "Augmented Reality Makeup App",
+                        "...",
+                        ProjectType.FromName("Personal"),
+                        ProjectStatus.Draft,
+                        user5.Id);
+                    project18.AddProjectRole(backendRole.Id, 2, [unitySkill]);
+
+                    context.Set<Project>().Add(project18);
                     context.SaveChanges();
                 }
 
