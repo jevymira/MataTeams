@@ -19,6 +19,8 @@ import {
 // hooks
 import { useSignup} from '../../hooks/signup'
 import { useLogin } from '../../hooks/login'
+import {useForm} from 'react-hook-form'
+
 
 //context 
 
@@ -96,108 +98,139 @@ export const Signup = () => {
 
     const [signup] = useSignup(email, password, firstName, lastName, username, isFaculty, skills)
 
-    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-        signup()
-    }
-
     const uppy = new Uppy({id: "upload", autoProceed: true, debug: false})
 
     uppy.on("file-added", (file) => {
         setSignupFormSkillsFromPlaceholderResume()
     });
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm();
+
     return (
-        <UppyContextProvider uppy={uppy}>
-            <Flex alignItems={'center'} flexDirection={'column'}>
-                <ScrollArea.Root maxW='2xl' className='Form' height="80vh" >
-                    <ScrollArea.Viewport>
-                        <ScrollArea.Content padding={'15px'}>
-                            <p>Welcome!</p>
-                            <p>Let's get you set up!</p>
+        <form onSubmit={handleSubmit(() => {signup()})}>
+            <UppyContextProvider uppy={uppy}>
+                <Flex alignItems={'center'} flexDirection={'column'}>
+                    <ScrollArea.Root maxW='2xl' className='Form' height="80vh" >
+                        <ScrollArea.Viewport>
+                            <ScrollArea.Content padding={'15px'}>
+                                <p>Welcome!</p>
+                                <p>Let's get you set up!</p><br/>
 
-                            <p>Please enter your first and last name:</p>
-                            <Input placeholder='First Name' size='md' onChange={e => {
-                            setFirst(e.target.value)
-                            }}/>
+                                <p>Please enter your first and last name:</p>
+                                <Input placeholder='First Name' size='md' borderColor={errors.firstName ? "red.500" : undefined}
+                                {...register("firstName", { required: true })}
+                                onChange={e => { setFirst(e.target.value)}}
+                                />
+                                {errors.firstName && <Text color="red.500">First name is required</Text>}
 
-                            <Input placeholder='Last Name' size='md' onChange={e => {
-                            setLast(e.target.value)
-                            }}/>
+                                <Input placeholder='Last Name' size='md' borderColor={errors.lastName ? "red.500" : undefined} 
+                                {...register("lastName", { required: true })}
+                                onChange={e => {setLast(e.target.value)}}
+                                />
+                                {errors.lastName && <Text color="red.500">Last name is required</Text>}<br/>
 
-                            <p>Please enter your CSUN email:</p>
-                            <Input placeholder='Email' size='md' onChange={e => {
-                            setEmail(e.target.value)
-                            }}/>
-
-                            <p>Create a Username and Password</p>
-                            <Input placeholder='Username' size='md' onChange={e => {
-                            setUsername(e.target.value)
-                            }}/>
-
-                            <Input placeholder='Password' type='password' size='md' onChange={e => {
-                            setPassword(e.target.value)
-                            }}/>
-
-                            <p>Are you a Student or Faculty member?</p>
-                                <CheckboxCard.Root variant='outline' colorPalette='green'
-                                        checked={isFaculty ===true} onCheckedChange={() => setFaculty(true)}>
-                                    <CheckboxCard.HiddenInput />
-                                    <CheckboxCard.Control>
-                                        <CheckboxCard.Label>Faculty</CheckboxCard.Label>
-                                        <CheckboxCard.Indicator />
-                                    </CheckboxCard.Control>
-                                </CheckboxCard.Root>
-
-                                <CheckboxCard.Root variant='outline' colorPalette='green'
-                                        checked={isFaculty ===false} onCheckedChange={() => setFaculty(false)}>
-                                    <CheckboxCard.HiddenInput />
-                                    <CheckboxCard.Control>
-                                        <CheckboxCard.Label>Student</CheckboxCard.Label>
-                                        <CheckboxCard.Indicator />
-                                    </CheckboxCard.Control>
-                                </CheckboxCard.Root>
-
-                            <p>Enter your major:</p>
-                            <Input placeholder='Major' size='md'/>
-
-                            <SegmentGroup.Root 
-                                value={skillEntry} 
-                                onValueChange={(e) => setSkillEntry(e.value !== null ? e.value : "Upload Resume")}
-                                marginBottom={'10px'} marginTop={'15px'}>
-                                <SegmentGroup.Indicator />
-                                <SegmentGroup.Items items={["Upload Resume", "Manual Entry"]} />
-                            </SegmentGroup.Root>
-                            {skillEntry == 'Upload Resume' ? 
-                            (<Flex flexDirection={'column'} paddingBottom={'15px'}><input
-                                type="file"
-                                name="image"
-                                onChange={(e) => {
-                                    if (e.target.files) {
-                                        setSignupFormSkillsFromPlaceholderResume()
-                                        uppy.addFile({ data: e.target.files[0], name: "image" });
+                                <p>Please enter your CSUN email:</p>
+                                <Input placeholder='Email' size='md' borderColor={errors.email ? "red.500" : undefined}
+                                {...register("email", { required: "Email is required"
+/////////////////////////////////
+/*                               
+                                    ,
+                                    pattern: {
+Enforces CSUN Email format          value: /^[a-z]+\.[a-z]+\.\d{3}@my\.csun\.edu$/,
+                                    message: "Must be a valid CSUN email (e.g. jane.doe.123@my.csun.edu)"
                                     }
-                                }}
-                            />
-                            <div>
-                                <Text>Skills from resume:</Text>
-                                {isLoading ? <Spinner /> : <Wrap gap="1">{skills && skills.map(s => {
-                                    return (<Badge>{s.name}</Badge>)
-                                })}</Wrap>}
-                            </div></Flex>) : (
-                                <SkillsDropdown labelText='Select your skills' setFormSkills={handleSetSignupFormSkills} />
-                            )}
-                            <Button onClick={e => handleSubmit(e)}>Submit</Button>
-                            <br /><p>Already have an account? <Link to='/login'>Login here!</Link></p>
-                            
-                        </ScrollArea.Content>
-                    </ScrollArea.Viewport>
-                    <ScrollArea.Scrollbar height="70vh">
-                    <ScrollArea.Thumb />
-                    </ScrollArea.Scrollbar>
-                    <ScrollArea.Corner />
-                </ScrollArea.Root>
-            </Flex>
-        </UppyContextProvider>
+*/                                    
+/////////////////////////////////
+                                })}
+                                onChange={e => {setEmail(e.target.value)}}
+                                />
+                                {errors.email && <Text color="red.500">{String(errors.email.message)}</Text>}<br/>
+
+                                <p>Create a Username and Password</p>
+                                <Input placeholder='Username' size='md' borderColor={errors.username ? "red.500" : undefined}
+                                {...register("username", { required: true })}
+                                onChange={e => {setUsername(e.target.value)}}
+                                />
+                                {errors.username && <Text color="red.500">Username is required</Text>}
+
+                                <PasswordInput placeholder='Password' type='password' size='md' 
+                                borderColor={errors.password ? "red.500" : undefined}
+                                {...register("password", {
+                                    required: "Password is required",
+                                    minLength: {
+                                    value: 8,
+                                    message: "Password must be at least 8 characters"
+                                    }
+                                })}
+                                onChange={e => {setPassword(e.target.value)}}
+                                />
+                                {errors.password && <Text color="red.500">{String(errors.password.message)}</Text>}<br/>
+
+                                <p>Are you a Student or Faculty member?</p>
+                                    <CheckboxCard.Root variant='outline' colorPalette='green' className='checkboxcard'
+                                            checked={isFaculty ===true} onCheckedChange={() => setFaculty(true)}>
+                                        <CheckboxCard.HiddenInput />
+                                        <CheckboxCard.Control>
+                                            <CheckboxCard.Label>Faculty</CheckboxCard.Label>
+                                            <CheckboxCard.Indicator />
+                                        </CheckboxCard.Control>
+                                    </CheckboxCard.Root>
+
+                                    <CheckboxCard.Root variant='outline' colorPalette='green' className='checkboxcard'
+                                            checked={isFaculty ===false} onCheckedChange={() => setFaculty(false)}>
+                                        <CheckboxCard.HiddenInput />
+                                        <CheckboxCard.Control>
+                                            <CheckboxCard.Label>Student</CheckboxCard.Label>
+                                            <CheckboxCard.Indicator />
+                                        </CheckboxCard.Control>
+                                    </CheckboxCard.Root>
+
+                                <p>Enter your major:</p>
+                                <small>(Not required but recommended!)</small>
+                                <Input placeholder='Major' size='md'/>
+
+                                <SegmentGroup.Root 
+                                    value={skillEntry} 
+                                    onValueChange={(e) => setSkillEntry(e.value !== null ? e.value : "Upload Resume")}
+                                    marginBottom={'10px'} marginTop={'15px'}>
+                                    <SegmentGroup.Indicator />
+                                    <SegmentGroup.Items items={["Upload Resume", "Manual Entry"]} />
+                                </SegmentGroup.Root>
+                                {skillEntry == 'Upload Resume' ? 
+                                (<Flex flexDirection={'column'} paddingBottom={'15px'}><input
+                                    type="file"
+                                    name="image"
+                                    onChange={(e) => {
+                                        if (e.target.files) {
+                                            setSignupFormSkillsFromPlaceholderResume()
+                                            uppy.addFile({ data: e.target.files[0], name: "image" });
+                                        }
+                                    }}
+                                />
+                                <div>
+                                    <Text>Skills from resume:</Text>
+                                    {isLoading ? <Spinner /> : <Wrap gap="1">{skills && skills.map(s => {
+                                        return (<Badge>{s.name}</Badge>)
+                                    })}</Wrap>}
+                                </div></Flex>) : (
+                                    <SkillsDropdown labelText='Select your skills' setFormSkills={handleSetSignupFormSkills} />
+                                )}
+                                <Button type="submit">Submit</Button>
+                                <br /><p>Already have an account? <Link to='/login'>Login here!</Link></p>
+                                
+                            </ScrollArea.Content>
+                        </ScrollArea.Viewport>
+                        <ScrollArea.Scrollbar marginTop="15px" height="75vh">
+                        <ScrollArea.Thumb />
+                        </ScrollArea.Scrollbar>
+                        <ScrollArea.Corner />
+                    </ScrollArea.Root>
+                </Flex>
+            </UppyContextProvider>
+        </form>
     )
   }

@@ -6,10 +6,16 @@ using Teams.Infrastructure;
 
 namespace Teams.API.Features.Users;
 
-public sealed record GetRecommendationsQuery : IRequest<GetRecommendationsResponse>;
+public sealed record GetRecommendationsQuery(
+    int? PageSize,
+    string? LastRecommendationId,
+    decimal? LastRecommendationMatchPercent)
+    : IRequest<GetRecommendationsResponse>;
 
 public sealed record GetRecommendationsResponse(
-    List<GetRecommendationsProjectViewModel> Items);
+    List<GetRecommendationsProjectViewModel> Items,
+    string? LastId,
+    decimal? LastMatchPercent);
 
 public sealed record GetRecommendationsProjectViewModel(
     string Id,
@@ -50,12 +56,24 @@ public static class GetRecommendationsEndpoint
 {
     public static void Map(RouteGroupBuilder builder) => builder
         .MapGet("me/recommendations", GetRecommendationsAsync)
-        .RequireAuthorization();
+        .RequireAuthorization()
+        .WithSummary("In descending order of skill overlap. Provides optional keyset pagination. " +
+        "Anything page other than the first requires `LastId` and `LastMatchPercent` as query strings. " +
+        "These properties are returned in the response.")
+        .WithDescription("Being keyset paginated, random access of pages is not supported. " +
+        "Neither is backward navigation supported, as is typical. " +
+        "The only support is for a feed that loads forward. " +
+        "Be warned that the `id` of an item is not the `id` of the recommendation entity, " +
+        "the latter is only exposed for the last item as `LastId`, " +
+        "for use in subsequent responses to request the next page.");
 
     private static async Task<Ok<GetRecommendationsResponse>> GetRecommendationsAsync(
+        int? pageSize,
+        string? lastRecommendationId,
+        decimal? lastRecommendationMatchPercent,
         IMediator mediator)
     {
-        var response = await mediator.Send(new GetRecommendationsQuery());
+        var response = await mediator.Send(new GetRecommendationsQuery(pageSize, lastRecommendationId, lastRecommendationMatchPercent));
         return TypedResults.Ok(response);
     }
 }
@@ -73,50 +91,77 @@ internal sealed class GetRecommendationsEndpointHandler(
             .Where(u => u.IdentityGuid == identityService.GetUserIdentity())
             .Select(u => u.Id)
             .SingleAsync(cancellationToken);
-        
-        var recommendations = await context.Recommendations
-            .Where(r => r.User.Id == userId)
+
+        var query = context.Recommendations.Where(r => r.User.Id == userId);
+
+        // Only apply the keyset condition when both values exist.
+        if (request.LastRecommendationId != null && request.LastRecommendationMatchPercent != null)
+        {
+            query = query.Where(r =>
+                r.MatchPercentage < request.LastRecommendationMatchPercent ||
+                (r.MatchPercentage == request.LastRecommendationMatchPercent
+                    && r.Id > Guid.Parse(request.LastRecommendationId))
+            ); // To prevent duplicates when LastIndex recommendation shares a percent with other recommendation(s).
+        }
+
+        query = query
             .OrderByDescending(r => r.MatchPercentage)
-            .Select(r => new GetRecommendationsProjectViewModel(
-                r.Project.Id.ToString(),
-                r.Project.Name,
-                r.Project.Description,
-                r.Project.Type.ToString(),
-                r.Project.Status.ToString(),
-                r.Project.Roles
-                    .Select(r => new GetRecommendationsProjectRoleViewModel(
+            .ThenBy(r => r.Id);
+        
+        if (request.PageSize is not null)
+        {
+            query = query.Take((int)request.PageSize);
+        }
+
+        var items = await query.Select(r => new GetRecommendationsProjectViewModel(
+            r.Project.Id.ToString(),
+            r.Project.Name,
+            r.Project.Description,
+            r.Project.Type.ToString(),
+            r.Project.Status.ToString(),
+            r.Project.Roles
+                .Select(r => new GetRecommendationsProjectRoleViewModel(
+                    r.Id.ToString(),
+                    r.RoleId.ToString(),
+                    r.Role.Name,
+                    r.PositionCount,
+                    r.Skills
+                        .Select(s => new GetRecommendationsSkillViewModel(
+                            s.Id.ToString(),
+                            s.Name)))),
+            r.Project.Teams
+                .Select(t => new GetRecommendationsTeamViewModel(
+                    t.Id.ToString(),
+                    t.Name,
+                    r.Project.Roles.Select(r => new GetRecommendationsTeamRoleViewModel(
                         r.Id.ToString(),
-                        r.RoleId.ToString(),
                         r.Role.Name,
-                        r.PositionCount,
-                        r.Skills
-                            .Select(s => new GetRecommendationsSkillViewModel(
-                                s.Id.ToString(),
-                                s.Name )))),
-                r.Project.Teams
-                    .Select(t => new GetRecommendationsTeamViewModel(
-                        t.Id.ToString(),
-                        t.Name,
-                        r.Project.Roles.Select(r => new GetRecommendationsTeamRoleViewModel(
-                            r.Id.ToString(),
-                            r.Role.Name,
-                            r.PositionCount - t.Members.Count(m => m.ProjectRoleId == r.Id),
-                            t.Members
-                                .Where(m => m.ProjectRoleId == r.Id)
-                                .Join(
-                                    context.Users,
-                                    m => m.UserId,
-                                    u => u.Id,
-                                    (m , u) => new
-                                    {
-                                        TeamMemberUserId = m.UserId,
-                                        UserName = u.FirstName + " " +  u.LastName
-                                    })
-                                .Select(m => new GetRecommendationsTeamMemberViewModel(
-                                    m.TeamMemberUserId.ToString(),
-                                    m.UserName))))))))
+                        r.PositionCount - t.Members.Count(m => m.ProjectRoleId == r.Id),
+                        t.Members
+                            .Where(m => m.ProjectRoleId == r.Id)
+                            .Join(
+                                context.Users,
+                                m => m.UserId,
+                                u => u.Id,
+                                (m, u) => new
+                                {
+                                    TeamMemberUserId = m.UserId,
+                                    UserName = u.FirstName + " " + u.LastName
+                                })
+                            .Select(m => new GetRecommendationsTeamMemberViewModel(
+                                m.TeamMemberUserId.ToString(),
+                                m.UserName))))))))
             .ToListAsync(cancellationToken);
 
-        return new GetRecommendationsResponse(recommendations);
+        // Get properties required to forward load "page" through a subsequent request.
+
+        var lastId = query.Last().Id;
+
+        var lastMatchPercent = await context.Recommendations
+            .Where(r => r.Id == lastId)
+            .Select(r => r.MatchPercentage)
+            .SingleOrDefaultAsync(cancellationToken);
+
+        return new GetRecommendationsResponse(items, lastId.ToString(), lastMatchPercent);
     }
 }

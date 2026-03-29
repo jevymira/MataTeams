@@ -1,14 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11520.95 d18.3
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C3242A32-DE1C-455F-9AE5-F2E142BD4920}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
 		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.Domain", "src/Teams.Domain\Teams.Domain.csproj", "{3CD68185-6A8B-4842-AAC8-52F4C967CAB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.Domain", "src\Teams.Domain\Teams.Domain.csproj", "{3CD68185-6A8B-4842-AAC8-52F4C967CAB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.Infrastructure", "src/Teams.Infrastructure\Teams.Infrastructure.csproj", "{11C01878-5339-41A4-AFDB-D941AA652A6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.Infrastructure", "src\Teams.Infrastructure\Teams.Infrastructure.csproj", "{11C01878-5339-41A4-AFDB-D941AA652A6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.API", "src\Teams.API\Teams.API.csproj", "{1199F7E2-5478-4B57-92BC-94168652735A}"
 EndProject
@@ -19,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.UnitTests", "tests\Teams.UnitTests\Teams.UnitTests.csproj", "{4A39F96E-ABC1-462E-B757-C80709986124}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.Contracts", "src\Teams.Contracts\Teams.Contracts.csproj", "{577E9B46-2086-4F64-9450-5C31F0A882A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teams.IntegrationTests", "tests\Teams.IntegrationTests\Teams.IntegrationTests.csproj", "{B54798C3-1AD7-400F-B8DB-4A50D3B46425}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,10 +55,20 @@ Global
 		{577E9B46-2086-4F64-9450-5C31F0A882A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{577E9B46-2086-4F64-9450-5C31F0A882A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{577E9B46-2086-4F64-9450-5C31F0A882A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B54798C3-1AD7-400F-B8DB-4A50D3B46425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B54798C3-1AD7-400F-B8DB-4A50D3B46425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B54798C3-1AD7-400F-B8DB-4A50D3B46425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B54798C3-1AD7-400F-B8DB-4A50D3B46425}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1199F7E2-5478-4B57-92BC-94168652735A} = {EC7D5740-07A3-4687-A7E1-11EECEFC1CE2}
 		{3CD68185-6A8B-4842-AAC8-52F4C967CAB7} = {EC7D5740-07A3-4687-A7E1-11EECEFC1CE2}
 		{11C01878-5339-41A4-AFDB-D941AA652A6C} = {EC7D5740-07A3-4687-A7E1-11EECEFC1CE2}
+		{1199F7E2-5478-4B57-92BC-94168652735A} = {EC7D5740-07A3-4687-A7E1-11EECEFC1CE2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {022E3782-8ECC-43EA-A0BF-FFDADDCD75A6}
 	EndGlobalSection
 EndGlobal
