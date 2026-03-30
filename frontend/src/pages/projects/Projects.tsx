@@ -1,8 +1,8 @@
 // libraries
-import { useEffect, useContext, useState } from 'react'
+import { useEffect, useContext, useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router'
-import { Flex, ScrollArea, Spinner, Stack } from '@chakra-ui/react'
+import { Flex, ScrollArea, Spinner, Stack, Button, useScrollArea } from '@chakra-ui/react'
 
 // context
 import { UserContext } from '../../context/auth'
@@ -26,15 +26,35 @@ import { applyFilters, sortProjects } from '../../utilities/sortFilterProjects'
 
 function Projects() {
   const { token } = useContext(UserContext) as UserContextType
-  const [projects, getProjects] = useGetRecommendedProjects(token)
+  const {projects, getProjects, loading, hasMore} = useGetRecommendedProjects(token)
   const [sortBy, setSortBy] = useState<string[]>(["rec"])
   const [filterByVacancies, setFilterByVacancies] = useState(false)
 
-  useEffect(() => {
-      getProjects()
-  }, [])
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  
+  const handleClick = async () => {
+  if (hasMore) {
+    await getProjects();
+  } else {
+    await getProjects(true);
+  }
+
+  scrollRef.current?.scrollTo({
+    top: 0,
+    behavior: 'smooth', 
+  });
+};
+
+  useEffect(() => {getProjects()}, [])
+
+  //this one resets the project view whenever you change the sort type
+  useEffect(() => {
+    const fetchReset = async () => {
+      await getProjects(true)
+      scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+    fetchReset()
+  }, [sortBy, filterByVacancies])
 
   return (
   <Flex 
@@ -62,8 +82,8 @@ function Projects() {
       </div>
       {!projects || projects.length < 1 ?<Spinner /> : (
         <ScrollArea.Root height="73vh" width={'600px'} marginTop={'10px'}>
-          <ScrollArea.Viewport>
-            <ScrollArea.Content>
+          <ScrollArea.Viewport ref={scrollRef}>
+            <ScrollArea.Content className='projectArea'>
               <Stack>
                 {sortProjects(applyFilters(projects, filterByVacancies), sortBy[0]).map((p, i) => {
                   return (
@@ -71,6 +91,9 @@ function Projects() {
                   )
                 })}
               </Stack>
+                <Button mt={4} onClick={handleClick} loading={loading}>
+                  {hasMore ? 'Load More' : 'Back to beginning'}
+                </Button>
             </ScrollArea.Content>
           </ScrollArea.Viewport>
           <ScrollArea.Scrollbar>
@@ -79,7 +102,6 @@ function Projects() {
           <ScrollArea.Corner />
         </ScrollArea.Root>
       )}
-      <Paginate />
       </Flex>
     </Flex>
   )
