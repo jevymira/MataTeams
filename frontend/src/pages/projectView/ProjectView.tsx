@@ -16,13 +16,13 @@ import { useGetProjectByID } from '../../hooks/projects'
 // style 
 import './ProjectView.css'
 import RoleCard from './RoleCard'
-import { useNavigate } from 'react-router'
-import { LuClipboardList, LuTelescope, LuUser } from 'react-icons/lu'
+import { useNavigate, Link } from 'react-router'
+import { LuClipboardList, LuTelescope, LuUser, LuExternalLink } from 'react-icons/lu'
 
 
 function ProjectView() {
     const navigate = useNavigate()
-    const { viewProjectId } = useContext(ProjectsContext) as ProjectsContextType
+    const { viewProjectId, projectLeaderId } = useContext(ProjectsContext) as ProjectsContextType
     const { token } = useContext(UserContext) as UserContextType
     const [project, getProject] = useGetProjectByID(viewProjectId, token)
     const [requestedRole, setRequestedRole ] = useState(false)
@@ -59,6 +59,12 @@ function ProjectView() {
                     </Grid>
                 </Box>
                 <Box width={'200px'}>
+                    <Flex flexDirection={'row'} alignItems={'center'}>
+                        <LuExternalLink />
+                        <Link to={`/profile/${projectLeaderId}`}>
+                            <Text textDecoration={'underline'} paddingLeft={'10px'}>Project Lead Profile</Text> 
+                        </Link>
+                    </Flex>
                     <Flex flexDirection={'row'} alignItems={'center'}>
                         <LuClipboardList />
                         <Text paddingLeft={'10px'}>Type: {project.type}</Text>
