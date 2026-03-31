@@ -53,7 +53,7 @@ function ProjectView() {
                     <Text marginTop={'50px'} fontWeight={650} fontSize={'18px'}>{project.teams.length > 0 ? project.teams[0].name : ''}</Text>
                     <Grid templateColumns="repeat(2, 1fr)" gap="6">
 
-                        {project.roles.map(r => {
+                        {project.teams && project.teams.length > 0 && project.roles.map(r => {
                             return (<GridItem> <RoleCard role={r} teamID={project.teams[0].id} onToast={onToast}/> </GridItem>)
                         })}
                     </Grid>
