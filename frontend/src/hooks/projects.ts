@@ -88,6 +88,9 @@ export function useCreateProject(createProjectData: CreateProject, token: string
 
 export function useGetProjectByID(id: string, token: string) {
     const [project, setProject] = useState<Project>();
+    const { setProjectLeaderId } = useContext(ProjectsContext) as ProjectsContextType
+
+    var teamID = ""
 
     const getProjectByID = async () => {
         const options = {
@@ -107,6 +110,19 @@ export function useGetProjectByID(id: string, token: string) {
                 return res.json()
             }).then(projectJSON => {
                 setProject(convertJSONToProject(projectJSON))
+
+                if (projectJSON && projectJSON.teams.length > 0) {
+                    teamID = projectJSON.teams[0].id
+                }
+                return teamID
+            }).then(team => {
+                if (team != "") {
+                    fetch(`https://localhost:7260/api/teams/${team}`, options).then(r => {
+                        return r.json()
+                    }).then(teamJson => {
+                        setProjectLeaderId(teamJson.leader.id)
+                    })
+                }
             })
         } catch (e) {
             console.error(e)
@@ -114,6 +130,8 @@ export function useGetProjectByID(id: string, token: string) {
         }
 
     }
+
+
     return [project, getProjectByID] as const
 }
 

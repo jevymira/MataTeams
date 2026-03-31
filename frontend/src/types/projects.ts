@@ -36,6 +36,8 @@ export type ProjectsContextType = {
     setProjects: (projects: Array<Project>) => void
     viewProjectId: string
     setViewProjectId: (id: string) => void
+    projectLeaderId: string
+    setProjectLeaderId: (id: string) => void
 }
 
 //**** PROJECT ROLES ****/

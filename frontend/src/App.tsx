@@ -19,6 +19,7 @@ import UserContextProvider from './context/auth'
 // style
 import './App.css'
 import CreateProjectForm from './components/createProjectForm/CreateProjectForm'
+import PublicProfile from './pages/profile/PublicProfile'
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
               <Route path='/' element={<PrivateRoute outlet={<Projects />} />} />
               <Route path='/new' element={<PrivateRoute outlet={<CreateProjectForm />} />} />
               <Route path='/project/view' element={<PrivateRoute outlet={<ProjectView />} />} />
-              <Route path='/profile' element={<PrivateRoute outlet={<Profile />} />} />
+              <Route path='/profile/me' element={<PrivateRoute outlet={<Profile />} />} />
+              <Route path='/profile/:id' element={<PrivateRoute outlet={<PublicProfile />} />} />
               <Route path='/login' element={<Login />} />
               <Route path='/signup' element={<Signup />}/>
               <Route path="*" element={<NotFound />}></Route>
