@@ -1,7 +1,11 @@
+import { useParams } from "react-router"
+
 function PublicProfile() {
+    let { id} = useParams();
+
     return (
         <div>
-            <p>Public profile</p>
+            <p>{`Public profille: ${id}`}</p>
         </div>
     )
 }

@@ -43,16 +43,16 @@ export const Header = () => {
                 </Button>
                 <div className='dropdown'>
                     <AvatarGroup display={'flex'} flexDirection={'row'}>
-                      <Link to='/profile' className='dropbtn'>
+                      <Link to='/profile/me' className='dropbtn'>
                       <Avatar.Root>
                         <Avatar.Fallback />
                         <Avatar.Image />
                       </Avatar.Root>
                       </Link>
-                      <Link to='/profile' className='dropbtn'><Text color={"white"}>{firstName}</Text></Link>
+                      <Link to='/profile/me' className='dropbtn'><Text color={"white"}>{firstName}</Text></Link>
                     </AvatarGroup>
                   <div className='dropdown-content'>
-                    <Link to='/profile'>My Profile</Link>
+                    <Link to='/profile/me'>My Profile</Link>
                     <a onClick={logout} className='logoutLink'>Log Out</a>
                   </div>
                 </div>
