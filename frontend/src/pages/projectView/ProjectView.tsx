@@ -16,13 +16,13 @@ import { useGetProjectByID } from '../../hooks/projects'
 // style 
 import './ProjectView.css'
 import RoleCard from './RoleCard'
-import { useNavigate } from 'react-router'
-import { LuClipboardList, LuTelescope, LuUser } from 'react-icons/lu'
+import { useNavigate, Link } from 'react-router'
+import { LuClipboardList, LuTelescope, LuUser, LuExternalLink } from 'react-icons/lu'
 
 
 function ProjectView() {
     const navigate = useNavigate()
-    const { viewProjectId } = useContext(ProjectsContext) as ProjectsContextType
+    const { viewProjectId, projectLeaderId } = useContext(ProjectsContext) as ProjectsContextType
     const { token } = useContext(UserContext) as UserContextType
     const [project, getProject] = useGetProjectByID(viewProjectId, token)
     const [requestedRole, setRequestedRole ] = useState(false)
@@ -53,12 +53,18 @@ function ProjectView() {
                     <Text marginTop={'50px'} fontWeight={650} fontSize={'18px'}>{project.teams.length > 0 ? project.teams[0].name : ''}</Text>
                     <Grid templateColumns="repeat(2, 1fr)" gap="6">
 
-                        {project.roles.map(r => {
+                        {project.teams && project.teams.length > 0 && project.roles.map(r => {
                             return (<GridItem> <RoleCard role={r} teamID={project.teams[0].id} onToast={onToast}/> </GridItem>)
                         })}
                     </Grid>
                 </Box>
                 <Box width={'200px'}>
+                    <Flex flexDirection={'row'} alignItems={'center'}>
+                        <LuExternalLink />
+                        <Link to={`/profile/${projectLeaderId}`}>
+                            <Text textDecoration={'underline'} paddingLeft={'10px'}>Project Lead Profile</Text> 
+                        </Link>
+                    </Flex>
                     <Flex flexDirection={'row'} alignItems={'center'}>
                         <LuClipboardList />
                         <Text paddingLeft={'10px'}>Type: {project.type}</Text>

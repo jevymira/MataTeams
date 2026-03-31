@@ -503,9 +503,9 @@ internal static class Extensions
                 {
                     project = new Project(
                         "ARCS: RecyCOOL",
-                        "GOAL: Increase recycling participation and food separation rates" +
+                        "GOAL: Increase recycling participation and food separation rates " +
                         "in communities while decreasing contamination in waste bins. " +
-                        "Create applications to in support of this goal, conduct site visits" +
+                        "Create applications in support of this goal, conduct site visits " +
                         "to locations for research, and collaborate with community leaders.",
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
@@ -527,7 +527,7 @@ internal static class Extensions
                     project2 = new Project(
                         "Chess Club App",
                         "A collaborative app for the CSUN Chess Club, which will " +
-                        "allow members to draft and solve puzzles for tournaments." +
+                        "allow members to draft and solve puzzles for tournaments. " +
                         "We aim to release on the Google Play store in late 2026.",
                         ProjectType.FromName("Club"),
                         ProjectStatus.Planning,
@@ -548,7 +548,7 @@ internal static class Extensions
                         "Retro Game Console",
                         "A personal project to recreate classic arcade games. " +
                         "We'll be soldering components onto a custom board, " +
-                        "including buttons and display output.",
+                        "including buttons and the display.",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Planning,
                         user4.Id);
@@ -593,7 +593,7 @@ internal static class Extensions
                         "New MataSync",
                         "I want to put together a team to enroll into COMP 490, " +
                         "any Mo/We section works for me. " + 
-                        "I'm want to build a new MataSync to organize clubs. " +
+                        "I'm thinking to build a new MataSync to organize clubs. " +
                         "I've already talked to several organizations on campus " +
                         "and have the feature set and user flow figured out.",
                         ProjectType.FromName("Class"),
@@ -641,7 +641,7 @@ internal static class Extensions
                         "Professor: Computer Vision Rover",
                         "Dr. Schwartz is looking for motivated students " +
                         "to help build a rover, leveraging computer vision " +
-                        "to identity animals on campus. The camera is planned to " +
+                        "to identity animals on campus. The camera is to " +
                         "be mounted on a wheeled platform, controlable remotely. " +
                         "Past experience is helpful but not a hard requirement.",
                         ProjectType.FromName("Faculty"),
@@ -886,8 +886,8 @@ internal static class Extensions
                     projectDemoUserIsLeader = new Project(
                         "Energy Saving App",
                         "A web application to simulate energy savings from various changes. " +
-                        "Namely, switching to LED lighting or improving insulation. " +
-                        "We visualize savings in real time and track progress against goals.",
+                        "For example, switching to LED lighting or improving insulation. " +
+                        "We'll visualize savings in real time and track progress against goals.",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Active,
                         demoUser.Id);

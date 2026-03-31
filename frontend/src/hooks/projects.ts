@@ -88,6 +88,9 @@ export function useCreateProject(createProjectData: CreateProject, token: string
 
 export function useGetProjectByID(id: string, token: string) {
     const [project, setProject] = useState<Project>();
+    const { setProjectLeaderId } = useContext(ProjectsContext) as ProjectsContextType
+
+    var teamID = ""
 
     const getProjectByID = async () => {
         const options = {
@@ -107,6 +110,19 @@ export function useGetProjectByID(id: string, token: string) {
                 return res.json()
             }).then(projectJSON => {
                 setProject(convertJSONToProject(projectJSON))
+
+                if (projectJSON && projectJSON.teams.length > 0) {
+                    teamID = projectJSON.teams[0].id
+                }
+                return teamID
+            }).then(team => {
+                if (team != "") {
+                    fetch(`https://localhost:7260/api/teams/${team}`, options).then(r => {
+                        return r.json()
+                    }).then(teamJson => {
+                        setProjectLeaderId(teamJson.leader.id)
+                    })
+                }
             })
         } catch (e) {
             console.error(e)
@@ -114,48 +130,80 @@ export function useGetProjectByID(id: string, token: string) {
         }
 
     }
+
+
     return [project, getProjectByID] as const
 }
 
-export function useGetRecommendedProjects(token: string) {
+export function useGetRecommendedProjects(token: string, pageSize: number= 5) {
+    /*
+    For future: might need to have sort here because projects are sorted by page rather than all at once.
+    Also when sorting by "open projects", the site only shows the open ones but pagination still shows all pages 
+    even if they are empty (Example: 4 pages normally -> 2 pages with open projects but still has 2 empty ones before you can refresh)
+    */
     const { projects, setProjects } = useContext(ProjectsContext) as ProjectsContextType
-    const { setSkills, setFirst, setLast } = useContext(UserContext) as UserContextType
 
-    const getProjects = async () => {
-        const options = {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
+    const [lastId, setLastId] = useState<string | null>(null);
+    const [lastMatchPercent, setLastMatchPercent] = useState<number | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+
+
+    const reset = () => {
+        setLastId(null);
+        setLastMatchPercent(null);
+        setHasMore(true);
+        setProjects([]); 
+    };
+
+    const getProjects = async (restart: boolean = false) => {
+        if (loading) return;
+
+        //getProjects(True) causes restart
+        if (restart) {
+            reset();
         }
+
+        setLoading(true);
 
         try {
-           fetch('https://localhost:7260/api/users/me', options).then((res) => {
-            return res.json().then(json => {
-                setSkills(json['skills'])
-                setFirst(json['firstName'])
-                setLast(json['lastName'])
+            let url = `https://localhost:7260/api/users/me/recommendations?pageSize=${pageSize}`;
 
-                fetch('https://localhost:7260/api/users/me/recommendations', options).then(res => {
-                    if (res.status !== 200) {
-                        console.error('error!')
-                        return -1
-                    }
-                    return res.json()
-                }).then(jsonRes => {
-                    setProjects(jsonRes['items']?.map((p: Project, i: number) => {
-                        p.matchPercentage = i
-                        return p
-                    }))
-                })
-            })
-           })
-        } catch(err) {
-            console.error(err)
+            if (!restart && lastId && lastMatchPercent !== null) {
+                url += `&lastRecommendationId=${lastId}&lastRecommendationMatchPercent=${lastMatchPercent}`;
+            }
+
+            const res = await fetch(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (!res.ok) throw new Error('Failed to fetch projects');
+
+            const json = await res.json();
+
+            const newProjects: Project[] = json.items.map((p: Project, i: number) => ({
+                ...p,
+                matchPercentage: p.matchPercentage ?? i,
+            }));
+
+            setProjects(newProjects);
+
+            setLastId(json.lastId || null);
+            setLastMatchPercent(json.lastMatchPercent || null);
+
+            setHasMore(Boolean(json.items.length === pageSize));
+
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
         }
-    }
-    return [projects, getProjects] as const
+    };
+
+    return { projects, getProjects, reset, loading, hasMore };
 }
 
 export function useGetAllProjects(token: string) {
