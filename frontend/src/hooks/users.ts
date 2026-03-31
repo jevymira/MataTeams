@@ -5,10 +5,10 @@ import { useState } from "react"
 import { User } from "../types"
 
 
-export function useGetUser(token: string) {
-    const [userRoles, setUserRoles] = useState<User[]>([])
+export function useGetUserByID(id: string, token: string) {
+    const [user, setUser] = useState<User>()
 
-    const getRoles = async () => {
+    const getUser = async () => {
         const options = {
             method: 'GET',
             headers: {
@@ -18,15 +18,15 @@ export function useGetUser(token: string) {
         }
 
         try {   
-            fetch('https://localhost:7260/api/users/me/roles', options).then(res => {
+            fetch(`https://localhost:7260/api/users/${id}`, options).then(res => {
                 return res.json()
             }).then(json => {
-                setUserRoles(json)
+                setUser(json)
             })
             } catch(err) {
                 console.error(err)
             }
     }
 
-    return [userRoles, getRoles] as const
+    return [user, getUser] as const
 }
