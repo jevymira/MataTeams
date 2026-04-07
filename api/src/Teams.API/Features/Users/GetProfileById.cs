@@ -32,7 +32,8 @@ public sealed record GetProfileByIdProjectRoleViewModel(
 public class GetProfileByIdEndpoint
 {
     public static void Map(RouteGroupBuilder builder) => builder
-        .MapGet("{userId}", GetProfileByIdAsync);
+        .MapGet("{userId}", GetProfileByIdAsync)
+        .WithSummary("Get a user profile by its ID, including the user's skills and projects.");
 
     private static async Task<Results<Ok<GetProfileByIdResponse>, NotFound>> GetProfileByIdAsync(
         string userId,
