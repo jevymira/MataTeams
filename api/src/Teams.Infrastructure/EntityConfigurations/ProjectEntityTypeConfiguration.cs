@@ -35,5 +35,11 @@ public class ProjectEntityTypeConfiguration : IEntityTypeConfiguration<Project>
             .HasForeignKey(p => p.OwnerId)
             .HasPrincipalKey(u => u.Id)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne<Project>()
+            .WithMany()
+            .HasForeignKey(p => p.CopyOf)
+            .HasPrincipalKey(p => p.Id)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

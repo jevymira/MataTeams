@@ -17,7 +17,7 @@ public class ProjectAggregateTest
         var status = ProjectStatus.Draft;
         
         // Act
-        var project = new Project(name, description, type, status, ownerId);
+        var project = new Project(name, description, type, status, ownerId, false, null);
         
         // Assert
         Assert.NotNull(project);
@@ -42,7 +42,7 @@ public class ProjectAggregateTest
         
         // Act & Assert
         var ex = Assert.Throws<InvalidOperationException>(() =>
-            new Project(name, description, type, status, ownerId));
+            new Project(name, description, type, status, ownerId, false, null));
         
         Assert.Equal("Invalid status for project type.", ex.Message);
     }
@@ -55,7 +55,9 @@ public class ProjectAggregateTest
             description,
             ProjectType.Arcs,
             ProjectStatus.Draft,
-            ownerId);
+            ownerId,
+            false,
+            null);
 
         project.AddTeamToProject("Team 1", ownerId);
         project.AddTeamToProject("Team 2", ownerId);

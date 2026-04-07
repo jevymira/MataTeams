@@ -17,7 +17,9 @@ public static class CreateProject
         string Description,
         string Type,
         string Status,
-        List<Role> Roles
+        List<Role> Roles,
+        bool CanCopy,
+        string? CopyOf
     ) : IRequest<Response>;
 
     public sealed record Response(
@@ -71,7 +73,8 @@ public static class CreateProject
     public static void MapEndpoint(RouteGroupBuilder builder) => builder
         .MapPost("", CreateAsync)
         .RequireAuthorization()
-        .WithSummary("Create a new project. Define roles and associated skills for each.");
+        .WithSummary("Create a new project. Define roles and associated skills for each. "
+        + "If a copy, reference the ID of the project of which it is a copy.");
 
     public static async Task<Created<Response>> CreateAsync(
         IMediator mediator,
@@ -103,7 +106,9 @@ public static class CreateProject
                 request.Description,
                 ProjectType.FromName(request.Type),
                 status, 
-                owner!.Id);
+                owner!.Id,
+                request.CanCopy,
+                Guid.TryParse(request.CopyOf, out var result) ? result : null);
 
             //skills for publishing to bus
             var allSkillIds = new List<String>();
