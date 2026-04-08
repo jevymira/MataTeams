@@ -922,9 +922,9 @@ internal static class Extensions
                 {
                     projectCopy1 = new Project(
                         "RecyCOOL Team Proposal",
-                        "Putting together an ARCS team for a COMP 490 Mo/We section. " + "\n" +
-                        "\n" +
-                        "GOAL: Increase recycling participation and food separation rates " +
+                        "Putting together a team to be considered for the ARCS RecyCool project. " +
+                        "I'm aiming to enroll into one of the COMP 490 Mo/We sections. " +
+                        "ORIGINAL POST: Increase recycling participation and food separation rates " +
                         "in communities while decreasing contamination in waste bins. " +
                         "Create applications in support of this goal, conduct site visits " +
                         "to locations for research, and collaborate with community leaders.",
@@ -1032,6 +1032,20 @@ internal static class Extensions
                         MatchPercentage = new decimal(0.99)
                     };
                     context.Set<Recommendation>().Add(recommendation);
+                    context.SaveChanges();
+                }
+
+                var recommendationCopy = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "RecyCOOL Team Proposal");
+                if (recommendationCopy is null)
+                {
+                    recommendationCopy = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = projectCopy1,
+                        MatchPercentage = new decimal(0.986)
+                    };
+                    context.Set<Recommendation>().Add(recommendationCopy);
                     context.SaveChanges();
                 }
 

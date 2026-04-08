@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using MassTransit.Initializers;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Teams.API.Features.Projects;
 using Teams.API.Features.Projects.GetAllProjects;
 using Teams.API.Features.Users;
 using Teams.Infrastructure;
@@ -72,7 +74,7 @@ public class IntegrationTests : IAsyncLifetime
 
             protected override void ConfigureWebHost(IWebHostBuilder builder)
             {
-                builder.ConfigureServices(async services =>
+                builder.ConfigureServices(services =>
                 {
                     services.Remove(services.SingleOrDefault(service => typeof(DbContextOptions<TeamDbContext>) == service.ServiceType));
                     // services.Remove(services.SingleOrDefault(service => typeof(DbConnection) == service.ServiceType));
@@ -119,6 +121,24 @@ public class IntegrationTests : IAsyncLifetime
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.NotEmpty(content.Items);
+        }
+
+        [Fact]
+        public async Task Get_Project_CopiesExist()
+        {
+            var client = _httpClient;
+
+            using var scope = _webApplicationFactory.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<TeamDbContext>();
+
+            var projectId = await dbContext.Projects
+                .SingleOrDefaultAsync(p => p.Name.Equals("ARCS: RecyCOOL"))
+                .Select(p => p.Id);
+
+            var response = await client.GetAsync($"/api/projects/{projectId}");
+            var content = await response.Content.ReadFromJsonAsync<GetProjectById.Response>();
+
+            Assert.NotEmpty(content.CopyIds);
         }
     }
 }
