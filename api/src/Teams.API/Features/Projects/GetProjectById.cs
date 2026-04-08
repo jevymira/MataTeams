@@ -18,6 +18,12 @@ public static class GetProjectById
         public required string Status { get; set; }
         public required List<ResponseRole> Roles { get; set; }
         public required List<GetProjectByIdTeamViewModel>  Teams { get; set; }
+
+        public required bool CanCopy { get; set; }
+
+        public string? CopyOf { get; set; }
+
+        public required List<string> CopyIds { get; set; }
     }
 
     public sealed record ResponseRole
@@ -89,6 +95,11 @@ public static class GetProjectById
 
             if (project is null) throw new KeyNotFoundException();
 
+            var copies = await context.Projects
+                .Where(p => p.CopyOf.Equals(project.Id))
+                .Select(p => p.Id.ToString())
+                .ToListAsync();
+
             return new Response
             {
                 Id = project.Id.ToString(),
@@ -136,7 +147,10 @@ public static class GetProjectById
                                     m.TeamMemberUserId.ToString(),
                                     m.UserName))))
                     ))
-                    .ToList()
+                    .ToList(),
+                CanCopy = project.CanCopy,
+                CopyOf = project.CopyOf.ToString(),
+                CopyIds = copies
             };
         } 
     }

@@ -916,6 +916,60 @@ internal static class Extensions
                     context.SaveChanges();
                 }
 
+                var projectCopy1 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "RecyCOOL Team Proposal");
+                if (projectCopy1 == null)
+                {
+                    projectCopy1 = new Project(
+                        "RecyCOOL Team Proposal",
+                        "Putting together an ARCS team for a COMP 490 Mo/We section. " + "\n" +
+                        "\n" +
+                        "GOAL: Increase recycling participation and food separation rates " +
+                        "in communities while decreasing contamination in waste bins. " +
+                        "Create applications in support of this goal, conduct site visits " +
+                        "to locations for research, and collaborate with community leaders.",
+                        ProjectType.FromName("ARCS"),
+                        ProjectStatus.Draft,
+                        user3.Id,
+                        false,
+                        project.Id);
+                    var projectRole = projectCopy1.AddProjectRole(frontendRole.Id, 2, [js, react]);
+                    projectCopy1.AddProjectRole(backendRole.Id, 2, [pySkill]);
+                    context.Set<Project>().Add(projectCopy1);
+                    var team = projectCopy1.AddTeamToProject("Students", projectCopy1.OwnerId);
+
+                    var request = projectCopy1.AddTeamMembershipRequest(team.Id, projectCopy1.OwnerId, projectRole.Id);
+                    projectCopy1.RespondToMembershipRequest(projectCopy1.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+                    context.SaveChanges();
+                }
+
+                var projectCopy2 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "RecyCOOL Team");
+                if (projectCopy2 == null)
+                {
+                    projectCopy2 = new Project(
+                        "RecyCOOL Team",
+                        "GOAL: Increase recycling participation and food separation rates " +
+                        "in communities while decreasing contamination in waste bins. " +
+                        "Create applications in support of this goal, conduct site visits " +
+                        "to locations for research, and collaborate with community leaders.",
+                        ProjectType.FromName("ARCS"),
+                        ProjectStatus.Draft,
+                        user4.Id,
+                        false,
+                        project.Id);
+                    projectCopy2.AddProjectRole(frontendRole.Id, 2, [js, react]);
+                    var projectRole = projectCopy2.AddProjectRole(backendRole.Id, 2, [pySkill]);
+                    context.Set<Project>().Add(projectCopy2);
+                    var team = projectCopy2.AddTeamToProject("Students", projectCopy2.OwnerId);
+
+                    var request = projectCopy2.AddTeamMembershipRequest(team.Id, projectCopy1.OwnerId, projectRole.Id);
+                    projectCopy2.RespondToMembershipRequest(projectCopy2.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+                    context.SaveChanges();
+                }
+
                 // Excluded from recommendations for demoUser.
                 var projectDemoUserIsLeader = context.Set<Project>()
                     .FirstOrDefault(p => p.Name == "Energy Saving App");
