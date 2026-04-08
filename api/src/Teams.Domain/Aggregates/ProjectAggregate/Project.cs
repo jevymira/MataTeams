@@ -28,26 +28,32 @@ public class Project : Entity
    
    public User Owner { get; private set; }
 
+   public bool CanCopy { get; private set; }
+
+   public Guid? CopyOf { get; private set; }
+
    protected Project()
    {
       _roles = new List<ProjectRole>();
       _teams = new List<Team>();
    }
 
-   public Project(string name, string description, ProjectType type, ProjectStatus status, Guid ownerId) : this()
-   {
-      if (!type.AllowedStatuses.Contains(status))
-         throw new InvalidOperationException("Invalid status for project type.");
+   public Project(string name, string description, ProjectType type, ProjectStatus status, Guid ownerId, bool canCopy, Guid? copyOf) : this()
+    {
+        if (!type.AllowedStatuses.Contains(status))
+            throw new InvalidOperationException("Invalid status for project type.");
 
-      Id = Guid.CreateVersion7();
-      Name = name;
-      Description = description;
-      Type = type;
-      Status = status;
-      OwnerId = ownerId;
-   }
+        Id = Guid.CreateVersion7();
+        Name = name;
+        Description = description;
+        Type = type;
+        Status = status;
+        OwnerId = ownerId;
+        CanCopy = canCopy;
+        CopyOf = copyOf;
+    }
 
-   public void Rename(string newName)
+    public void Rename(string newName)
    {
       Name = newName;
    }

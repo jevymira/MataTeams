@@ -509,7 +509,9 @@ internal static class Extensions
                         "to locations for research, and collaborate with community leaders.",
                         ProjectType.FromName("ARCS"),
                         ProjectStatus.Draft,
-                        user.Id);
+                        user.Id,
+                        true,
+                        null);
                     // Add `Frontend` Role with `JavaScript` and `React` Skills.
                     var projectRole = project.AddProjectRole(frontendRole.Id, 2, [js, react]);
                     // Add `Backend` Role with `Java` Skill.
@@ -531,7 +533,9 @@ internal static class Extensions
                         "We aim to release on the Google Play store in late 2026.",
                         ProjectType.FromName("Club"),
                         ProjectStatus.Planning,
-                        user3.Id
+                        user3.Id,
+                        false,
+                        null
                     );
                     var projectRole1 = project2.AddProjectRole(frontendRole.Id, 1, [react, js, expressSkill]);
                     var projectRole2 = project2.AddProjectRole(fullstackRole.Id, 1, [java, sqlSkill]);
@@ -551,7 +555,9 @@ internal static class Extensions
                         "including buttons and the display.",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Planning,
-                        user4.Id);
+                        user4.Id,
+                        false,
+                        null);
                     var projectRole = project3.AddProjectRole(embeddedRole.Id, 3, [cplusplusSkill, solderingSkill]);
 
                     context.Set<Project>().Add(project3);
@@ -574,7 +580,9 @@ internal static class Extensions
                         "and wiring. Beginners welcome!",
                         ProjectType.FromName("Club"),
                         ProjectStatus.Planning,
-                        user4.Id);
+                        user4.Id,
+                        false,
+                        null);
                     var projectRole = project4.AddProjectRole(embeddedRole.Id, 4, [cplusplusSkill, solderingSkill]);
                     context.Set<Project>().Add(project4);
 
@@ -598,8 +606,9 @@ internal static class Extensions
                         "and have the feature set and user flow figured out.",
                         ProjectType.FromName("Class"),
                         ProjectStatus.Planning,
-                        user3.Id
-                        );
+                        user3.Id,
+                        false,
+                        null);
                     var projectRole = project5.AddProjectRole(fullstackRole.Id, 2, [js, react, sqlSkill]);
                     context.Set<Project>().Add(project5);
 
@@ -621,8 +630,9 @@ internal static class Extensions
                         "Looking for one other person who wants to help build this!",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Planning,
-                        user3.Id
-                        );
+                        user3.Id,
+                        false,
+                        null);
                     var projectRole = project6.AddProjectRole(fullstackRole.Id, 2, [js, react, expressSkill]);
                     context.Set<Project>().Add(project6);
 
@@ -646,7 +656,9 @@ internal static class Extensions
                         "Past experience is helpful but not a hard requirement.",
                         ProjectType.FromName("Faculty"),
                         ProjectStatus.Planning,
-                        user.Id);
+                        user.Id,
+                        false,
+                        null);
 
                     var projectRole1 = project7.AddProjectRole(embeddedRole.Id, 2, [cplusplusSkill, solderingSkill]);
                     var projectRole2 = project7.AddProjectRole(fullstackRole.Id, 2, [pySkill, openCvSkill]);
@@ -666,7 +678,9 @@ internal static class Extensions
                         "using the publicly-available information in the CSUN App.",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Planning,
-                        user.Id);
+                        user.Id,
+                        false,
+                        null);
 
                     var projectRole = project8.AddProjectRole(fullstackRole.Id, 2, [js, react, expressSkill]);
 
@@ -685,7 +699,9 @@ internal static class Extensions
                         "can be found at https://www.csun.edu/science-mathematics/physics-astronomy",
                         ProjectType.FromName("Faculty"),
                         ProjectStatus.Planning,
-                        user.Id);
+                        user.Id,
+                        false,
+                        null);
 
                     var projectRole = project9.AddProjectRole(fullstackRole.Id, 2, [cplusplusSkill]);
 
@@ -705,7 +721,9 @@ internal static class Extensions
                         "want to work in the stack I know best.",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
 
                     var projectRole = project8.AddProjectRole(fullstackRole.Id, 2, [js, react, expressSkill, sqlSkill]);
 
@@ -722,7 +740,9 @@ internal static class Extensions
                         "...",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
 
                     project11.AddProjectRole(backendRole.Id, 2, [java]);
 
@@ -739,7 +759,9 @@ internal static class Extensions
                         "...",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
                     project12.AddProjectRole(fullstackRole.Id, 2, [java]);
 
                     context.Set<Project>().Add(project12);
@@ -755,7 +777,9 @@ internal static class Extensions
                         "...",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
                     project13.AddProjectRole(backendRole.Id, 2, [java, sqlSkill]);
 
                     context.Set<Project>().Add(project13);
@@ -771,7 +795,9 @@ internal static class Extensions
                         "...",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
                     project14.AddProjectRole(backendRole.Id, 2, [java]);
 
                     context.Set<Project>().Add(project14);
@@ -787,7 +813,9 @@ internal static class Extensions
                         "...",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
                     project15.AddProjectRole(backendRole.Id, 2, [java, sqlSkill]);
 
                     context.Set<Project>().Add(project15);
@@ -803,7 +831,9 @@ internal static class Extensions
                         "...",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
                     project16.AddProjectRole(backendRole.Id, 2, [java]);
 
                     context.Set<Project>().Add(project16);
@@ -819,7 +849,9 @@ internal static class Extensions
                         "...",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
                     project17.AddProjectRole(backendRole.Id, 2, [unitySkill]);
 
                     context.Set<Project>().Add(project17);
@@ -835,7 +867,9 @@ internal static class Extensions
                         "...",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Draft,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
                     project18.AddProjectRole(backendRole.Id, 2, [unitySkill]);
 
                     context.Set<Project>().Add(project18);
@@ -851,7 +885,9 @@ internal static class Extensions
                         "...",
                         ProjectType.FromName("Game Design"),
                         ProjectStatus.Alpha,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
 
                     gameProject1.AddProjectRole(threeDModelingRole.Id, 1, []);
 
@@ -870,11 +906,67 @@ internal static class Extensions
                         "We're looking for student volunteers to carry the project through!",
                         ProjectType.FromName("Film"),
                         ProjectStatus.PostProduction,
-                        user5.Id);
+                        user5.Id,
+                        false,
+                        null);
 
                     filmProject1.AddProjectRole(fxArtistRole.Id, 2, [unitySkill]);
 
                     context.Set<Project>().Add(filmProject1);
+                    context.SaveChanges();
+                }
+
+                var projectCopy1 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "RecyCOOL Team Proposal");
+                if (projectCopy1 == null)
+                {
+                    projectCopy1 = new Project(
+                        "RecyCOOL Team Proposal",
+                        "Putting together a team to be considered for the ARCS RecyCool project. " +
+                        "I'm aiming to enroll into one of the COMP 490 Mo/We sections. " +
+                        "ORIGINAL POST: Increase recycling participation and food separation rates " +
+                        "in communities while decreasing contamination in waste bins. " +
+                        "Create applications in support of this goal, conduct site visits " +
+                        "to locations for research, and collaborate with community leaders.",
+                        ProjectType.FromName("ARCS"),
+                        ProjectStatus.Draft,
+                        user3.Id,
+                        false,
+                        project.Id);
+                    var projectRole = projectCopy1.AddProjectRole(frontendRole.Id, 2, [js, react]);
+                    projectCopy1.AddProjectRole(backendRole.Id, 2, [pySkill]);
+                    context.Set<Project>().Add(projectCopy1);
+                    var team = projectCopy1.AddTeamToProject("Students", projectCopy1.OwnerId);
+
+                    var request = projectCopy1.AddTeamMembershipRequest(team.Id, projectCopy1.OwnerId, projectRole.Id);
+                    projectCopy1.RespondToMembershipRequest(projectCopy1.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+                    context.SaveChanges();
+                }
+
+                var projectCopy2 = context.Set<Project>()
+                    .FirstOrDefault(p => p.Name == "RecyCOOL Team");
+                if (projectCopy2 == null)
+                {
+                    projectCopy2 = new Project(
+                        "RecyCOOL Team",
+                        "GOAL: Increase recycling participation and food separation rates " +
+                        "in communities while decreasing contamination in waste bins. " +
+                        "Create applications in support of this goal, conduct site visits " +
+                        "to locations for research, and collaborate with community leaders.",
+                        ProjectType.FromName("ARCS"),
+                        ProjectStatus.Draft,
+                        user4.Id,
+                        false,
+                        project.Id);
+                    projectCopy2.AddProjectRole(frontendRole.Id, 2, [js, react]);
+                    var projectRole = projectCopy2.AddProjectRole(backendRole.Id, 2, [pySkill]);
+                    context.Set<Project>().Add(projectCopy2);
+                    var team = projectCopy2.AddTeamToProject("Students", projectCopy2.OwnerId);
+
+                    var request = projectCopy2.AddTeamMembershipRequest(team.Id, projectCopy1.OwnerId, projectRole.Id);
+                    projectCopy2.RespondToMembershipRequest(projectCopy2.OwnerId, request.Id, TeamMembershipRequestStatus.Approved);
+
                     context.SaveChanges();
                 }
 
@@ -890,7 +982,9 @@ internal static class Extensions
                         "We'll visualize savings in real time and track progress against goals.",
                         ProjectType.FromName("Personal"),
                         ProjectStatus.Active,
-                        demoUser.Id);
+                        demoUser.Id,
+                        false,
+                        null);
                     var projectRole = projectDemoUserIsLeader.AddProjectRole(fullstackRole.Id, 2, [js, react]);
                     context.Set<Project>().Add(projectDemoUserIsLeader);
 
@@ -914,7 +1008,9 @@ internal static class Extensions
                         "Full details can be found at https://www.csun.edu/engineering-computer-science/electrical-computer-engineering",
                         ProjectType.FromName("Faculty"),
                         ProjectStatus.Active,
-                        user.Id);
+                        user.Id,
+                        false,
+                        null);
                     var projectRole = projectDemoUserIsMember.AddProjectRole(embeddedRole.Id, 3, [cplusplusSkill, solderingSkill]);
                     context.Set<Project>().Add(projectDemoUserIsMember);
 
@@ -936,6 +1032,20 @@ internal static class Extensions
                         MatchPercentage = new decimal(0.99)
                     };
                     context.Set<Recommendation>().Add(recommendation);
+                    context.SaveChanges();
+                }
+
+                var recommendationCopy = context.Set<Recommendation>()
+                    .SingleOrDefault(r => r.Project.Name == "RecyCOOL Team Proposal");
+                if (recommendationCopy is null)
+                {
+                    recommendationCopy = new Recommendation
+                    {
+                        User = demoUser,
+                        Project = projectCopy1,
+                        MatchPercentage = new decimal(0.986)
+                    };
+                    context.Set<Recommendation>().Add(recommendationCopy);
                     context.SaveChanges();
                 }
 
