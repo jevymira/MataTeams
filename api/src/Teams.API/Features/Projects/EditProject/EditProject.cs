@@ -24,7 +24,7 @@ public static class EditProject
     );
     
     public sealed record Response(
-        string Id,
+        string ProjectRoleId,
         string Name,
         string Description,
         string Type,
@@ -44,7 +44,7 @@ public static class EditProject
     ) : IRequest<Response>;
     
     public sealed record Role(
-        string? Id, // Null when denoting new Role.
+        string? ProjectRoleId, // Null when denoting new Role.
         string RoleId,
         int PositionCount,
         List<string> SkillIds
@@ -63,15 +63,23 @@ public static class EditProject
         List<SkillViewModel> Skills
     );
     
-    public sealed record TeamViewModel(string Id, string Name);
+    public sealed record TeamViewModel(string Id, string Name, List<TeamRoleViewModel> ProjectRoles);
+
+    public sealed record TeamRoleViewModel(
+        string Id,
+        string RoleName,
+        int VacantPositionCount,
+        List<TeamMemberViewModel> Members);
+
+    public sealed record TeamMemberViewModel(string UserId, string Name);
     
-    public sealed record SkillViewModel(string Id, string Name);
+    public sealed record SkillViewModel(string SkillId, string SkillName);
 
     public static void Map(RouteGroupBuilder group) => group
         .MapPut("{projectId}", EditProjectAsync)
         .WithSummary("Overwrite properties of a project, edit project roles, and remove project teams. " +
                      "Restricted to project owner.")
-        .WithDescription("Designate a new role using a null `ID`. Change existing roles by their `roleId`, " +
+        .WithDescription("Designate a new role using a null `ProjectRoleID`. Change existing roles by their `roleId`, " +
                          "e.g., from Frontend to Fullstack. `skillIds` refer to the IDs of the skills themselves, " +
                          "rather than the project-specific `ProjectRoleSkillId`. " +
                          "Include the IDs of teams to be retained; those absent will be removed. " +
@@ -142,8 +150,8 @@ public static class EditProject
             
             var rolesToRemove = project.Roles
                 .Where(pr => !command.Roles
-                    .Where(r => r.Id is not null)
-                    .Select(r => Guid.Parse(r.Id))
+                    .Where(r => r.ProjectRoleId is not null)
+                    .Select(r => Guid.Parse(r.ProjectRoleId))
                     .ToList()
                     .Contains(pr.Id))
                 .ToList();
@@ -159,14 +167,14 @@ public static class EditProject
                     .Where(s => role.SkillIds.Contains(s.Id.ToString()))
                     .ToList();
                 
-                if (role.Id is null)
+                if (role.ProjectRoleId is null)
                 {
                     project.AddProjectRole(Guid.Parse(role.RoleId), role.PositionCount, skills);
                 }
                 else
                 {
                     project.UpdateRole(
-                        Guid.Parse(role.Id),
+                        Guid.Parse(role.ProjectRoleId),
                         Guid.Parse(role.RoleId),
                         role.PositionCount,
                         skills
@@ -190,7 +198,7 @@ public static class EditProject
                 project.Type.ToString(),
                 project.Status.ToString(),
                 project.Roles.Select(r => r.ToViewModel()).ToList(),
-                project.Teams.Select(t => t.ToViewModel()).ToList()
+                project.Teams.Select(t => t.ToViewModel(project, dbContext)).ToList()
             );
 
             return response;
@@ -206,8 +214,28 @@ public static class EditProject
             role.Skills.Select(s => new SkillViewModel(s.Id.ToString(), s.Name)).ToList()
         );
 
-    private static TeamViewModel ToViewModel(this Team team) =>
-        new TeamViewModel(team.Id.ToString(), team.Name);
+    private static TeamViewModel ToViewModel(this Team team, Project project, TeamDbContext dbContext) =>
+        new TeamViewModel(
+            team.Id.ToString(),
+            team.Name,
+            project.Roles.Select(r => new TeamRoleViewModel(
+                r.Id.ToString(),
+                r.Role.Name,
+                r.PositionCount - team.Members.Count(m => m.ProjectRoleId == r.Id),
+                team.Members
+                    .Where(m => m.ProjectRoleId == r.Id)
+                    .Join(
+                        dbContext.Users,
+                        m => m.UserId,
+                        u => u.Id,
+                        (m, u) => new
+                        {
+                            TeamMemberUserId = m.UserId,
+                            UserName = u.FirstName + " " + u.LastName
+                        })
+                    .Select(m => new TeamMemberViewModel(m.TeamMemberUserId.ToString(), m.UserName))
+                    .ToList()))
+            .ToList());
 }
 
 
