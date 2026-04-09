@@ -7,16 +7,20 @@ import { useGetSkills } from '../../hooks/projects'
 
 type SkillsDropdownProps = {
     labelText: string
+    defaultSelectedSkills?: Skill[]
     setFormSkills: (skills: Skill[]) => void
 }
 
-const SkillsDropdown = ({labelText, setFormSkills}: SkillsDropdownProps) => {
+const SkillsDropdown = ({labelText, setFormSkills, defaultSelectedSkills}: SkillsDropdownProps) => {
     const [skills, getSkills] = useGetSkills()
     const [searchValue, setSearchValue] = useState("")
     const [selectedSkills, setSelectedSkills] = useState<string[]>([])
 
     useEffect(() => {
         getSkills()
+        if (defaultSelectedSkills) {
+            setSelectedSkills(defaultSelectedSkills.map(s => s.id))
+        }
     }, [])
 
     const skillsCollection = createListCollection<Skill>({

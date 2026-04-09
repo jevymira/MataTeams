@@ -45,7 +45,7 @@ function Profile() {
     return (
         <Flex paddingTop={'20px'} flexDirection="column" alignItems={'center'} justifyContent={'center'}>
             <Text fontSize={'26px'} marginBottom={'40px'}>Welcome back, {firstName}!</Text>
-            
+
             <Flex flexDirection='row' justifyContent={'space-between'} alignItems={'center'} width={'500px'}>
                 <Text fontSize={'20px'} fontWeight={600}>Profile Details</Text>
             </Flex>
@@ -84,7 +84,7 @@ function Profile() {
             </Flex>
             <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'}>
             {isEditingSkills ? (
-                <SkillsDropdown setFormSkills={setProfileSkills} labelText="Select skills"/>
+                <SkillsDropdown setFormSkills={setProfileSkills} labelText="Select skills" defaultSelectedSkills={skills}/>
             ) : (
                     <Wrap>
                     {skills?.length > 0 ? (

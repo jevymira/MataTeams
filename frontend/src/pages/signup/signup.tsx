@@ -212,7 +212,7 @@ Enforces CSUN Email format          value: /^[a-z]+\.[a-z]+\.\d{3}@my\.csun\.edu
                                     }}
                                 />
                                 <div>
-                                    <Text>Skills from resume:</Text>
+                                    <Text>Skills:</Text>
                                     {isLoading ? <Spinner /> : <Wrap gap="1">{skills && skills.map(s => {
                                         return (<Badge>{s.name}</Badge>)
                                     })}</Wrap>}
