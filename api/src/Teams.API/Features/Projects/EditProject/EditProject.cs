@@ -20,7 +20,7 @@ public static class EditProject
         string Type,
         string Status,
         List<Role> Roles,
-        List<string> TeamIds
+        List<TeamRequestModel> Teams
     );
     
     public sealed record Response(
@@ -40,7 +40,7 @@ public static class EditProject
         string Type,
         string Status,
         List<Role> Roles,
-        List<string> TeamIds
+        List<TeamRequestModel> Teams
     ) : IRequest<Response>;
     
     public sealed record Role(
@@ -48,6 +48,11 @@ public static class EditProject
         string RoleId,
         int PositionCount,
         List<string> SkillIds
+    );
+
+    public sealed record TeamRequestModel(
+        string Id,
+        List<string> UserIds
     );
 
     public sealed record RoleViewModel(
@@ -84,7 +89,7 @@ public static class EditProject
             request.Type,
             request.Status,
             request.Roles,
-            request.TeamIds
+            request.Teams
         );
             
         var response = await mediator.Send(command);
@@ -166,7 +171,12 @@ public static class EditProject
                 }
             }
             
-            project.RemoveExcludedTeams(command.TeamIds.Select(t => new Guid(t)));
+            foreach (var team in command.Teams)
+            {
+                project.RemoveExcludedMembers(Guid.Parse(team.Id), team.UserIds.ConvertAll(Guid.Parse));
+            }
+
+            project.RemoveExcludedTeams(command.Teams.Select(t => new Guid(t.Id)));
             
             await dbContext.SaveChangesAsync(cancellationToken);
             

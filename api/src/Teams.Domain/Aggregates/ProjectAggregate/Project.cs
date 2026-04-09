@@ -154,4 +154,16 @@ public class Project : Entity
       
       return team.RespondToMembershipRequest(membershipRequestId, projectRoleId, newStatus, positionLimit);
    }
+
+    /// <summary>
+    /// Remove members excluded from the list of members to retain, for a specified team.
+    /// </summary>
+    public void RemoveExcludedMembers(Guid teamId, List<Guid> userIdsToRetain)
+    {
+        var team = _teams.SingleOrDefault(t => t.Id == teamId);
+
+        if (team is null) throw new KeyNotFoundException($"No team with ID: {teamId}");
+
+        team.RemoveExcludedMembers(userIdsToRetain);
+    }
 }
