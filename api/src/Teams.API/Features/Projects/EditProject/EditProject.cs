@@ -71,9 +71,12 @@ public static class EditProject
         .MapPut("{projectId}", EditProjectAsync)
         .WithSummary("Overwrite properties of a project, edit project roles, and remove project teams. " +
                      "Restricted to project owner.")
-        .WithDescription("New roles have null IDs. " +
-                         "Include the IDs of teams to be retained; those absent will be removed." +
-                         "Teams can be removed regardless of whether they still have members.")
+        .WithDescription("Designate a new role using a null `ID`. Change existing roles by their `roleId`, " +
+                         "e.g., from Frontend to Fullstack. `skillIds` refer to the IDs of the skills themselves, " +
+                         "rather than the project-specific `ProjectRoleSkillId`. " +
+                         "Include the IDs of teams to be retained; those absent will be removed. " +
+                         "Teams can be removed regardless of whether they still have members. " +
+                         "Remove team members by excluding their `userID` from their team.")
         .RequireAuthorization();
 
     private static async Task<Ok<Response>> EditProjectAsync(
