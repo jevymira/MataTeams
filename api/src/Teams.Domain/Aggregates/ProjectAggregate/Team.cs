@@ -64,4 +64,9 @@ public class Team : Entity
         _members.Add(new TeamMember(Id, request!.UserId, request.ProjectRoleId));
         return request!.UpdateStatus(status);
     }
+
+    public void RemoveExcludedMembers(List<Guid> userIdsToRetain)
+    {
+        _members.RemoveAll(m => !userIdsToRetain.Contains(m.UserId));
+    }
 }

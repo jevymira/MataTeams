@@ -72,4 +72,27 @@ public class ProjectAggregateTest
         
         Assert.Equal(2, project.Teams.Count);
     }
+
+    [Fact]
+    public void RemoveMember_Project_Success()
+    {
+        var project = new Project(
+            name,
+            description,
+            ProjectType.Arcs,
+            ProjectStatus.Draft,
+            ownerId,
+            false,
+            null);
+
+        var role = project.AddProjectRole(Guid.NewGuid(), 1, []);
+
+        var team = project.AddTeamToProject("Team 1", ownerId);
+        var request = project.AddTeamMembershipRequest(team.Id, ownerId, role.Id);
+        project.RespondToMembershipRequest(ownerId, request.Id, TeamMembershipRequestStatus.Approved);
+
+        project.RemoveExcludedMembers(team.Id, []);
+
+        Assert.Empty(project.Teams.First().Members);
+    }
 }
