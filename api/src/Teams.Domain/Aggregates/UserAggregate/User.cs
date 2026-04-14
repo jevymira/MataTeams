@@ -11,6 +11,8 @@ public class User : Entity
     
     public string LastName { get; private set; }
     
+    public string Email { get; private set; }
+
     public bool IsFacultyOrStaff { get; private set; }
     
     private readonly List<string> _programs;
@@ -35,11 +37,12 @@ public class User : Entity
         _skills = new List<Skill>();
     }
     
-    public User(Guid id, string firstname, string lastname, bool isFacultyOrStaff, string identityGuid) : this()
+    public User(Guid id, string firstname, string lastname, string email, bool isFacultyOrStaff, string identityGuid) : this()
     {
         Id = id;
         FirstName = firstname;
         LastName = lastname;
+        Email = email;
         IsFacultyOrStaff = isFacultyOrStaff;
         IdentityGuid = !string.IsNullOrWhiteSpace(identityGuid)
             ? identityGuid 

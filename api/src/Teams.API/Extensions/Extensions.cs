@@ -444,7 +444,7 @@ internal static class Extensions
                     .FirstOrDefault(m => m.IdentityGuid == builder.Configuration["SeedUsers:0:IdentityGuid"]);
                 if (user == null)
                 {
-                    user = new User(Guid.CreateVersion7(), "MataTeams", "Admin", false, builder.Configuration["SeedUsers:0:IdentityGuid"]!);
+                    user = new User(Guid.CreateVersion7(), "MataTeams", "Admin", "matateams@csun.edu", false, builder.Configuration["SeedUsers:0:IdentityGuid"]!);
                     user.AddSkill(java);
                     context.Set<User>().Add(user);
                     context.SaveChanges();
@@ -455,7 +455,7 @@ internal static class Extensions
                     .FirstOrDefault(u => u.IdentityGuid == builder.Configuration["SeedUsers:1:IdentityGuid"]);
                 if (demoUser == null)
                 {
-                    demoUser = new User(Guid.CreateVersion7(), "Matty", "Miller", false, builder.Configuration["SeedUsers:1:IdentityGuid"]!);
+                    demoUser = new User(Guid.CreateVersion7(), "Matty", "Miller", "matty.miller.626@my.csun.edu", false, builder.Configuration["SeedUsers:1:IdentityGuid"]!);
                     demoUser.AddSkill(js);
                     demoUser.AddSkill(react);
                     demoUser.AddSkill(pySkill);
@@ -469,7 +469,7 @@ internal static class Extensions
                     .FirstOrDefault(u => u.IdentityGuid == "00000000000000000000000000000003");
                 if (user3 == null)
                 {
-                    user3 = new User(Guid.CreateVersion7(), "Patty", "Palmer", false, "00000000000000000000000000000003");
+                    user3 = new User(Guid.CreateVersion7(), "Patty", "Palmer", "patty.palmer.311@my.csun.edu", false, "00000000000000000000000000000003");
                     user3.AddSkill(js);
                     user3.AddSkill(react);
                     user3.AddSkill(expressSkill);
@@ -481,7 +481,7 @@ internal static class Extensions
                     .FirstOrDefault(u => u.IdentityGuid == "00000000000000000000000000000004");
                 if (user4 == null)
                 {
-                    user4 = new User(Guid.CreateVersion7(), "Maria", "Martinez", false, "00000000000000000000000000000004");
+                    user4 = new User(Guid.CreateVersion7(), "Maria", "Martinez", "maria.martinez.128@my.csun.edu", false, "00000000000000000000000000000004");
                     user4.AddSkill(cplusplusSkill);
                     user4.AddSkill(solderingSkill);
                     context.Set<User>().Add(user4);
@@ -492,7 +492,7 @@ internal static class Extensions
                     .FirstOrDefault(u => u.IdentityGuid == "00000000000000000000000000000005");
                 if (user5 == null)
                 {
-                    user5 = new User(Guid.CreateVersion7(), "Maria", "Martinez", false, "00000000000000000000000000000005");
+                    user5 = new User(Guid.CreateVersion7(), "Tom", "Fowler", "tom.fowler.492@my.csun.edu", false, "00000000000000000000000000000005");
                     context.Set<User>().Add(user5);
                     context.SaveChanges();
                 }
