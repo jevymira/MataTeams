@@ -40,7 +40,10 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                     // TODO: set error state
                 }
                 return res.json()
-            }).then(projID => {
+            }).then(project => {
+                console.log(project)
+                const createdProject = convertJSONToProject(project)
+                const projID = createdProject.id;
                 setViewProjectId(projID)
                 fetch(`https://localhost:7260/api/projects/${projID}`, getProjectOptions).then(res => {
                     return res.json().then(projectJSON => {
