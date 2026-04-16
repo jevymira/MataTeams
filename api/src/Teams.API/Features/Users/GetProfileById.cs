@@ -10,6 +10,7 @@ public sealed record GetProfileByIdQuery(string userId) : IRequest<GetProfileByI
 public sealed record GetProfileByIdResponse(
     string FirstName,
     string LastName,
+    string Email,
     bool IsFacultyOrStaff,
     IEnumerable<string> Programs,
     IEnumerable<GetProfileByIdSkillViewModel> Skills,
@@ -87,6 +88,7 @@ internal sealed class GetProfileByIdQueryHandler(TeamDbContext dbContext)
             .Select(u => new GetProfileByIdResponse(
                 u.FirstName,
                 u.LastName,
+                u.Email,
                 u.IsFacultyOrStaff,
                 u.Programs,
                 u.Skills.Select(s => new GetProfileByIdSkillViewModel(
