@@ -12,6 +12,7 @@ namespace Teams.API.Features.Users;
 public sealed record GetAuthenticatedUserProfileQuery : IRequest<GetAuthenticatedUserProfileResponse>;
 
 public sealed record GetAuthenticatedUserProfileResponse(
+    string Id,
     string FirstName,
     string LastName,
     string Email,
@@ -110,6 +111,7 @@ internal sealed class GetAuthenticatedUserProfileQueryHandler(
         }
 
         return new GetAuthenticatedUserProfileResponse(
+            user.Id.ToString(),
             user.FirstName,
             user.LastName,
             user.Email,
