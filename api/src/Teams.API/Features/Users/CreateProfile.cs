@@ -14,6 +14,7 @@ public sealed record CreateProfileCommand : IRequest<CreateProfileResponse>
 {
     public required string FirstName { get; init; }
     public required string LastName { get; init; }
+    public required string Email { get; init; }
     public required bool IsFacultyOrStaff { get; init; }
     
     /// <summary>
@@ -28,6 +29,7 @@ public sealed record CreateProfileResponse
 {
     public required string FirstName { get; init; }
     public required string LastName { get; init; }
+    public required string Email { get; init; }
     public required bool IsFacultyOrStaff { get; init; }
     public required IEnumerable<string> Programs { get; init; }
     public required IEnumerable<CreateProfileSkillModel> Skills { get; init; }
@@ -120,7 +122,7 @@ internal sealed class CreateProfileCommandHandler(
             throw new InvalidOperationException("Profile already exists for the authenticated user.");
         }
         
-        user = new User(Guid.CreateVersion7(), command.FirstName, command.LastName, command.IsFacultyOrStaff, identityService.GetUserIdentity());
+        user = new User(Guid.CreateVersion7(), command.FirstName, command.LastName, command.Email, command.IsFacultyOrStaff, identityService.GetUserIdentity());
         
         var skills = await context.Skills
             .Where(s => command.SkillIds.Contains(s.Id.ToString()))
@@ -150,6 +152,7 @@ internal sealed class CreateProfileCommandHandler(
         {
             FirstName = user.FirstName,
             LastName = user.LastName,
+            Email = user.Email,
             IsFacultyOrStaff = user.IsFacultyOrStaff,
             Programs = user.Programs,
             Skills = skills.Select(s => new CreateProfileSkillModel

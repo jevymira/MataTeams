@@ -14,6 +14,7 @@ public sealed record GetAuthenticatedUserProfileQuery : IRequest<GetAuthenticate
 public sealed record GetAuthenticatedUserProfileResponse(
     string FirstName,
     string LastName,
+    string Email,
     bool IsFacultyOrStaff,
     IEnumerable<string> Programs,
     IEnumerable<GetAuthenticatedUserProfileSkillViewModel> Skills
@@ -111,6 +112,7 @@ internal sealed class GetAuthenticatedUserProfileQueryHandler(
         return new GetAuthenticatedUserProfileResponse(
             user.FirstName,
             user.LastName,
+            user.Email,
             user.IsFacultyOrStaff,
             user.Programs,
             user.Skills.Select(s => new GetAuthenticatedUserProfileSkillViewModel(
