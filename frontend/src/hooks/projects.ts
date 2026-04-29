@@ -244,6 +244,10 @@ export function useGetAllProjects(token: string) {
     return [projects, getProjects] as const
 }
 
+export function useGetProjectsForUser(token: string, userID: number) {
+    
+}
+
 export function useGetSkills() {
     const [skills, setSkills] = useState<Skill[]>([])
 
@@ -295,4 +299,3 @@ export function useGetRoles() {
     }
     return [roles, getRoles] as const
 }
-
