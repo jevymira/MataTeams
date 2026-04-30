@@ -31,7 +31,7 @@ function App() {
             <Routes>
               <Route path='/' element={<PrivateRoute outlet={<Projects />} />} />
               <Route path='/new' element={<PrivateRoute outlet={<CreateProjectForm />} />} />
-              <Route path='/project/view' element={<PrivateRoute outlet={<ProjectView />} />} />
+              <Route path='/project/:id' element={<PrivateRoute outlet={<ProjectView />} />} />
               <Route path='/profile/me' element={<PrivateRoute outlet={<Profile />} />} />
               <Route path='/profile/:id' element={<PrivateRoute outlet={<PublicProfile />} />} />
               <Route path='/login' element={<Login />} />

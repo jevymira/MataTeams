@@ -1,7 +1,7 @@
 import { Skill } from "./projects"
 
 export type UserContextType = {
-    userID: number
+    userID: string
     username: string
     firstName: string
     lastName: string

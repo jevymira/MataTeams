@@ -244,7 +244,7 @@ export function useGetAllProjects(token: string) {
     return [projects, getProjects] as const
 }
 
-export function useGetProjectsForUser(token: string, userID: number) {
+export function useGetProjectsForUser(token: string, userID: string) {
     const [projectsForUser, setProjectsForUser] = useState<Project[]>([])
 
         const [roles, setRoles] = useState<Role[]>([])

@@ -52,7 +52,7 @@ function ProjectCard({project, isGoodMatch} : ProjectProps) {
                         }
                     </Flex>
                     <Flex flexDirection={'column'} width='100%' alignItems={'flex-start'}>
-                        <Link to={`/project/view`} className='projectLink' onClick={() => {
+                        <Link to={`/project/${project.id}`} className='projectLink' onClick={() => {
                             setViewProjectId(project.id)
                         }}>{project.name} </Link>
                         <Text fontSize={'18px'} fontWeight={190}>{truncateText(project.description)}</Text>
