@@ -20,10 +20,11 @@ type ProjectAdminMemberCardProps = {
 }
 
 function ProjectAdminMemberCard({role, teamID}: ProjectAdminMemberCardProps) {
-    const {skills, token} = useContext(UserContext) as UserContextType
-    const [roleRequest, requestRole] = useRequestRole(role.projectRoleId, teamID, token)
-    const [didRequestRole, setDidRequestRole] = useState(false)
-    const matchingSkill = findMatchingSkillFromRole(role, skills)
+    const [isRemoved, setIsRemoved] = useState(false)
+
+    if (isRemoved) {
+        return <></>
+    }
 
     return (
         <Card.Root padding={'10px'}>
@@ -38,7 +39,7 @@ function ProjectAdminMemberCard({role, teamID}: ProjectAdminMemberCardProps) {
                 <Button width={'180px'}>
                     View Member Profile    
                 </Button>
-                <IconButton bgColor={'red'} width={'180px'}>
+                <IconButton bgColor={'red'} width={'180px'} onClick={() => setIsRemoved(true)}>
                     <LuUserMinus />
                     Remove From Team    
                 </IconButton>
