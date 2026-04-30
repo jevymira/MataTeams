@@ -106,17 +106,17 @@ function Profile() {
             <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'}>
                 <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>My Projects</Text>
                 <Wrap>
-                    {myProjects.map(project => {
+                    {userProjects.map(project => {
                         return (
                         <Card.Root  width="240px" variant='outline'>
                         <Card.Body>
                             <Card.Title >
-                                <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>{project.projectName}
+                                <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>{project.name}
                                 <LuClock /> </Flex>
                             </Card.Title>
                             <Card.Description>
                             {/* <Text>{request.teamName}</Text> */}
-                            <Text>{project.projectRoleName}{" developer"}</Text>
+                            {/* <Text>{project.projectRoleName}{" developer"}</Text> */}
                             </Card.Description>
                         </Card.Body>
                         <Card.Footer justifyContent="flex-end">

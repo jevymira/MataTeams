@@ -245,7 +245,53 @@ export function useGetAllProjects(token: string) {
 }
 
 export function useGetProjectsForUser(token: string, userID: number) {
-    
+    const [projectsForUser, setProjectsForUser] = useState<Project[]>([])
+
+        const [roles, setRoles] = useState<Role[]>([])
+
+        const getProjects = async () => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        }
+
+        
+        try {
+            // first get roles
+            // from roles look up project by ID 
+            // then if owner ID matches, return in array 
+
+            fetch(`https://localhost:7260/api/users/me/roles`, options).then(res => {
+                if (res.status !== 200) {
+                    throw new Error(res.statusText)
+                }
+                    
+                    return res.json()
+                
+                }).then(json => {          
+                    console.log(json)
+                }).then(() => {
+                    fetch('https://localhost:7260/api/projects/019ddb11-0c83-70b7-8ab2-d1f1613d39d2', options).then(res => {
+                        if (res.status !== 200) {
+                            console.error('error!')
+                            return -1
+                        }
+        
+                        return res.json()
+                    }).then(jsonRes => {
+                        console.log(jsonRes)
+                    })
+                })
+        } catch (e) {
+            console.error(e)
+            return e
+        }
+    }
+
+    return [projectsForUser, getProjects] as const
 }
 
 export function useGetSkills() {
