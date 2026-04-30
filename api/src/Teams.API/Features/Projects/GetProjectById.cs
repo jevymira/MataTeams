@@ -12,6 +12,7 @@ public static class GetProjectById
     public sealed record Response
     {
         public required string Id { get; set; }
+        public required string OwnerId { get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
         public required string Type { get; set; }
@@ -103,6 +104,7 @@ public static class GetProjectById
             return new Response
             {
                 Id = project.Id.ToString(),
+                OwnerId = project.OwnerId.ToString(),
                 Name = project.Name,
                 Description = project.Description,
                 Type = project.Type.ToString(),

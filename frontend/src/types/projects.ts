@@ -1,5 +1,6 @@
 export type Project = {
     id: string
+    ownerId: string
     description: string
     matchPercentage?: number
     name: string

@@ -2,10 +2,16 @@
 import { useContext, useEffect, useState } from 'react'
 import { Flex, Box, Text, Button, Spinner, Card, Grid, GridItem } from '@chakra-ui/react'
 import { ToastContainer, toast } from 'react-toastify'
+import { useParams, Link } from 'react-router'
+import { LuClipboardList, LuTelescope, LuUser, LuExternalLink } from 'react-icons/lu'
 
 // context
 import { ProjectsContext } from '../../context/project'
 import { UserContext } from '../../context/auth'
+
+// components
+import RoleCard from './RoleCard'
+import ProjectAdminView from './ProjectAdminView'
 
 // types
 import { UserContextType, Project, ProjectsContextType} from '../../types'
@@ -15,28 +21,30 @@ import { useGetProjectByID } from '../../hooks/projects'
 
 // style 
 import './ProjectView.css'
-import RoleCard from './RoleCard'
-import { useNavigate, Link } from 'react-router'
-import { LuClipboardList, LuTelescope, LuUser, LuExternalLink } from 'react-icons/lu'
 
 
 function ProjectView() {
-    const navigate = useNavigate()
+    let { id } = useParams()
     const { viewProjectId, projectLeaderId } = useContext(ProjectsContext) as ProjectsContextType
-    const { token } = useContext(UserContext) as UserContextType
-    const [project, getProject] = useGetProjectByID(viewProjectId, token)
+    const { token, userID } = useContext(UserContext) as UserContextType
+    const [project, getProject] = useGetProjectByID(id ? id : '', token)
     const [requestedRole, setRequestedRole ] = useState(false)
 
     useEffect(() => {
-        if (!viewProjectId) {
-            navigate('/')
-        } else {
-            getProject()
-        }
+        getProject()
     }, [])
 
     const onToast = () => {
         toast("Sent request to join project role!")
+    }
+
+    if (!project) {
+        return <Spinner />
+    }
+
+
+    if (project.ownerId == userID) {
+        return <ProjectAdminView project={project} />
     }
 
     return (<Flex width='100%' justifyContent={'center'} flexDirection={'row'}>

@@ -9,6 +9,7 @@ import { UserContext } from '../../context/auth'
 
 // hooks
 import { useGetPendingRequests, useGetUserRoles } from '../../hooks/teams'
+import { useGetProjectsForUser } from '../../hooks/projects'
 import { useUpdateUser } from '../../hooks/profile'
 
 // components
@@ -18,9 +19,10 @@ import SkillsDropdown from '../../components/skillsDropdown/SkillsDropdown'
 import { UserContextType, Skill } from '../../types'
 
 function Profile() {
-    const { firstName, lastName, skills, token, setSkills } = useContext(UserContext) as UserContextType
+    const { firstName, lastName, skills, token, userID, setSkills } = useContext(UserContext) as UserContextType
     const navigate = useNavigate()
     const [ pendingRequests, getRequests ] = useGetPendingRequests(token)
+    const [ userProjects, getProjectsForUser] = useGetProjectsForUser(token, userID)
     const [ userRoles, getUserRoles ] = useGetUserRoles(token)
     const [ editFirstName, setEditFirstName ] = useState(firstName)
     const [ editLastName, setEditLastName ] = useState(lastName)
@@ -30,6 +32,7 @@ function Profile() {
 
     useEffect(() => {
         getRequests()
+        getProjectsForUser()
         getUserRoles()
     }, [])
 
@@ -99,6 +102,31 @@ function Profile() {
             )}
 
             </Flex>
+
+            <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'}>
+                <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>My Projects</Text>
+                <Wrap>
+                    {userProjects.map(project => {
+                        return (
+                        <Card.Root  width="240px" variant='outline'>
+                        <Card.Body>
+                            <Card.Title >
+                                <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>{project.name}
+                                <LuClock /> </Flex>
+                            </Card.Title>
+                            <Card.Description>
+                            {/* <Text>{request.teamName}</Text> */}
+                            {/* <Text>{project.projectRoleName}{" developer"}</Text> */}
+                            </Card.Description>
+                        </Card.Body>
+                        <Card.Footer justifyContent="flex-end">
+                            <IconButton padding={'5px'} variant="surface" colorPalette='gray'>Cancel</IconButton>
+                        </Card.Footer>
+                        </Card.Root>)
+                    })}
+                </Wrap>
+            </Flex>
+
 
             <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'}>
                 <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>Pending Requests</Text>

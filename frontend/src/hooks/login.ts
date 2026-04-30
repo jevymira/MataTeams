@@ -7,7 +7,7 @@ import { UserContext } from '../context/auth'
 import { UserContextType } from '../types'
 
 export function useLogin(username: string, password: string) {
-    const { setUsername, setSkills, setFirst, setLast, setToken } = useContext(UserContext) as UserContextType
+    const { setUserID, setSkills, setFirst, setLast, setToken } = useContext(UserContext) as UserContextType
     const navigate = useNavigate()
 
     const requestOptions = {
@@ -41,6 +41,7 @@ export function useLogin(username: string, password: string) {
                 setFirst(meJSON['firstName'])
                 setLast(meJSON['lastName'])
                 setSkills(meJSON['skills'])
+                setUserID(meJSON['id'])
                 navigate("/")     
             }).catch((err) => {
                 console.error(err)

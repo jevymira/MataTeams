@@ -11,6 +11,7 @@ import { UserContext } from '../../context/auth'
 
 // components
 import ProjectTypeDropdown from '../projectTypeDropdown/ProjectTypeDropdown'
+import ProjectStatusDropdown from '../projectStatusDropdown/ProjectStatusDropdown'
 
 // types
 import { UserContextType } from '../../types'
@@ -19,7 +20,6 @@ import { createProjectFormReducer, defaultCreateProject } from '../../reducers/c
 
 // style
 import './CreateProjectForm.css'
-import ProjectStatusDropdown from '../projectStatusDropdown/ProjectStatusDropdown'
 
 function CreateProjectForm() {
     const [formState, dispatch] = useReducer(createProjectFormReducer, defaultCreateProject)
