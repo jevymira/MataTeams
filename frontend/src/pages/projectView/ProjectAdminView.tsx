@@ -22,9 +22,10 @@ const ProjectAdminView = ({project} : ProjectAdminViewProps) => {
         console.log("open modal!")
         setOpen(openStatus)
     }
+    console.log(project)
 
     return (
-        <>
+        <Flex width='100%' justifyContent={'center'} flexDirection={'row'}>
             <PopUp 
                 message={"Are you sure you want to remove this member from this project?"}
                 setOpen={setOpenModal}
@@ -68,7 +69,7 @@ const ProjectAdminView = ({project} : ProjectAdminViewProps) => {
                     </Box>
                 </Flex>
             </Box>
-        </>
+            </Flex>
     )
 }
 
