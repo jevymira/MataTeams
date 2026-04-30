@@ -3,24 +3,21 @@ import { Dialog, Button, Portal, CloseButton } from "@chakra-ui/react"
 
 type PopUpProps = {
     message: string
+    open: boolean
+    setOpen: (open: boolean) => void
+    confirmButtonMessage: string
+    confirmAction: () => void
 }
 
-function PopUp({message} : PopUpProps) { 
-    <>
-        <Dialog.Root>
-        <Dialog.Trigger asChild>
-            <Button variant="outline" size="sm">
-            Open Dialog
-            </Button>
-        </Dialog.Trigger>
+function PopUp({message, open, setOpen, confirmButtonMessage, confirmAction} : PopUpProps) { 
+    return (
+        <>
+        <Dialog.Root lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
         <Portal>
             <Dialog.Backdrop />
             <Dialog.Positioner>
             <Dialog.Content>
-                <Dialog.Header>
-                <Dialog.Title>Dialog Title</Dialog.Title>
-                </Dialog.Header>
-                <Dialog.Body>
+                <Dialog.Body paddingTop={'20px'}>
                 <p>
                     {message}
                 </p>
@@ -29,7 +26,7 @@ function PopUp({message} : PopUpProps) {
                 <Dialog.ActionTrigger asChild>
                     <Button variant="outline">Cancel</Button>
                 </Dialog.ActionTrigger>
-                <Button>Save</Button>
+                <Button>{confirmButtonMessage}</Button>
                 </Dialog.Footer>
                 <Dialog.CloseTrigger asChild>
                 <CloseButton size="sm" />
@@ -39,6 +36,7 @@ function PopUp({message} : PopUpProps) {
         </Portal>
         </Dialog.Root>
     </>
+    )
 }
 
 export default PopUp
