@@ -29,14 +29,12 @@ export function useUpdateUser(firstName: string, lastName: string, skills: Skill
         }
         try {
             fetch(`https://localhost:7260/api/users/me`, options).then(res => {
-                console.log(res.status)
                 if (res.status !== 200) {
                     console.error(res.statusText)
                     return -1
                 }
                 return res.json()
             }).then(json => {
-                console.log(json)
                 setFirst(firstName)
                 setLast(lastName)
                 setSkills(json['skillIds'])

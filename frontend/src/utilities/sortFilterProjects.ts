@@ -36,7 +36,6 @@ export const applyFilters = (projects: Project[], filterByVacancy: boolean) => {
             let hasVacancy = false
             project.teams.forEach(team => {
                 team.projectRoles.forEach(teamRole => {
-                    console.log(teamRole)
                     if (teamRole.vacantPositionCount && teamRole.vacantPositionCount > 0) {
                         hasVacancy = true
                     }

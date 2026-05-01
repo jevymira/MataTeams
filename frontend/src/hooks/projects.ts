@@ -41,7 +41,6 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                 }
                 return res.json()
             }).then(project => {
-                console.log(project)
                 const createdProject = convertJSONToProject(project)
                 const projID = createdProject.id;
                 setViewProjectId(projID)
@@ -112,8 +111,6 @@ export function useGetProjectByID(id: string, token: string) {
                 
                 return res.json()
             }).then(projectJSON => {
-                console.log("HERE")
-                console.log(projectJSON)
                 setProject(convertJSONToProject(projectJSON))
 
                 if (projectJSON && projectJSON.teams.length > 0) {
@@ -130,6 +127,7 @@ export function useGetProjectByID(id: string, token: string) {
                 }
             }).then(() => {
                 // dispatch here (in copy only! get project for copy form hook)
+                
 
             })
         } catch (e) {
