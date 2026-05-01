@@ -120,9 +120,7 @@ function ProjectView() {
                     </Flex>
                     <Flex>
                         {project.canCopy && <Button size="xs" onClick={() => {
-                            // first set project ID in context
                             setViewProjectId(project.id)
-                            // then navigate to route
                             navigate('/copy')
                         }}>Copy this Project <LuArrowRight/></Button>}
                     </Flex>

@@ -18,13 +18,15 @@ export const findMatchingSkill = (project: Project, userSkills: Skill[]): string
     let userSkillNames: string[] = userSkills.map(skill => {
         return skill.name
     })
-    project.roles.forEach((r: ProjectRole) => {
-        r.skills.forEach((skill: Skill) => {
-            if (userSkillNames.includes(skill.name)) {
-                match = skill.name
-            }
+    if (project && project.roles.length > 0) {
+        project.roles.forEach((r: ProjectRole) => {
+            r.skills.forEach((skill: Skill) => {
+                if (userSkillNames.includes(skill.name)) {
+                    match = skill.name
+                }
+            })
         })
-    })
+    }
     return match
 }
 
@@ -34,7 +36,6 @@ export const applyFilters = (projects: Project[], filterByVacancy: boolean) => {
             let hasVacancy = false
             project.teams.forEach(team => {
                 team.projectRoles.forEach(teamRole => {
-                    console.log(teamRole)
                     if (teamRole.vacantPositionCount && teamRole.vacantPositionCount > 0) {
                         hasVacancy = true
                     }

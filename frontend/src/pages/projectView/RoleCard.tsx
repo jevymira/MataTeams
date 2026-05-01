@@ -29,7 +29,7 @@ function RoleCard({role, teamID, onToast}: RoleCardProps) {
     const onRequestRole = () => {
         onToast()
         setDidRequestRole(true)
-        //requestRole()
+        requestRole()
     }
 
     return (

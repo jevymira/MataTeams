@@ -64,7 +64,6 @@ export function useRequestRole(projectRoleId: string, teamId: string, token: str
     const [roleRequest, setRoleRequest] = useState<ProjectRoleResponse>()
 
         const requestRole = async () => {
-            console.log(projectRoleId)
             const options = {
                 method: 'POST',
                 headers: {
@@ -82,7 +81,6 @@ export function useRequestRole(projectRoleId: string, teamId: string, token: str
 
                     return res.json()
                 }).then(json => {       
-                    console.log(json)   
                     setRoleRequest(json)
                 })
             } catch(e) {

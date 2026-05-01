@@ -1,6 +1,6 @@
 // libraries
 import { useState, useEffect, Dispatch, useReducer, useContext } from 'react'
-import { Container, Field, Text, Input, Button, IconButton, Flex, ScrollArea, CheckboxCard, Center } from '@chakra-ui/react'
+import { Container, Field, Text, Input, Button, IconButton, Flex, ScrollArea, CheckboxCard, Center, Spinner } from '@chakra-ui/react'
 import { LuUserPlus } from "react-icons/lu"
 import { useNavigate } from 'react-router'
 
@@ -28,6 +28,8 @@ function CopyProjectForm() {
     const [project, getProject] = useGetProjectByID(viewProjectId, token)
     const [formState, dispatch] = useReducer(createProjectFormReducer, defaultCreateProject)
     const [createProject] = useCreateProject(formState, token)
+    const [changedName, setChangedName] = useState(false)
+    const [changedDescription, setChangedDescription] = useState(false)
 
      useEffect(() => {
         if (!viewProjectId) {
@@ -35,13 +37,14 @@ function CopyProjectForm() {
         } else {
             getProject()
         }
-        getProject().then(() => {
-            dispatch({type: 'SET_PROJECT_NAME', payload: project ? project.name : ''})
-        })
+
+        getProject()
     }, [])
  
     return (
         <Flex alignItems={'center'} flexDirection={'column'}>
+            {project ? (
+            <>
             <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontSize={'26px'} padding={'20px'} textAlign={'center'}>
                 Create a new project
             </Text>
@@ -53,7 +56,8 @@ function CopyProjectForm() {
                                 <Field.RequiredIndicator />
                                 <Text>Project Name</Text>
                             </Field.Label>
-                            <Input backgroundColor={'white'} size='md' value={formState.name} onChange={e => {
+                            <Input backgroundColor={'white'} size='md' value={changedName ? formState.name : project.name} onChange={e => {
+                                setChangedName(true)
                                 dispatch({type: 'SET_PROJECT_NAME', payload: e.target.value})
                             }} />
                             <Field.ErrorText>
@@ -66,7 +70,8 @@ function CopyProjectForm() {
                                 <Field.RequiredIndicator />
                                 <Text>Description</Text>
                             </Field.Label>
-                            <Input backgroundColor={'white'} size='md' value={formState.description} onChange={e => {
+                            <Input backgroundColor={'white'} size='md' value={changedDescription ? formState.description : project.description} onChange={e => {
+                                setChangedDescription(true)
                                 dispatch({type: 'SET_PROJECT_DESCRIPTION', payload: e.target.value})
                             }} />
                             <Field.ErrorText>
@@ -85,8 +90,8 @@ function CopyProjectForm() {
                         </Field.Root>
 
                         <CheckboxCard.Root variant='outline' colorPalette='green' className='checkboxcard' 
-                                           size='lg' border='none' boxShadow='none' alignItems='center'
-                                           onCheckedChange={e => {
+                                        size='lg' border='none' boxShadow='none' alignItems='center'
+                                        onCheckedChange={e => {
                                             dispatch({type: 'CAN_COPY', payload: e.checked === true})}}>
                             <CheckboxCard.HiddenInput />
                             <CheckboxCard.Control>
@@ -129,6 +134,9 @@ function CopyProjectForm() {
                 </ScrollArea.Scrollbar>
                 <ScrollArea.Corner />
             </ScrollArea.Root>
+            </>
+            ) : <Spinner />}
+            
         </Flex>
 
     )

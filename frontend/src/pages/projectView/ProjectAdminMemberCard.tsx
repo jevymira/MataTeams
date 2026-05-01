@@ -1,25 +1,18 @@
 // libraries
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { Button, IconButton, Card, Badge, Wrap } from "@chakra-ui/react"
-import { LuClock, LuUserMinus } from "react-icons/lu"
-
+import { LuUserMinus } from "react-icons/lu"
 
 // types
-import { ProjectRole, UserContextType } from "../../types"
-
-// utiltiies
-import { findMatchingSkillFromRole } from "../../utilities/sortFilterProjects"
-
-// context
-import { UserContext } from "../../context/auth"
-import { useRequestRole } from "../../hooks/teams"
+import { ProjectRole } from "../../types"
 
 type ProjectAdminMemberCardProps = {
     role: ProjectRole
     teamID: string
+    openRemoveMemberModal: (open: boolean) => void
 }
 
-function ProjectAdminMemberCard({role, teamID}: ProjectAdminMemberCardProps) {
+function ProjectAdminMemberCard({role, teamID, openRemoveMemberModal}: ProjectAdminMemberCardProps) {
     const [isRemoved, setIsRemoved] = useState(false)
 
     if (isRemoved) {
@@ -39,7 +32,7 @@ function ProjectAdminMemberCard({role, teamID}: ProjectAdminMemberCardProps) {
                 <Button width={'180px'}>
                     View Member Profile    
                 </Button>
-                <IconButton bgColor={'red'} width={'180px'} onClick={() => setIsRemoved(true)}>
+                <IconButton bgColor={'red'} width={'180px'} onClick={() => openRemoveMemberModal(true)}>
                     <LuUserMinus />
                     Remove From Team    
                 </IconButton>

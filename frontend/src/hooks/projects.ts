@@ -41,7 +41,6 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                 }
                 return res.json()
             }).then(project => {
-                console.log(project)
                 const createdProject = convertJSONToProject(project)
                 const projID = createdProject.id;
                 setViewProjectId(projID)
@@ -109,7 +108,7 @@ export function useGetProjectByID(id: string, token: string) {
                     console.error(res.statusText)
                     return -1
                 }
-
+                
                 return res.json()
             }).then(projectJSON => {
                 setProject(convertJSONToProject(projectJSON))
@@ -128,6 +127,8 @@ export function useGetProjectByID(id: string, token: string) {
                 }
             }).then(() => {
                 // dispatch here (in copy only! get project for copy form hook)
+                
+
             })
         } catch (e) {
             console.error(e)
@@ -249,8 +250,6 @@ export function useGetAllProjects(token: string) {
 export function useGetProjectsForUser(token: string, userID: string) {
     const [projectsForUser, setProjectsForUser] = useState<Project[]>([])
 
-        const [roles, setRoles] = useState<Role[]>([])
-
         const getProjects = async () => {
         const options = {
             method: 'GET',
@@ -274,18 +273,21 @@ export function useGetProjectsForUser(token: string, userID: string) {
                     return res.json()
                 
                 }).then(json => {          
-                    console.log(json)
-                }).then(() => {
-                    fetch('https://localhost:7260/api/projects/019ddb11-0c83-70b7-8ab2-d1f1613d39d2', options).then(res => {
+                    for (let i = 0; i < json.items.length; i++) {
+                        fetch(`https://localhost:7260/api/projects/${json.items[i].projectId}`, options).then(res => {
                         if (res.status !== 200) {
                             console.error('error!')
                             return -1
                         }
         
                         return res.json()
-                    }).then(jsonRes => {
-                        console.log(jsonRes)
+                    }).then(projectRes => {
+                        if (projectRes.ownerId == userID) {
+                            setProjectsForUser([...projectsForUser, convertJSONToProject(projectRes)])
+                        }
                     })
+                    }
+
                 })
         } catch (e) {
             console.error(e)
