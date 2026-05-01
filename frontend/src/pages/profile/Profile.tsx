@@ -1,7 +1,8 @@
 // libraries
 import { useContext, useEffect, useState, Dispatch } from 'react'
+import { Link } from 'react-router'
 import { useNavigate } from 'react-router'
-import { ScrollArea, Editable, Text, Flex, Badge, Wrap, IconButton, Card } from '@chakra-ui/react'
+import { ScrollArea, Editable, Text, Flex, Badge, Wrap, IconButton, Card, Container } from '@chakra-ui/react'
 import { LuClock, LuPencil, LuPlus } from 'react-icons/lu'
 
 // context
@@ -21,7 +22,7 @@ import { UserContextType, Skill } from '../../types'
 function Profile() {
     const { firstName, lastName, skills, token, userID, setSkills } = useContext(UserContext) as UserContextType
     const navigate = useNavigate()
-    const [ pendingRequests, getRequests ] = useGetPendingRequests(token)
+    const [ teamRequests, getRequests ] = useGetPendingRequests(token)
     const [ userProjects, getProjectsForUser] = useGetProjectsForUser(token, userID)
     const [ userRoles, getUserRoles ] = useGetUserRoles(token)
     const [ editFirstName, setEditFirstName ] = useState(firstName)
@@ -106,7 +107,7 @@ function Profile() {
 
                         </Flex>
 
-                        <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'}>
+                        <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'35px'}>
                             <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>My Projects</Text>
                             <Wrap>
                                 {userProjects.map(project => {
@@ -114,8 +115,8 @@ function Profile() {
                                     <Card.Root  width="240px" variant='outline'>
                                     <Card.Body>
                                         <Card.Title >
-                                            <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>{project.name}
-                                            <LuClock /> </Flex>
+                                            <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+                                                <Link to={`/project/${project.id}`}> {project.name} </Link> </Flex>
                                         </Card.Title>
                                         <Card.Description>
                                         {/* <Text>{request.teamName}</Text> */}
@@ -123,70 +124,68 @@ function Profile() {
                                         </Card.Description>
                                     </Card.Body>
                                     <Card.Footer justifyContent="flex-end">
-                                        <IconButton padding={'5px'} variant="surface" colorPalette='gray'>Cancel</IconButton>
+                                        <IconButton padding={'5px'} variant="surface" colorPalette='gray'>Manage Project</IconButton>
                                     </Card.Footer>
                                     </Card.Root>)
                                 })}
                             </Wrap>
+                                <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'} >
+                                <IconButton variant={'subtle'} colorPalette={'green'} padding='20px' onClick={routeToNewProject}>
+                                    <LuPlus />
+                                    Create a new project
+                                </IconButton>
+                            </Flex>
                         </Flex>
 
-
-                        <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'}>
-                            <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>Pending Requests</Text>
+                        <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'35px'}>
+                            <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>Projects I've Joined</Text>
                             <Wrap>
-                                {pendingRequests.map(request => {
-                                    return (
+                                {teamRequests.map(request => {
+                                    return request.status != 'Pending' && (
                                     <Card.Root  width="240px" variant='outline'>
                                     <Card.Body>
                                         <Card.Title >
-                                            <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>{request.projectName}
-                                            <LuClock /> </Flex>
+                                            <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+                                                <Link to={`/project/${request.projectId}`}> {request.projectName} </Link>
+                                             </Flex>
                                         </Card.Title>
                                         <Card.Description>
                                         {/* <Text>{request.teamName}</Text> */}
                                         <Text>{request.projectRoleName}{" developer"}</Text>
                                         </Card.Description>
                                     </Card.Body>
+                                    </Card.Root>)
+                                })}
+                            </Wrap>
+                        </Flex>
+
+
+                        <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'35px'}>
+                            <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>Pending Requests</Text>
+                            <Wrap>
+                                {teamRequests.map(request => {
+                                    return request.status == 'Pending' && (
+                                    <Card.Root  width="240px" variant='outline'>
+                                    <Card.Body>
+                                        <Card.Title >
+                                            <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
+                                                <Link to={`/project/${request.projectId}`}> {request.projectName} </Link>
+                                             </Flex>
+                                        </Card.Title>
+                                        <Card.Description>
+                                        {/* <Text>{request.teamName}</Text> */}
+                                        <Text>{request.projectRoleName}{" developer"}</Text>
+                                        
+                                        </Card.Description>
+                                    </Card.Body>
                                     <Card.Footer justifyContent="flex-end">
+                                        {request.status == 'Pending' ? <>{"Pending "}<LuClock /></> : <></>} 
                                         <IconButton padding={'5px'} variant="surface" colorPalette='gray'>Cancel</IconButton>
                                     </Card.Footer>
                                     </Card.Root>)
                                 })}
                             </Wrap>
                         </Flex>
-                        
-                        {(userRoles && userRoles.length > 0) ? (<Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'}>
-                            <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>My Projects</Text>
-                            <Wrap>
-                                {userRoles.map(role => {
-                                    return (
-                                    <Card.Root  width="250px" variant='outline'>
-                                    <Card.Body>
-                                        <Card.Title>
-                                            {role.projectName}
-                                        </Card.Title>
-                                        <Card.Description>
-                                            <Text>{role.roleName}</Text>
-                                            <Text>{"Pending member requests: 0"}</Text>
-                                        </Card.Description>
-                                    </Card.Body>
-                                    <Card.Footer justifyContent="flex-end">
-                                        <IconButton colorPalette='gray' variant={'subtle'} padding={'10px'}>
-                                            <LuPencil />
-                                            Edit Project
-                                            </IconButton>
-                                    </Card.Footer>
-                                    </Card.Root>)
-                                })}
-                            </Wrap>
-                        </Flex>): (
-                            <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'25px'} >
-                                <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>No projects yet!</Text>
-                                <IconButton variant={'subtle'} colorPalette={'green'} padding='20px' onClick={routeToNewProject}>
-                                    <LuPlus />
-                                    Create a new project
-                                </IconButton>
-                            </Flex>)}
 
                 </ScrollArea.Content>
             </ScrollArea.Viewport>
