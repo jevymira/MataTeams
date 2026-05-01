@@ -124,7 +124,9 @@ function Profile() {
                                         </Card.Description>
                                     </Card.Body>
                                     <Card.Footer justifyContent="flex-end">
-                                        <IconButton padding={'5px'} variant="surface" colorPalette='gray'>Manage Project</IconButton>
+                                        <IconButton padding={'5px'} variant="surface" colorPalette='gray' onClick={() => {
+                                            navigate(`/project/${project.id}`)
+                                        }}>Manage Project</IconButton>
                                     </Card.Footer>
                                     </Card.Root>)
                                 })}
@@ -138,7 +140,7 @@ function Profile() {
                         </Flex>
 
                         <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'} marginTop={'35px'}>
-                            <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>Projects I've Joined</Text>
+                            <Text fontWeight={600} fontSize={'20px'} marginBottom={'10px'}>My Team Roles</Text>
                             <Wrap>
                                 {teamRequests.map(request => {
                                     return request.status != 'Pending' && (
@@ -146,12 +148,12 @@ function Profile() {
                                     <Card.Body>
                                         <Card.Title >
                                             <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-                                                <Link to={`/project/${request.projectId}`}> {request.projectName} </Link>
+                                                <Link to={`/project/${request.projectId}`}> {request.projectRoleName} developer </Link>
                                              </Flex>
                                         </Card.Title>
                                         <Card.Description>
                                         {/* <Text>{request.teamName}</Text> */}
-                                        <Text>{request.projectRoleName}{" developer"}</Text>
+                                        <Text>{request.projectName}</Text>
                                         </Card.Description>
                                     </Card.Body>
                                     </Card.Root>)

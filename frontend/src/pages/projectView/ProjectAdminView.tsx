@@ -19,10 +19,8 @@ const ProjectAdminView = ({project} : ProjectAdminViewProps) => {
     const [open, setOpen] = useState(false)
 
     const setOpenModal = (openStatus: boolean) => {
-        console.log("open modal!")
         setOpen(openStatus)
     }
-    console.log(project)
 
     return (
         <Flex width='100%' justifyContent={'center'} flexDirection={'row'}>
