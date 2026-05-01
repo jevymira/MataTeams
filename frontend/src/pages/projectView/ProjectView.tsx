@@ -1,16 +1,14 @@
 // libraries
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import { Flex, Box, Text, Button, Spinner, Card, Grid, GridItem } from '@chakra-ui/react'
 import { ToastContainer, toast } from 'react-toastify'
-import { useParams, Link } from 'react-router'
-import { LuClipboardList, LuTelescope, LuUser, LuExternalLink } from 'react-icons/lu'
+
 
 // context
 import { ProjectsContext } from '../../context/project'
 import { UserContext } from '../../context/auth'
 
 // components
-import RoleCard from './RoleCard'
 import ProjectAdminView from './ProjectAdminView'
 
 // types
@@ -21,18 +19,46 @@ import { useGetProjectByID } from '../../hooks/projects'
 
 // style 
 import './ProjectView.css'
+import RoleCard from './RoleCard'
+import { useParams, Link, useNavigate } from 'react-router'
+import { LuClipboardList, LuTelescope, LuUser, LuExternalLink, LuArrowRight } from 'react-icons/lu'
 
 
 function ProjectView() {
     let { id } = useParams()
-    const { viewProjectId, projectLeaderId } = useContext(ProjectsContext) as ProjectsContextType
+    let projectRef = useRef(id)
+    const { viewProjectId, projectLeaderId, setViewProjectId} = useContext(ProjectsContext) as ProjectsContextType
     const { token, userID } = useContext(UserContext) as UserContextType
     const [project, getProject] = useGetProjectByID(id ? id : '', token)
     const [requestedRole, setRequestedRole ] = useState(false)
+    const navigate = useNavigate()
+
+    const routeToNewProject = () => {
+        navigate('/new')
+    }
+    /*
+    const { login } = useParams();
+    const loginRef = useRef(login);
+    ...
+    useEffect(() => {
+    if(login !== loginRef.current){
+        getUser(login);
+        getUserRepos(login);
+        loginRef.current = login;
+    }
+    }, [login, loginRef]);
+    */
 
     useEffect(() => {
-        getProject()
+            getProject()
     }, [])
+
+    useEffect(() => {
+        if (id !== projectRef.current) {
+            getProject()
+            projectRef.current = id;
+        }
+    }, [id, projectRef])
 
     const onToast = () => {
         toast("Sent request to join project role!")
@@ -73,6 +99,13 @@ function ProjectView() {
                             <Text textDecoration={'underline'} paddingLeft={'10px'}>Project Lead Profile</Text> 
                         </Link>
                     </Flex>
+                    { project.copyOf && <Flex flexDirection={'row'} alignItems={'center'}>
+                        <LuExternalLink />
+                        <Link to={`/project/${project.copyOf.toUpperCase()}`}>
+                            <Text textDecoration={'underline'} paddingLeft={'10px'}>Original Project</Text> 
+                        </Link> 
+                    </Flex>
+                    }
                     <Flex flexDirection={'row'} alignItems={'center'}>
                         <LuClipboardList />
                         <Text paddingLeft={'10px'}>Type: {project.type}</Text>
@@ -81,9 +114,17 @@ function ProjectView() {
                         <LuTelescope />
                         <Text paddingLeft={'10px'}>Status: {project.status}</Text>
                     </Flex>
-                        <Flex flexDirection={'row'} alignItems={'center'}>
+                    <Flex flexDirection={'row'} alignItems={'center'}>
                         <LuUser />
                         <Text paddingLeft={'10px'}>{project.roles.length} open roles</Text>
+                    </Flex>
+                    <Flex>
+                        {project.canCopy && <Button size="xs" onClick={() => {
+                            // first set project ID in context
+                            setViewProjectId(project.id)
+                            // then navigate to route
+                            navigate('/copy')
+                        }}>Copy this Project <LuArrowRight/></Button>}
                     </Flex>
                 </Box>
             </Flex>

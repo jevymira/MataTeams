@@ -77,6 +77,12 @@ export const createProjectFormReducer = (state: CreateProject, action: ProjectFo
                 })
             }
         }
+        case 'CAN_COPY':{
+            return {...state, canCopy: action.payload}
+        }
+        case 'SET_COPY_OF':{
+            return {...state, copyOf: action.payload}
+        }
     }
 }
 
@@ -85,5 +91,7 @@ export const defaultCreateProject: CreateProject = {
     description: '',
     projectType: '',
     status: 'Planning',
-    roles: []
+    roles: [],
+    canCopy: true,
+    copyOf: null
 }
