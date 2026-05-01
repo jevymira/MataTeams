@@ -8,6 +8,8 @@ export type Project = {
     status: string
     roles: ProjectRole[]
     teams: Team[]
+    canCopy: boolean
+    copyOf: string | null
 }
 
 export type TeamMember = {
@@ -30,6 +32,8 @@ export type CreateProject = {
     projectType: string
     status: string
     roles: ProjectRoleCreate[]
+    canCopy: boolean
+    copyOf: string | null
 }
 
 export type ProjectsContextType = {

@@ -9,4 +9,6 @@ export type ProjectFormAction =
     { type: 'REMOVE_ROLE', payload: number } |
     { type: 'UPDATE_ROLE_SKILLS', payload: ProjectRoleFormSkills } |
     { type: 'UPDATE_ROLE_POSITION_COUNT', payload: ProjectRoleFormPositionCount } |
-    { type: 'SET_LEADER_ROLE', payload: number }
+    { type: 'SET_LEADER_ROLE', payload: number } |
+    { type: 'CAN_COPY', payload: boolean } | 
+    { type: 'SET_COPY_OF', payload: string | null}

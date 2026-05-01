@@ -76,7 +76,7 @@ export function useCreateProject(createProjectData: CreateProject, token: string
                         }
 
                         fetch(`https://localhost:7260/api/projects/${projID}/teams`, createTeamOptions).then(res => {
-                            navigate('/project/view')
+                            navigate(`/project/${projID}`)
                         })
                     })
                 })
@@ -126,6 +126,8 @@ export function useGetProjectByID(id: string, token: string) {
                         setProjectLeaderId(teamJson.leader.id)
                     })
                 }
+            }).then(() => {
+                // dispatch here (in copy only! get project for copy form hook)
             })
         } catch (e) {
             console.error(e)
@@ -197,8 +199,8 @@ export function useGetRecommendedProjects(token: string, pageSize: number= 5) {
             setLastId(json.lastId || null);
             setLastMatchPercent(json.lastMatchPercent || null);
 
-            setHasMore(Boolean(json.items.length === pageSize));
-
+            setHasMore(Boolean(json.items.length === pageSize)); //This doesn't work if the amount of projects is divisible by pageSize
+                                                                 //load more will just repeat final page
         } catch (e) {
             console.error(e);
         } finally {

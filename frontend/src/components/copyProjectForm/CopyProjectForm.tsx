@@ -1,30 +1,44 @@
 // libraries
-import { useState, Dispatch, useReducer, useContext } from 'react'
+import { useState, useEffect, Dispatch, useReducer, useContext } from 'react'
 import { Container, Field, Text, Input, Button, IconButton, Flex, ScrollArea, CheckboxCard, Center } from '@chakra-ui/react'
 import { LuUserPlus } from "react-icons/lu"
+import { useNavigate } from 'react-router'
 
 // hooks
-import { useCreateProject } from '../../hooks/projects'
+import { useCreateProject, useGetProjectByID } from '../../hooks/projects'
 
 // context
 import { UserContext } from '../../context/auth'
+import { ProjectsContext } from '../../context/project'
 
 // components
 import ProjectTypeDropdown from '../projectTypeDropdown/ProjectTypeDropdown'
 import ProjectStatusDropdown from '../projectStatusDropdown/ProjectStatusDropdown'
 
 // types
-import { UserContextType } from '../../types'
+import { CreateProject, UserContextType, ProjectsContextType } from '../../types'
 import AddRoleForm from '../addRoleForm/AddRoleForm'
 import { createProjectFormReducer, defaultCreateProject } from '../../reducers/createProjectForm'
 
-// style
-import './CreateProjectForm.css'
 
-function CreateProjectForm() {
-    const [formState, dispatch] = useReducer(createProjectFormReducer, defaultCreateProject)
+function CopyProjectForm() {
+    const navigate = useNavigate()
     const { token } = useContext(UserContext) as UserContextType
+    const { viewProjectId } = useContext(ProjectsContext) as ProjectsContextType
+    const [project, getProject] = useGetProjectByID(viewProjectId, token)
+    const [formState, dispatch] = useReducer(createProjectFormReducer, defaultCreateProject)
     const [createProject] = useCreateProject(formState, token)
+
+     useEffect(() => {
+        if (!viewProjectId) {
+            navigate('/')
+        } else {
+            getProject()
+        }
+        getProject().then(() => {
+            dispatch({type: 'SET_PROJECT_NAME', payload: project ? project.name : ''})
+        })
+    }, [])
  
     return (
         <Flex alignItems={'center'} flexDirection={'column'}>
@@ -120,4 +134,4 @@ function CreateProjectForm() {
     )
   }
   
-export default CreateProjectForm
+export default CopyProjectForm

@@ -20,6 +20,7 @@ import UserContextProvider from './context/auth'
 import './App.css'
 import CreateProjectForm from './components/createProjectForm/CreateProjectForm'
 import PublicProfile from './pages/profile/PublicProfile'
+import CopyProjectForm from './components/copyProjectForm/CopyProjectForm'
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Routes>
               <Route path='/' element={<PrivateRoute outlet={<Projects />} />} />
               <Route path='/new' element={<PrivateRoute outlet={<CreateProjectForm />} />} />
+              <Route path='/copy' element={<PrivateRoute outlet={<CopyProjectForm />} />} />
               <Route path='/project/:id' element={<PrivateRoute outlet={<ProjectView />} />} />
               <Route path='/profile/me' element={<PrivateRoute outlet={<Profile />} />} />
               <Route path='/profile/:id' element={<PrivateRoute outlet={<PublicProfile />} />} />
