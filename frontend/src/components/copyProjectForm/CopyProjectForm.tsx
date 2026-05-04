@@ -46,7 +46,7 @@ function CopyProjectForm() {
             {project ? (
             <>
             <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontSize={'26px'} padding={'20px'} textAlign={'center'}>
-                Create a new project
+                Copy Project
             </Text>
             <ScrollArea.Root maxWidth={500} paddingTop={'10px'} height={'80vh'}>
                 <ScrollArea.Viewport>
