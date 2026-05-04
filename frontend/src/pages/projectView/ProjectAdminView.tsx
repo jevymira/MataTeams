@@ -35,7 +35,7 @@ const ProjectAdminView = ({project} : ProjectAdminViewProps) => {
                 <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontWeight={750} fontSize={'26px'} paddingTop={'20px'} >
                     {project.name}
                 </Text>
-                <Flex>
+                <Flex marginTop={'10px'}>
                     <Box>
                         <Text fontWeight={650} fontSize={'18px'}>About this project</Text>
                         <Text width={"600px"}>{project.description}</Text>

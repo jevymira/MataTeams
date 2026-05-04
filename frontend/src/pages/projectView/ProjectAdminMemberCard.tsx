@@ -20,12 +20,12 @@ function ProjectAdminMemberCard({role, teamID, openRemoveMemberModal}: ProjectAd
     }
 
     return (
-        <Card.Root padding={'10px'}>
+        <Card.Root padding={'10px'} marginTop={'10px'}>
             <Card.Title>{`Member: ${role.roleName} developer`}</Card.Title>
             <Card.Body>
                 <Card.Description>
-                    {`Role: ${role.roleName} developer`}
-                    Status: Accepted
+                    <p>{`Role: ${role.roleName} developer `}</p>
+                    <p>Status: Accepted</p>
                 </Card.Description>
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
