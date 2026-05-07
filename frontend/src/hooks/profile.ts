@@ -8,9 +8,14 @@ import { Skill, User } from "../types"
 import { UserContext } from '../context/auth'
 import { UserContextType } from '../types'
 
-export function useUpdateUser(firstName: string, lastName: string, skills: Skill[]) {
-    const { token, setSkills, setFirst, setLast } = useContext(UserContext) as UserContextType
-    const skillIds = skills.map(s => {
+// utilities
+import { convertJSONToSkillsArray } from "../utilities/convertJSONToProject"
+
+export function useUpdateUser(firstName: string, lastName: string, skillsToSet: Skill[]) {
+    const { token, skills, setSkills, setFirst, setLast } = useContext(UserContext) as UserContextType
+    const skillIds = skillsToSet.filter(s => {
+        return s != null
+    }).map(s => {
         return s.id
     })
 
@@ -37,7 +42,7 @@ export function useUpdateUser(firstName: string, lastName: string, skills: Skill
             }).then(json => {
                 setFirst(firstName)
                 setLast(lastName)
-                setSkills(json['skillIds'])
+                setSkills(convertJSONToSkillsArray(json['skillIds']))
             })
         } catch (e) {
             console.error(e)

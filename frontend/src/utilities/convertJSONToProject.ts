@@ -1,4 +1,4 @@
-import { CreateProject, Project, ProjectRoleCreate, ProjectRoleForm } from "../types"
+import { CreateProject, Project, ProjectRoleCreate, ProjectRoleForm, Skill } from "../types"
 
 export const convertJSONToProject = (json: any): Project => {
     const { id, name, ownerId, description, status, type, roles, teams, canCopy, copyOf } = json
@@ -27,4 +27,14 @@ export const convertProjectToJSON = (project: CreateProject): string => {
         copyOf: project.copyOf ?? null
     }
     return JSON.stringify(newJsonObject)
+}
+
+export const convertJSONToSkillsArray = (json: any): Skill[] => {
+    let skills: Skill[] = []
+    
+    for (let i = 0; i < json.length; i++) {
+        const { id, name } = json[i]
+        skills.push({id, name})
+    }
+    return skills
 }

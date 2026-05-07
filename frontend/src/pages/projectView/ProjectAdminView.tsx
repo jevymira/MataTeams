@@ -1,7 +1,7 @@
 // libraries
 import { useState } from 'react'
-import { Flex, Box, Text, Button, Card, Grid, GridItem } from '@chakra-ui/react'
-import { LuPencil } from 'react-icons/lu'
+import { Flex, Box, Text, Button, Card, Grid, GridItem, IconButton } from '@chakra-ui/react'
+import { LuCheck, LuPencil, LuUserPlus } from 'react-icons/lu'
 
 // components
 
@@ -17,6 +17,7 @@ type ProjectAdminViewProps = {
 
 const ProjectAdminView = ({project} : ProjectAdminViewProps) => {
     const [open, setOpen] = useState(false)
+    const [isEditingProject, setIsEditingProject] = useState(false)
 
     const setOpenModal = (openStatus: boolean) => {
         setOpen(openStatus)
@@ -32,10 +33,23 @@ const ProjectAdminView = ({project} : ProjectAdminViewProps) => {
                 confirmAction={() => {}} />
 
             <Box textAlign={'left'} backgroundColor={'white'} marginTop={'25px'} padding={'25px'} borderRadius={'20px'}>
-                <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontWeight={750} fontSize={'26px'} paddingTop={'20px'} >
-                    {project.name}
-                </Text>
-                <Flex>
+                <Flex alignItems={'center'} justifyContent={'space-between'}>
+
+                    <Text fontFamily={'"Merriweather Sans", sans-serif;'} fontWeight={750} fontSize={'26px'} paddingTop={'20px'} >
+                        {project.name} 
+                    </Text>
+                    {isEditingProject ? <Button variant='subtle' onClick={() => {setIsEditingProject(false)}}>
+                        <LuCheck />
+                        Confirm Changes
+                        </Button> : 
+                        <Button variant='subtle' onClick={() => {
+                        setIsEditingProject(true)   
+                    }}>
+                        <LuPencil />
+                            Edit Project
+                        </Button>}
+                    </Flex>
+                <Flex marginTop={'10px'}>
                     <Box>
                         <Text fontWeight={650} fontSize={'18px'}>About this project</Text>
                         <Text width={"600px"}>{project.description}</Text>
@@ -50,18 +64,24 @@ const ProjectAdminView = ({project} : ProjectAdminViewProps) => {
                                 </GridItem>)
                             })}
                         </Grid>
+                            {isEditingProject ? <IconButton marginTop={'15px'} variant={'subtle'} colorPalette={'green'} padding='20px' onClick={() => {
+
+                            }}>
+                                <LuUserPlus />
+                                    Add New Role
+                            </IconButton> : <></>}
                     </Box>
                     <Box width={'200px'}>
                         <Flex flexDirection={'row'} alignItems={'center'}>
-                            <LuPencil />
+                            {isEditingProject ? <LuPencil /> : <></>}
                             <Text paddingLeft={'10px'}>Type: {project.type}</Text>
                         </Flex>
                         <Flex flexDirection={'row'} alignItems={'center'}>
-                            <LuPencil />
+                            {isEditingProject ? <LuPencil /> : <></>}
                             <Text paddingLeft={'10px'}>Status: {project.status}</Text>
                         </Flex>
                             <Flex flexDirection={'row'} alignItems={'center'}>
-                            <LuPencil />
+                            {isEditingProject ? <LuPencil /> : <></>}
                             <Text paddingLeft={'10px'}>{project.roles.length} open roles</Text>
                         </Flex>
                     </Box>

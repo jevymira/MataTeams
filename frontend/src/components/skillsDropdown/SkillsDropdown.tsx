@@ -1,6 +1,6 @@
 // libraries
 import { useEffect, useState, useMemo } from 'react'
-import { Combobox, Portal, Select, createListCollection, Wrap, Badge } from '@chakra-ui/react'
+import { Combobox, Portal, Select, createListCollection, Wrap, Badge, Spinner } from '@chakra-ui/react'
 // types
 import { Skill } from '../../types'
 import { useGetSkills } from '../../hooks/projects'
@@ -46,15 +46,14 @@ const SkillsDropdown = ({labelText, setFormSkills, defaultSelectedSkills}: Skill
         <Combobox.Root collection={skillsCollection} 
             multiple
             size="sm" 
+            defaultValue={selectedSkills}
             value={selectedSkills}
             onValueChange={handleValueChange}
             marginBottom={'10px'}
             onInputValueChange={(details) => setSearchValue(details.inputValue)}>
             <Combobox.Label>{labelText}</Combobox.Label>
             <Wrap gap="1">
-                {selectedSkills.map((skill) => (
-                <Badge key={skill}>{skills.find(s => s.id == skill)?.name}</Badge>
-                ))}
+                {(skills ? selectedSkills.map((skill) => <Badge key={skill}>{skills.find(s => s.id.toLowerCase() == skill.toLowerCase())?.name}</Badge>) : <Spinner /> )}
             </Wrap>
             <Combobox.Control>
                 <Combobox.Input backgroundColor={'white'} />

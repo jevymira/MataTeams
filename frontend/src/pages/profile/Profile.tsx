@@ -3,7 +3,7 @@ import { useContext, useEffect, useState, Dispatch } from 'react'
 import { Link } from 'react-router'
 import { useNavigate } from 'react-router'
 import { ScrollArea, Editable, Text, Flex, Badge, Wrap, IconButton, Card, Container } from '@chakra-ui/react'
-import { LuClock, LuPencil, LuPlus } from 'react-icons/lu'
+import { LuCheck, LuClock, LuPencil, LuPlus } from 'react-icons/lu'
 
 // context
 import { UserContext } from '../../context/auth'
@@ -43,7 +43,7 @@ function Profile() {
     
     const setProfileSkills = (skills: Skill[]) => {
         setSkillsToUpdate(skills)
-        updateUser()
+        //updateUser()
     }
 
     return (
@@ -83,20 +83,29 @@ function Profile() {
                         
                         <Flex flexDirection='row' justifyContent={'space-between'} alignItems={'center'} width={'500px'}>
                             <Text fontSize={'20px'} fontWeight={600}>Skills</Text>
-                            <IconButton variant={'subtle'} onClick={() => {
-                                setIsEditingSkills(true)
+                            {isEditingSkills ? 
+                            <IconButton onClick={() => {
+                                updateUser()
+                                setIsEditingSkills(false)
                             }}>
-                                <LuPencil />
+                                <LuCheck />
                             </IconButton>
+                            :
+                                <IconButton variant={'subtle'} onClick={() => {
+                                    setIsEditingSkills(true)
+                                }}>
+                                    <LuPencil />
+                                </IconButton>
+                            }
                         </Flex>
                         <Flex width='500px' flexDirection={'column'} alignItems={'flex-start'}>
                         {isEditingSkills ? (
                             <SkillsDropdown setFormSkills={setProfileSkills} labelText="Select skills" defaultSelectedSkills={skills}/>
                         ) : (
                                 <Wrap>
-                                {skills?.length > 0 ? (
-                                    skills.map((skill, index) => (
-                                        <Badge key={index} mt={2}>{skill.name}</Badge>))
+                                {skills && skills.length > 0 ? (
+                                    skills.map((skill, index) => {
+                                        return (<Badge key={index} mt={2}>{skill.name}</Badge>)})
                                     ) : (
                                         <Text mt={2} color="gray">
                                     No skills added yet
